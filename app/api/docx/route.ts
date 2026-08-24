@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
     });
 
     const { buffer, filename } = await fillDocxTemplate(type, ctx);
-    const body = new Uint8Array(buffer).buffer as ArrayBuffer;
+    const responseBody = new Uint8Array(buffer).buffer as ArrayBuffer;
 
-    return new NextResponse(body, {
+    return new NextResponse(responseBody, {
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
