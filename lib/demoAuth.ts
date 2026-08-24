@@ -1,7 +1,7 @@
 /** Demo-stage founder credentials. Keep seed, login-check, and NextAuth in sync. */
 export const DEMO_FOUNDER = {
   username: "founder",
-  password: "luxaeonspaces2026",
+  password: "Luxaeonspaces2026",
   fullName: "Oluwabukunmi OMISORE",
   role: "Founder",
   department: "Executive",

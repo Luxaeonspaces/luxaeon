@@ -10,6 +10,6 @@ USE COMMAND PROMPT (cmd), NOT POWERSHELL
 8. npx.cmd tsx prisma/seed.ts
 9. npm.cmd run dev
 10. Browser http://localhost:3000
-    founder / Luxaeon2026
+    founder / Luxaeonspaces2026
 
 If npm.ps1 error: you are in PowerShell - switch to cmd

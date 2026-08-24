@@ -1,6 +1,6 @@
 -- Luxaeon Business OS founder seed
 -- Run after supabase-migration.sql in Supabase SQL Editor.
--- Login: founder / Luxaeon2026
+-- Login: founder / Luxaeonspaces2026
 
 INSERT INTO "User" (
   "id", "username", "fullName", "passwordHash", "role", "department", "active"
@@ -9,7 +9,7 @@ VALUES (
   'founder-seed',
   'founder',
   'Oluwabukunmi OMISORE',
-  '$2a$10$.VTOvl8G1xkzdhWJioUQQebo6m2AYocLH/PI9aVQfy.HFKWEUDEb2',
+  '$2a$10$c5EPVBHvQNG3qKNPLIYYoe9XbEcaG8jOp7.ihIaTAQJpEI2J1SXj2',
   'Founder',
   'Management',
   true

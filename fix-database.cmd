@@ -21,7 +21,7 @@ call npm run db:seed
 echo.
 echo Done.
 echo Login:  username = founder
-echo         password = Luxaeon2026
+echo         password = Luxaeonspaces2026
 echo.
 echo Now run:  npm run dev
 echo Then open: http://localhost:3000

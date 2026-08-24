@@ -35,5 +35,5 @@ if errorlevel 1 exit /b 1
 echo.
 echo Migration complete.
 echo Login username: founder
-echo Login password: Luxaeon2026
+echo Login password: Luxaeonspaces2026
 endlocal

@@ -20,7 +20,7 @@ call npx.cmd prisma db push
 call npx.cmd tsx prisma/seed.ts
 echo.
 echo Open http://localhost:3000
-echo Login founder / Luxaeon2026
+echo Login founder / Luxaeonspaces2026
 echo.
 call npm.cmd run dev
 pause

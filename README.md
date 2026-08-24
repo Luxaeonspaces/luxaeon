@@ -34,7 +34,7 @@ Open **http://localhost:3000**
 ### Default login
 
 - Username: `founder`
-- Password: `luxaeonspaces2026`
+- Password: `Luxaeonspaces2026`
 
 Change password in **Settings** after first login.
 

@@ -11,7 +11,7 @@ HOW TO START (Windows)
 FOUNDER LOGIN
 -------------
 Username: founder
-Password: Luxaeon2026
+Password: Luxaeonspaces2026
 
 REQUIREMENTS
 ------------
