@@ -36,7 +36,8 @@ export default async function ActivityPage() {
       </div>
 
       <div className="glass-card overflow-hidden">
-        <table className="w-full text-left text-sm">
+        <div className="table-scroll">
+          <table className="w-full text-left text-sm">
           <thead className="bg-cream/50 text-xs uppercase text-gray-500">
             <tr>
               <th className="px-4 py-2">When</th>
@@ -64,7 +65,8 @@ export default async function ActivityPage() {
               </tr>
             )}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
     </div>
   );

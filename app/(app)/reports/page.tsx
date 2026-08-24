@@ -117,7 +117,8 @@ function Segment({ title, rows, map }: { title: string; rows: any[]; map: Record
   return (
     <div className="glass-card overflow-hidden">
       <div className="border-b border-gold/30 px-4 py-3 font-semibold text-burgundy">{title}</div>
-      <table className="w-full text-left text-sm">
+      <div className="table-scroll">
+        <table className="w-full text-left text-sm">
         <thead className="bg-cream/50 text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-2">When</th>
@@ -150,7 +151,8 @@ function Segment({ title, rows, map }: { title: string; rows: any[]; map: Record
             </tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }
@@ -166,7 +168,8 @@ async function LoginReport() {
   return (
     <div className="glass-card overflow-hidden">
       <div className="border-b border-gold/30 px-4 py-3 font-semibold text-burgundy">Login &amp; security audit</div>
-      <table className="w-full text-left text-sm">
+      <div className="table-scroll">
+        <table className="w-full text-left text-sm">
         <thead className="bg-cream/50 text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-2">When</th>
@@ -194,7 +197,8 @@ async function LoginReport() {
             </tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }

@@ -25,14 +25,14 @@ export default function DocList({ docs, title = "Supporting documents" }: { docs
       <ul className="space-y-1">
         {docs.map((d) => (
           <li key={d.id} className="flex flex-wrap items-center justify-between gap-2 rounded-lg border border-gold/20 bg-white/60 px-2 py-1.5">
-            <span>
+            <span className="min-w-0 break-words">
               <span className="mr-2 rounded bg-gold/15 px-1.5 py-0.5 text-[10px] uppercase text-burgundy">
                 {kind(d.name || d.filename)}
               </span>
               {d.name}
               {d.by && <span className="text-xs text-gray-400"> · {d.by}</span>}
             </span>
-            <span className="flex gap-2">
+            <span className="flex shrink-0 gap-2">
               <button type="button" className="text-xs font-semibold text-burgundy underline" onClick={() => setPreview(d)}>
                 View
               </button>

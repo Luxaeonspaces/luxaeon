@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 type Props = {
   fullName: string;
@@ -49,40 +50,74 @@ const links = [
 
 export default function Sidebar({ fullName, role, department, perms }: Props) {
   const path = usePathname();
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [path]);
 
   return (
-    <aside className="sticky top-0 flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-gold/40 bg-white/65 p-4 backdrop-blur-xl">
-      <div className="mb-6 px-2">
-        <img src="/logo.png" alt="Luxaeon" className="mb-2 h-12 w-12 object-contain" />
-        <h1 className="font-display text-lg font-semibold text-burgundy">Luxaeon Spaces</h1>
-        <p className="text-xs text-gray-500">Business OS · Next.js</p>
-        <div className="mt-3 rounded-xl bg-burgundy/5 px-3 py-2 text-xs">
+    <>
+      <button
+        type="button"
+        aria-label="Open navigation"
+        aria-expanded={open}
+        onClick={() => setOpen(true)}
+        className="fixed left-4 top-3 z-50 rounded-xl border border-gold/40 bg-white/90 px-3 py-2 text-lg leading-none text-burgundy shadow-sm md:hidden"
+      >
+        <span aria-hidden="true">☰</span>
+      </button>
+      {open && (
+        <button
+          type="button"
+          aria-label="Close navigation"
+          onClick={() => setOpen(false)}
+          className="fixed inset-0 z-30 bg-burgundy/25 md:hidden"
+        />
+      )}
+      <aside className={`fixed inset-y-0 left-0 z-40 flex h-screen w-[min(18rem,88vw)] flex-col overflow-hidden border-r border-gold/40 bg-white/95 p-4 shadow-2xl backdrop-blur-xl transition-transform duration-200 md:sticky md:top-0 md:z-auto md:w-64 md:shrink-0 md:translate-x-0 md:bg-white/65 md:shadow-none ${open ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className="mb-6 flex items-start justify-between px-2">
+          <div>
+            <img src="/logo.png" alt="Luxaeon" className="mb-2 h-12 w-12 object-contain" />
+            <h1 className="font-display text-lg font-semibold text-burgundy">Luxaeon Spaces</h1>
+            <p className="text-xs text-gray-500">Business OS · Next.js</p>
+          </div>
+          <button
+            type="button"
+            aria-label="Close navigation"
+            onClick={() => setOpen(false)}
+            className="rounded-lg px-2 py-1 text-xl leading-none text-burgundy md:hidden"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="mb-4 rounded-xl bg-burgundy/5 px-3 py-2 text-xs">
           <p className="font-semibold text-burgundy">{fullName}</p>
           <p className="text-gray-600">
             {role}
             {department ? ` · ${department}` : ""}
           </p>
         </div>
-      </div>
-      <nav className="flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-1">
-        {links
-          .filter((l) => l.show(perms))
-          .map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className={`nav-link ${path === l.href || path.startsWith(l.href + "/") ? "nav-link-active" : ""}`}
-            >
-              {l.label}
-            </Link>
-          ))}
-      </nav>
-      <button
-        onClick={() => signOut({ callbackUrl: "/login" })}
-        className="mt-4 rounded-xl border border-gold/40 bg-white/80 px-3 py-2 text-sm font-medium text-burgundy transition hover:bg-cream"
-      >
-        Sign out
-      </button>
-    </aside>
+        <nav className="flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-1">
+          {links
+            .filter((l) => l.show(perms))
+            .map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className={`nav-link ${path === l.href || path.startsWith(l.href + "/") ? "nav-link-active" : ""}`}
+              >
+                {l.label}
+              </Link>
+            ))}
+        </nav>
+        <button
+          onClick={() => signOut({ callbackUrl: "/login" })}
+          className="mt-4 rounded-xl border border-gold/40 bg-white/80 px-3 py-2 text-sm font-medium text-burgundy transition hover:bg-cream"
+        >
+          Sign out
+        </button>
+      </aside>
+    </>
   );
 }

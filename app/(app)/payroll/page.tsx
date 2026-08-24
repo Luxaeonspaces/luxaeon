@@ -97,7 +97,7 @@ export default async function PayrollPage({
             </tbody>
           </table>
           {perms.isFounder && b.status === "Pending Founder" && (
-            <form action={founderApproveBatch} className="flex gap-2">
+            <form action={founderApproveBatch} className="flex flex-wrap gap-2">
               <input type="hidden" name="id" value={b.id} />
               <button name="decision" value="approve" className="btn-primary">
                 Founder approve → Finance

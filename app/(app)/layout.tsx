@@ -23,12 +23,12 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           canSeeAllActivity: perms.canSeeAllActivity,
         }}
       />
-      <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-gold/30 bg-white/70 px-4 py-2 backdrop-blur-xl">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-gold/30 bg-white/70 py-2 pl-16 pr-4 backdrop-blur-xl md:px-4">
           <BackButton />
           <span className="text-xs text-gray-500">Luxaeon Spaces · Business OS</span>
         </header>
-        <main className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-6 page-enter">{children}</main>
+        <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain p-4 page-enter sm:p-6">{children}</main>
       </div>
     </div>
   );

@@ -68,7 +68,7 @@ function TxnColumn({
     <div className="glass-card overflow-hidden">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-gold/30 px-4 py-3">
         <h2 className="font-semibold text-burgundy">{title}</h2>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           <a href={downloadCsv} className="rounded-lg border border-gold/40 px-3 py-1 text-xs font-semibold text-burgundy">
             Download {title} CSV
           </a>
@@ -77,7 +77,8 @@ function TxnColumn({
           </a>
         </div>
       </div>
-      <table className="w-full text-left text-sm">
+      <div className="table-scroll">
+        <table className="w-full text-left text-sm">
         <thead className="bg-cream/50 text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-2">Txn ID</th>
@@ -111,7 +112,8 @@ function TxnColumn({
             </tr>
           )}
         </tbody>
-      </table>
+        </table>
+      </div>
     </div>
   );
 }

@@ -53,7 +53,7 @@ export default async function TxnDetailPage({ params }: { params: { id: string }
         <p><strong>Recorded by:</strong> {txn.createdBy || "—"}</p>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-wrap gap-2">
         <a href={`/api/finance/export?id=${txn.id}&format=csv`} className="btn-primary">
           Download this transaction (CSV)
         </a>
@@ -64,7 +64,8 @@ export default async function TxnDetailPage({ params }: { params: { id: string }
 
       <div className="glass-card overflow-hidden">
         <div className="border-b border-gold/30 px-4 py-3 font-semibold text-burgundy">Transaction audit trail</div>
-        <table className="w-full text-left text-sm">
+        <div className="table-scroll">
+          <table className="w-full text-left text-sm">
           <thead className="bg-cream/50 text-xs uppercase text-gray-500">
             <tr>
               <th className="px-4 py-2">When</th>
@@ -83,7 +84,8 @@ export default async function TxnDetailPage({ params }: { params: { id: string }
               </tr>
             ))}
           </tbody>
-        </table>
+          </table>
+        </div>
       </div>
 
       <TxnDocs
