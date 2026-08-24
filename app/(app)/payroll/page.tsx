@@ -40,7 +40,7 @@ export default async function PayrollPage({
       </div>
 
       {perms.canManageHr && (
-        <form key={searchParams?.ok || "payroll-batch"} action={preparePayroll} className="glass-card grid gap-3 p-5 md:grid-cols-3" key={searchParams?.ok || "pay"}>
+        <form action={preparePayroll} className="glass-card grid gap-3 p-5 md:grid-cols-3" key={searchParams?.ok || "pay"}>
           <h2 className="md:col-span-3 font-semibold text-burgundy">Generate payroll batch</h2>
           <input name="period" className="input" placeholder="Period e.g. August 2026" required />
           <div>
