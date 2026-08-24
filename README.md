@@ -26,6 +26,9 @@ Use the Supabase pooler URL for `DATABASE_URL` and the direct database URL for
 `DIRECT_URL`. The Supabase project URL and publishable API key are not database
 connection credentials and are not required by this Prisma-backed application.
 
+On Windows, run `migrate-supabase.cmd` to generate the client, apply the schema,
+and seed the founder account in one step.
+
 Open **http://localhost:3000**
 
 ### Default login
