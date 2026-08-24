@@ -75,7 +75,7 @@ export default function Sidebar({ fullName, role, department, perms }: Props) {
           className="fixed inset-0 z-30 bg-burgundy/25 md:hidden"
         />
       )}
-      <aside className={`fixed inset-y-0 left-0 z-40 flex h-screen w-[min(18rem,88vw)] flex-col overflow-hidden border-r border-gold/40 bg-white/95 p-4 shadow-2xl backdrop-blur-xl transition-transform duration-200 md:sticky md:top-0 md:z-auto md:w-64 md:shrink-0 md:translate-x-0 md:bg-white/65 md:shadow-none ${open ? "translate-x-0" : "-translate-x-full"}`}>
+      <aside className={`fixed inset-y-0 left-0 z-40 flex h-[100dvh] w-[min(18rem,88vw)] flex-col overflow-hidden border-r border-gold/40 bg-white/95 p-4 pb-[calc(1rem+env(safe-area-inset-bottom))] shadow-2xl backdrop-blur-xl transition-transform duration-200 md:sticky md:top-0 md:h-screen md:z-auto md:w-64 md:shrink-0 md:translate-x-0 md:bg-white/65 md:shadow-none ${open ? "translate-x-0" : "-translate-x-full"}`}>
         <div className="mb-6 flex items-start justify-between px-2">
           <div>
             <img src="/logo.png" alt="Luxaeon" className="mb-2 h-12 w-12 object-contain" />
@@ -98,7 +98,7 @@ export default function Sidebar({ fullName, role, department, perms }: Props) {
             {department ? ` · ${department}` : ""}
           </p>
         </div>
-        <nav className="flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-1">
+        <nav className="min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain pr-1">
           {links
             .filter((l) => l.show(perms))
             .map((l) => (
@@ -111,12 +111,15 @@ export default function Sidebar({ fullName, role, department, perms }: Props) {
               </Link>
             ))}
         </nav>
-        <button
-          onClick={() => signOut({ callbackUrl: "/login" })}
-          className="mt-4 rounded-xl border border-gold/40 bg-white/80 px-3 py-2 text-sm font-medium text-burgundy transition hover:bg-cream"
-        >
-          Sign out
-        </button>
+        <div className="mt-3 shrink-0 border-t border-gold/20 pt-3">
+          <button
+            type="button"
+            onClick={() => signOut({ callbackUrl: "/login" })}
+            className="min-h-11 w-full rounded-xl border border-gold/40 bg-white/90 px-3 py-2 text-sm font-semibold text-burgundy transition hover:bg-cream"
+          >
+            Sign out
+          </button>
+        </div>
       </aside>
     </>
   );
