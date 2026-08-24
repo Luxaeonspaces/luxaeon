@@ -33,8 +33,9 @@ export async function POST(req: NextRequest) {
     });
 
     const { buffer, filename } = await fillDocxTemplate(type, ctx);
+    const body = new Uint8Array(buffer).buffer as ArrayBuffer;
 
-    return new NextResponse(buffer, {
+    return new NextResponse(body, {
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -62,7 +63,8 @@ export async function GET(req: NextRequest) {
     }
     const ctx = await contextFromProjectCode(projectCode);
     const { buffer, filename } = await fillDocxTemplate(type, ctx);
-    return new NextResponse(buffer, {
+    const body = new Uint8Array(buffer).buffer as ArrayBuffer;
+    return new NextResponse(body, {
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
