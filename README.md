@@ -6,7 +6,7 @@ Full web version of the Luxaeon corporate system: auth, RBAC, leads, projects (`
 
 - Next.js 14 (App Router)
 - TypeScript
-- Prisma + SQLite
+- Prisma + Supabase PostgreSQL
 - NextAuth (credentials)
 - Tailwind CSS (glassmorphism UI)
 
@@ -15,10 +15,16 @@ Full web version of the Luxaeon corporate system: auth, RBAC, leads, projects (`
 ```bash
 cd Luxaeon_NextJS
 npm install
+npx prisma generate
 npx prisma db push
 npm run db:seed
 npm run dev
 ```
+
+Set `DATABASE_URL` and `DIRECT_URL` in `.env` before running the Prisma commands.
+Use the Supabase pooler URL for `DATABASE_URL` and the direct database URL for
+`DIRECT_URL`. The Supabase project URL and publishable API key are not database
+connection credentials and are not required by this Prisma-backed application.
 
 Open **http://localhost:3000**
 
@@ -52,11 +58,13 @@ Change password in **Settings** after first login.
 
 ## Production
 
-1. Set strong `NEXTAUTH_SECRET` in `.env`
-2. Set `NEXTAUTH_URL` to your domain
-3. Optional: switch Prisma to PostgreSQL
-4. Deploy to Vercel / VPS
-5. Link client portal from website: `https://your-domain/client-portal`
+1. Set `DATABASE_URL` to Supabase's pooled connection string
+2. Set `DIRECT_URL` to Supabase's direct connection string
+3. Set a strong `NEXTAUTH_SECRET`
+4. Set `NEXTAUTH_URL` to your deployed domain
+5. Run `npx prisma db push` and `npm run db:seed` once against Supabase
+6. Deploy to Vercel / VPS
+7. Link client portal from website: `https://your-domain/client-portal`
 
 ## Company
 
