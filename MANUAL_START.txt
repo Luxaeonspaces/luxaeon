@@ -1,0 +1,15 @@
+USE COMMAND PROMPT (cmd), NOT POWERSHELL
+
+1. Install Node LTS from https://nodejs.org and RESTART PC
+2. Win key > type cmd > open Command Prompt
+3. cd /d C:\Users\oomisore\Downloads\Luxaeon_NextJS
+4. node -v
+5. npm.cmd install
+6. npx.cmd prisma generate
+7. npx.cmd prisma db push
+8. npx.cmd tsx prisma/seed.ts
+9. npm.cmd run dev
+10. Browser http://localhost:3000
+    founder / Luxaeon2026
+
+If npm.ps1 error: you are in PowerShell - switch to cmd
