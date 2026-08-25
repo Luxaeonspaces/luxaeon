@@ -19,13 +19,13 @@ const matrix = [
   ["HR / payroll generate", "Yes", "HR", "No"],
   ["Payroll founder approve", "Yes", "No", "No"],
   ["Reports (finance/login/project)", "Yes", "All HODs", "No — “can’t access data”"],
-  ["User management", "Yes", "Head of IT", "No"],
+  ["User management", "Yes", "IT department", "No"],
   ["Team activity feed", "Yes", "No", "No"],
 ];
 
 export default async function PermissionsPage() {
   const { user, perms } = await requireUser();
-  if (!perms.canManageUsers && !perms.isFounder && !perms.isHod) {
+  if (!perms.canManageUsers) {
     redirect("/dashboard");
   }
 

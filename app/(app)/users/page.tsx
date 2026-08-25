@@ -26,7 +26,7 @@ export default async function UsersPage({
       <div className="main-header">
         <h1 className="relative z-10 font-display text-2xl font-semibold">User Management</h1>
         <p className="relative z-10 text-sm text-white/80">
-          Founder &amp; Head of IT · create, disable, or remove accounts
+          Founder &amp; IT staff · edit usernames, create, disable, or remove accounts
         </p>
       </div>
 
@@ -155,8 +155,9 @@ export default async function UsersPage({
       </form>
 
       <form action={updateUser} className="glass-card grid gap-3 p-5 md:grid-cols-4" key={`upd-${searchParams?.ok || ""}`}>
-        <h2 className="md:col-span-4 font-display font-semibold text-burgundy">Adjust role / department</h2>
-        <input name="username" className="input" placeholder="Username" required autoComplete="off" />
+        <h2 className="md:col-span-4 font-display font-semibold text-burgundy">Edit username / role / department</h2>
+        <input name="username" className="input" placeholder="Current username" required autoComplete="off" />
+        <input name="newUsername" className="input" placeholder="New username (optional)" autoComplete="off" />
         <select name="role" className="input">
           <option>Staff</option>
           <option>Department Head</option>

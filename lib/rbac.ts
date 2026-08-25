@@ -52,7 +52,7 @@ export function getPerms(user: SessionUser) {
     canDeptApprove: isFounder || isHod || isHeadOfIt,
     canFinalApprove: isFounder,
 
-    canManageUsers: isFounder || isHeadOfIt,
+    canManageUsers: isFounder || isIt,
     canManageHr: isFounder || isHr || isHeadOfIt,
     canViewHr: isFounder || isHr || isHeadOfIt,
     canSeeAudit: isFounder || isHeadOfIt,

@@ -72,20 +72,33 @@ export async function updateUser(formData: FormData) {
   const username = String(formData.get("username") || "")
     .toLowerCase()
     .trim();
+  const newUsername = String(formData.get("newUsername") || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, ".");
   const target = await prisma.user.findUnique({ where: { username } });
   if (!target) {
     redirect("/users?error=" + encodeURIComponent(`User "${username}" not found`));
   }
-  if (target.role === "Founder" && !perms.isFounder) {
-    redirect("/users?error=" + encodeURIComponent("Only Founder can modify the Founder account"));
+  const targetRole = String(formData.get("role") || target.role);
+  const targetActive = String(formData.get("active") || "1") === "1";
+  if (target.role === "Founder" && !perms.isFounder && (targetRole !== target.role || targetActive !== target.active)) {
+    redirect("/users?error=" + encodeURIComponent("Only Founder can change a Founder role or status"));
+  }
+  if (newUsername && newUsername !== username) {
+    const usernameExists = await prisma.user.findUnique({ where: { username: newUsername } });
+    if (usernameExists) {
+      redirect("/users?error=" + encodeURIComponent(`Username "${newUsername}" already exists`));
+    }
   }
 
   await prisma.user.update({
     where: { username },
     data: {
-      role: String(formData.get("role") || target.role),
+      username: newUsername || username,
+      role: targetRole,
       department: String(formData.get("department") || target.department),
-      active: String(formData.get("active") || "1") === "1",
+      active: targetActive,
     },
   });
   await prisma.auditLog.create({
@@ -94,11 +107,11 @@ export async function updateUser(formData: FormData) {
       fullName: user.fullName,
       role: user.role,
       action: "User Role Updated",
-      details: `${username} updated by ${user.fullName}`,
+      details: `${username}${newUsername && newUsername !== username ? ` renamed to ${newUsername}` : ""} updated by ${user.fullName}`,
     },
   });
   revalidatePath("/users");
-  redirect("/users?ok=" + encodeURIComponent(`Updated @${username}`));
+  redirect("/users?ok=" + encodeURIComponent(`Updated @${newUsername || username}`));
 }
 
 export async function resetPassword(formData: FormData) {
