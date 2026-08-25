@@ -2,6 +2,15 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import Link from "next/link";
 
+function formatWAT(date: Date) {
+  return `${new Intl.DateTimeFormat("en-NG", {
+    timeZone: "Africa/Lagos",
+    dateStyle: "medium",
+    timeStyle: "short",
+    hour12: false,
+  }).format(date)} WAT`;
+}
+
 export default async function ReportsPage({
   searchParams,
 }: {
@@ -37,34 +46,38 @@ export default async function ReportsPage({
         <p className="relative z-10 text-sm text-white/80">HOD &amp; Founder · choose a report type below</p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-3">
-        <ReportCard
-          href="/reports?type=finance"
-          title="Finance audit"
-          desc="Transaction create, view, export, payroll links"
-          active={type === "finance"}
-        />
+      <div className={`grid gap-4 ${perms.isIt && !perms.isFounder && !perms.isHod ? "sm:grid-cols-1" : "sm:grid-cols-3"}`}>
+        {(perms.isFounder || perms.isHod) && (
+          <ReportCard
+            href="/reports?type=finance"
+            title="Finance audit"
+            desc="Transaction create, view, export, payroll links"
+            active={type === "finance"}
+          />
+        )}
         <ReportCard
           href="/reports?type=login"
           title="Login & security"
           desc="Sign-ins and user access events"
           active={type === "login"}
         />
-        <ReportCard
-          href="/reports?type=project"
-          title="Project activity"
-          desc="Projects created/updated, notes, team work log"
-          active={type === "project"}
-        />
+        {(perms.isFounder || perms.isHod) && (
+          <ReportCard
+            href="/reports?type=project"
+            title="Project activity"
+            desc="Projects created/updated, notes, team work log"
+            active={type === "project"}
+          />
+        )}
       </div>
 
       {!type && (
         <p className="text-sm text-gray-500">Select a report type above to view the audit trail.</p>
       )}
 
-      {type === "finance" && <FinanceReport />}
+      {type === "finance" && (perms.isFounder || perms.isHod) && <FinanceReport />}
       {type === "login" && <LoginReport />}
-      {type === "project" && <ProjectReport />}
+      {type === "project" && (perms.isFounder || perms.isHod) && <ProjectReport />}
     </div>
   );
 }
@@ -131,7 +144,7 @@ function Segment({ title, rows, map }: { title: string; rows: any[]; map: Record
         <tbody>
           {rows.map((a) => (
             <tr key={a.id} className="border-t border-gold/20">
-              <td className="px-4 py-2 text-xs whitespace-nowrap">{a.createdAt.toISOString().slice(0, 16)}</td>
+              <td className="px-4 py-2 text-xs whitespace-nowrap">{formatWAT(a.createdAt)}</td>
               <td className="px-4 py-2 font-mono text-xs">{a.txnId || "—"}</td>
               <td className="px-4 py-2 text-burgundy">{a.action}</td>
               <td className="px-4 py-2">
@@ -182,7 +195,7 @@ async function LoginReport() {
         <tbody>
           {logs.map((l) => (
             <tr key={l.id} className="border-t border-gold/20">
-              <td className="px-4 py-2 text-xs">{l.createdAt.toISOString().slice(0, 16)}</td>
+              <td className="px-4 py-2 text-xs whitespace-nowrap">{formatWAT(l.createdAt)}</td>
               <td className="px-4 py-2">{l.fullName || l.username}</td>
               <td className="px-4 py-2">{l.department || "—"}</td>
               <td className="px-4 py-2 text-burgundy">{l.action}</td>
