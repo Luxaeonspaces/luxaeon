@@ -13,6 +13,7 @@ export function getPerms(user: SessionUser) {
   const isFounder = role === "Founder";
   const isHod = role === "Department Head";
   const isStaff = role === "Staff";
+  const isExecutive = role === "Executive" || dept === "Executive";
 
   const isFinance = ["Finance", "Executive"].includes(dept);
   const isSales = ["Sales & Marketing", "Sales", "Marketing"].includes(dept);
@@ -29,6 +30,7 @@ export function getPerms(user: SessionUser) {
 
   return {
     isFounder,
+    isExecutive,
     isHod,
     isStaff,
     isFinance,
@@ -56,7 +58,10 @@ export function getPerms(user: SessionUser) {
     canManageHr: isFounder || isHr || isHeadOfIt,
     canViewHr: isFounder || isHr || isHeadOfIt,
     canSeeAudit: isFounder || isHeadOfIt,
-    canSeeReports: isFounder || isHod || isIt,
+    canSeeReports: isFounder || isHod || isIt || isExecutive,
+    canSeeFinanceReport: isFounder || isExecutive || isHeadOfFinance,
+    canSeeLoginReport: isFounder || isExecutive || isIt,
+    canSeeProjectReport: isFounder || isExecutive || (isHod && isDesign),
     canSeeAllActivity: isFounder,
 
     canCreateProjects: isFounder || isHod || isIt || isDesign,

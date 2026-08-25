@@ -170,7 +170,7 @@ export default function PortalClient({
               type="file"
               required
               className="block w-full text-sm"
-              accept=".pdf,.docx,.png,.jpg,.jpeg,.zip,.xlsx"
+              accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.gif,.webp,.svg,.mp4,.mov,.webm,.avi"
             />
             <button type="submit" className="btn-primary" disabled={uploading}>
               {uploading ? "Uploading…" : "Upload file"}

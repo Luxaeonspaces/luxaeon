@@ -193,7 +193,7 @@ export default function ProjectTools({ projectCode }: { projectCode: string }) {
           ))}
         </select>
         <input name="description" className="input" placeholder="Description" />
-        <input name="file" type="file" required className="text-sm" />
+        <input name="file" type="file" required className="text-sm" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.gif,.webp,.svg" />
         <button type="submit" className="btn-primary" disabled={busy}>
           Upload
         </button>
@@ -202,7 +202,7 @@ export default function ProjectTools({ projectCode }: { projectCode: string }) {
       <form onSubmit={shareWithClient} className="glass-card space-y-3 p-4">
         <h3 className="font-semibold text-burgundy">Share file with client (portal)</h3>
         <input name="description" className="input" placeholder="Description" />
-        <input name="file" type="file" required className="text-sm" />
+        <input name="file" type="file" required className="text-sm" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.gif,.webp,.svg,.mp4,.mov,.webm,.avi" />
         <button type="submit" className="btn-primary" disabled={busy}>
           Share to client portal
         </button>

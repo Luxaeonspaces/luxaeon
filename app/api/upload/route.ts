@@ -7,6 +7,29 @@ import path from "path";
 
 export const runtime = "nodejs";
 
+const DOCUMENT_EXTENSIONS = new Set(["pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "txt", "zip"]);
+const IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg"]);
+const VIDEO_EXTENSIONS = new Set(["mp4", "mov", "webm", "avi"]);
+const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+
+function extension(filename: string) {
+  return filename.toLowerCase().split(".").pop() || "";
+}
+
+function validateUpload(file: File, kind: string) {
+  if (file.size > MAX_UPLOAD_BYTES) {
+    return "Files must be 25 MB or smaller";
+  }
+  const ext = extension(file.name);
+  const supportsVideo = kind === "client";
+  if (!DOCUMENT_EXTENSIONS.has(ext) && !IMAGE_EXTENSIONS.has(ext) && !(supportsVideo && VIDEO_EXTENSIONS.has(ext))) {
+    return supportsVideo
+      ? "Supported files: documents, images, or videos"
+      : "Supported files: documents or images";
+  }
+  return null;
+}
+
 export async function POST(req: NextRequest) {
   try {
     const form = await req.formData();
@@ -19,6 +42,10 @@ export async function POST(req: NextRequest) {
 
     if (!file) {
       return NextResponse.json({ error: "file required" }, { status: 400 });
+    }
+    const uploadError = validateUpload(file, kind);
+    if (uploadError) {
+      return NextResponse.json({ error: uploadError }, { status: 400 });
     }
 
 

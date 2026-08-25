@@ -27,7 +27,7 @@ export default async function ReportsPage({
         <div className="glass-card p-8 text-center">
           <p className="text-lg font-semibold text-burgundy">Can&apos;t access data</p>
           <p className="mt-2 text-sm text-gray-600">
-            Unfortunately you cannot access Reports. Only Heads of Department and the Founder can view audit reports.
+            You do not have access to reports. Contact the Founder or IT.
           </p>
           <Link href="/dashboard" className="mt-4 inline-block text-sm font-semibold text-burgundy underline">
             ← Back to dashboard
@@ -43,11 +43,11 @@ export default async function ReportsPage({
     <div className="space-y-6">
       <div className="main-header">
         <h1 className="relative z-10 font-display text-2xl font-semibold">Reports</h1>
-        <p className="relative z-10 text-sm text-white/80">HOD &amp; Founder · choose a report type below</p>
+        <p className="relative z-10 text-sm text-white/80">Choose a report type available to your role</p>
       </div>
 
-      <div className={`grid gap-4 ${perms.isIt && !perms.isFounder && !perms.isHod ? "sm:grid-cols-1" : "sm:grid-cols-3"}`}>
-        {(perms.isFounder || perms.isHod) && (
+      <div className="grid gap-4 sm:grid-cols-3">
+        {perms.canSeeFinanceReport && (
           <ReportCard
             href="/reports?type=finance"
             title="Finance audit"
@@ -55,13 +55,13 @@ export default async function ReportsPage({
             active={type === "finance"}
           />
         )}
-        <ReportCard
+        {perms.canSeeLoginReport && <ReportCard
           href="/reports?type=login"
           title="Login & security"
           desc="Sign-ins and user access events"
           active={type === "login"}
-        />
-        {(perms.isFounder || perms.isHod) && (
+        />}
+        {perms.canSeeProjectReport && (
           <ReportCard
             href="/reports?type=project"
             title="Project activity"
@@ -75,9 +75,9 @@ export default async function ReportsPage({
         <p className="text-sm text-gray-500">Select a report type above to view the audit trail.</p>
       )}
 
-      {type === "finance" && (perms.isFounder || perms.isHod) && <FinanceReport />}
-      {type === "login" && <LoginReport />}
-      {type === "project" && (perms.isFounder || perms.isHod) && <ProjectReport />}
+      {type === "finance" && perms.canSeeFinanceReport && <FinanceReport />}
+      {type === "login" && perms.canSeeLoginReport && <LoginReport />}
+      {type === "project" && perms.canSeeProjectReport && <ProjectReport />}
     </div>
   );
 }
