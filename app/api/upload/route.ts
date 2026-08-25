@@ -21,7 +21,7 @@ function validateUpload(file: File, kind: string) {
     return "Files must be 25 MB or smaller";
   }
   const ext = extension(file.name);
-  const supportsVideo = kind === "client";
+  const supportsVideo = kind === "client" || kind === "project";
   if (!DOCUMENT_EXTENSIONS.has(ext) && !IMAGE_EXTENSIONS.has(ext) && !(supportsVideo && VIDEO_EXTENSIONS.has(ext))) {
     return supportsVideo
       ? "Supported files: documents, images, or videos"
