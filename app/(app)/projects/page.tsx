@@ -30,6 +30,22 @@ export default async function ProjectsPage({ searchParams }: { searchParams?: { 
         <p className="relative z-10 text-sm text-white/80">Pipeline · created by tracking</p>
       </div>
 
+      <nav aria-label="Project views" className="flex max-w-full overflow-x-auto border-b border-gold/30">
+        <Link
+          href="/projects"
+          className="shrink-0 border-b-2 border-burgundy px-4 py-3 text-sm font-semibold text-burgundy"
+          aria-current="page"
+        >
+          Active Projects
+        </Link>
+        <Link
+          href="/archive"
+          className="shrink-0 border-b-2 border-transparent px-4 py-3 text-sm font-semibold text-gray-500 transition hover:border-gold hover:text-burgundy"
+        >
+          Project Archives
+        </Link>
+      </nav>
+
       <div className="glass-card flex flex-wrap gap-2 p-4">
         <span className="w-full text-sm font-semibold text-burgundy">Download project tracker</span>
         <a
