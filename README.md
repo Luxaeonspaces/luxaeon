@@ -26,6 +26,11 @@ Use the Supabase pooler URL for `DATABASE_URL` and the direct database URL for
 `DIRECT_URL`. The Supabase project URL and publishable API key are not database
 connection credentials and are not required by this Prisma-backed application.
 
+For uploads in production, create a Supabase Storage bucket named
+`luxaeon-files` and set `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and
+`SUPABASE_STORAGE_BUCKET`. Keep the service-role key server-only; never expose
+it as a `NEXT_PUBLIC_` variable. Uploads use local disk only during development.
+
 On Windows, run `migrate-supabase.cmd` to generate the client, apply the schema,
 and seed the founder account in one step.
 

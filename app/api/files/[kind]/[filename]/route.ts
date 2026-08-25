@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { readFile } from "fs/promises";
+import { retrieveFile } from "@/lib/fileStorage";
 import path from "path";
 
 export const runtime = "nodejs";
@@ -18,10 +18,9 @@ export async function GET(
   };
   const sub = map[params.kind] || "uploads";
   const filename = path.basename(params.filename);
-  const filePath = path.join(process.cwd(), "storage", sub, filename);
-
   try {
-    const data = await readFile(filePath);
+    const data = await retrieveFile(sub, filename);
+    if (!data) return NextResponse.json({ error: "File not found" }, { status: 404 });
     const ext = filename.split(".").pop()?.toLowerCase();
     const types: Record<string, string> = {
       pdf: "application/pdf",

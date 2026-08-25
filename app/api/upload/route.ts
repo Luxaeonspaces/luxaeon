@@ -2,8 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import { storeFile } from "@/lib/fileStorage";
 
 export const runtime = "nodejs";
 
@@ -58,10 +57,8 @@ export async function POST(req: NextRequest) {
       if (!procurementId) return NextResponse.json({ error: "procurementId required" }, { status: 400 });
       const row = await prisma.procurementRequest.findUnique({ where: { id: procurementId } });
       if (!row) return NextResponse.json({ error: "Not found" }, { status: 404 });
-      const dir = path.join(process.cwd(), "storage", "procurement_docs");
-      await mkdir(dir, { recursive: true });
       const safe = `PROC_${procurementId}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-      await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+      await storeFile("procurement_docs", safe, Buffer.from(await file.arrayBuffer()));
       const doc = await prisma.procurementDocument.create({
         data: {
           procurementId,
@@ -80,10 +77,8 @@ export async function POST(req: NextRequest) {
       if (!outflowId) return NextResponse.json({ error: "outflowId required" }, { status: 400 });
       const outflow = await prisma.outflowRequest.findUnique({ where: { id: outflowId } });
       if (!outflow) return NextResponse.json({ error: "Outflow not found" }, { status: 404 });
-      const dir = path.join(process.cwd(), "storage", "outflow_docs");
-      await mkdir(dir, { recursive: true });
       const safe = `OUT_${outflowId}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-      await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+      await storeFile("outflow_docs", safe, Buffer.from(await file.arrayBuffer()));
       const doc = await prisma.outflowDocument.create({
         data: {
           outflowId,
@@ -109,10 +104,8 @@ export async function POST(req: NextRequest) {
       if (!txn) {
         return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
       }
-      const dir = path.join(process.cwd(), "storage", "finance_docs");
-      await mkdir(dir, { recursive: true });
       const safe = `FIN_${transactionId}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-      await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+      await storeFile("finance_docs", safe, Buffer.from(await file.arrayBuffer()));
       const doc = await prisma.transactionDocument.create({
         data: {
           transactionId,
@@ -151,10 +144,8 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Employee not found" }, { status: 404 });
       }
 
-      const dir = path.join(process.cwd(), "storage", "hr_docs");
-      await mkdir(dir, { recursive: true });
       const safe = `HR_${userId}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-      await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+      await storeFile("hr_docs", safe, Buffer.from(await file.arrayBuffer()));
 
       const doc = await prisma.employeeDocument.create({
         data: {
@@ -199,11 +190,8 @@ export async function POST(req: NextRequest) {
       (uploadedByRole === "client" ? project.clientName : "Staff");
 
     const subdir = kind === "client" ? "client_docs" : "uploads";
-    const dir = path.join(process.cwd(), "storage", subdir);
-    await mkdir(dir, { recursive: true });
-
     const safe = `${projectCode}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-    await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+    await storeFile(subdir, safe, Buffer.from(await file.arrayBuffer()));
 
     if (kind === "client") {
       const doc = await prisma.clientDocument.create({
