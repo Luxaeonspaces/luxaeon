@@ -8,7 +8,7 @@ import ProjectHeader from "./_components/ProjectHeader";
 import ProjectSummaryCards from "./_components/ProjectSummaryCards";
 import ProjectDetailsForm from "./_components/ProjectDetailsForm";
 import ProjectPayments from "./_components/ProjectPayments";
-import ProjectFilesPanel from "./_components/ProjectFilesPanel";
+import ProjectFilesPanel from "./_components/Projectfilespanel"
 import ProjectNotes from "./_components/ProjectNotes";
 
 export default async function ProjectDetailPage({

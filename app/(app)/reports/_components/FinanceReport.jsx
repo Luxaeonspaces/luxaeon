@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AuditTable from "./AuditTable";
-import { formatWAT } from "./format";
+import { formatWAT } from "./Format";
 
 const financeColumns = (map) => [
   { header: "When", render: (a) => formatWAT(a.createdAt), className: "text-xs whitespace-nowrap" },
