@@ -49,7 +49,7 @@ export async function submitSelfAppraisal(formData: FormData) {
   await prisma.appraisal.create({
     data: {
       userId: user.id,
-      employeeName: user.fullName,
+      employeeName: user.fullName || "",
       department: user.department || null,
       period,
       quarter,
