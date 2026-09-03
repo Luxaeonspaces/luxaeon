@@ -2,7 +2,7 @@ import Sidebar from "@/components/Sidebar";
 import BackButton from "@/components/BackButton";
 import { requireUser } from "@/lib/session";
 
-export default async function AppLayout({ children }: { children: React.ReactNode }) {
+export default async function AppLayout({ children }) {
   const { user, perms } = await requireUser();
 
   return (
@@ -21,10 +21,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
           canManageAppraisals: perms.canManageAppraisals,
           canManageOnboarding: perms.canManageOnboarding,
           canSeeAllActivity: perms.canSeeAllActivity,
+          canSeeReports: perms.canSeeReports,
         }}
       />
       <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-gold/30 bg-white/70 py-2 pl-16 pr-4 backdrop-blur-xl md:px-4">
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-gray-200 bg-white/70 py-2 pl-16 pr-4 backdrop-blur-xl md:px-4">
           <BackButton />
           <span className="text-xs text-gray-500">Luxaeon Spaces · Business OS</span>
         </header>

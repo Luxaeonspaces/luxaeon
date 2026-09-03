@@ -6,9 +6,10 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { logWork } from "@/lib/activity";
 import { createTransaction } from "@/lib/txn";
+import { getYear, format } from "date-fns";
 
-function codeFromCount(n: number) {
-  const year = new Date().getFullYear();
+function codeFromCount(n) {
+  const year = getYear(new Date());
   return `LX-${year}-${String(n + 1).padStart(3, "0")}`;
 }
 
@@ -17,7 +18,7 @@ function accessCode() {
   return Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join("");
 }
 
-export async function createProject(formData: FormData) {
+export async function createProject(formData) {
   const { user, perms } = await requireUser();
   if (!perms.canCreateProjects) throw new Error("Not allowed to create projects");
 
@@ -79,7 +80,7 @@ export async function createProject(formData: FormData) {
     });
     // Progress sales target for that marketer (no separate duplicate manual needed)
     if (salesPersonId) {
-      const month = new Date().toLocaleString("en-GB", { month: "long", year: "numeric" });
+      const month = format(new Date(), "MMMM yyyy");
       const target = await prisma.salesTarget.findFirst({
         where: { userId: salesPersonId },
         orderBy: { createdAt: "desc" },
@@ -109,7 +110,7 @@ export async function createProject(formData: FormData) {
   );
 }
 
-export async function updateProjectStage(formData: FormData) {
+export async function updateProjectStage(formData) {
   const { perms } = await requireUser();
   if (!perms.canCreateProjects && !perms.isHod && !perms.isFounder) throw new Error("Not allowed");
 

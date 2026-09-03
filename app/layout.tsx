@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
-import { DM_Sans, Outfit } from "next/font/google";
+import { IBM_Plex_Sans } from "next/font/google";
 import "./globals.css";
 import Providers from "@/components/Providers";
 
-const dm = DM_Sans({ subsets: ["latin"], variable: "--font-dm" });
-const outfit = Outfit({ subsets: ["latin"], variable: "--font-outfit" });
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-sans",
+});
 
 export const metadata: Metadata = {
   title: "Luxaeon Spaces | Business OS",
@@ -14,7 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={`${dm.variable} ${outfit.variable} font-sans antialiased`}>
+      <body className={`${plexSans.variable} font-sans antialiased`}>
         <Providers>{children}</Providers>
       </body>
     </html>

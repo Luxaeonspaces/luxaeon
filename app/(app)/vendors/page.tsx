@@ -1,10 +1,17 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { addVendor } from "./actions";
+import { unstable_cache } from "next/cache";
+
+const getVendors = unstable_cache(
+  async () => prisma.vendor.findMany({ orderBy: { name: "asc" } }),
+  ["vendors-list"],
+  { tags: ["vendors"] }
+);
 
 export default async function VendorsPage({ searchParams }: { searchParams?: { ok?: string; created?: string; error?: string } }) {
   await requireUser();
-  const vendors = await prisma.vendor.findMany({ orderBy: { name: "asc" } });
+  const vendors = await getVendors();
 
   return (
     <div className="space-y-6">

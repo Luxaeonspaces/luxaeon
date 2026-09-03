@@ -7,7 +7,7 @@ import { createTransaction } from "@/lib/txn";
 import { logWork } from "@/lib/activity";
 import { redirect } from "next/navigation";
 
-export async function addNote(projectId: string, formData: FormData) {
+export async function addNote(projectId, formData) {
   const { user } = await requireUser();
   const note = String(formData.get("note") || "").trim();
   if (!note) return;
@@ -26,7 +26,7 @@ export async function addNote(projectId: string, formData: FormData) {
 }
 
 /** Only Finance staff, Department Heads, and Founder can edit project details */
-export async function updateProjectDetails(projectCode: string, formData: FormData) {
+export async function updateProjectDetails(projectCode, formData) {
   const { user, perms } = await requireUser();
 
   const canEdit = perms.isFounder || perms.isHod || perms.isFinance;
@@ -107,9 +107,8 @@ export async function updateProjectDetails(projectCode: string, formData: FormDa
   redirect(`/projects/${projectCode}?ok=` + encodeURIComponent("Project saved"));
 }
 
-
 /** Record a payment against the project — receipt attachment required */
-export async function recordProjectPayment(projectCode: string, formData: FormData) {
+export async function recordProjectPayment(projectCode, formData) {
   const { user, perms } = await requireUser();
   const canPay = perms.isFounder || perms.isHod || perms.isFinance;
   if (!canPay) {
@@ -121,7 +120,7 @@ export async function recordProjectPayment(projectCode: string, formData: FormDa
 
   const amount = Number(String(formData.get("amount") || "0").replace(/,/g, ""));
   const note = String(formData.get("note") || "").trim();
-  const file = formData.get("receipt") as File | null;
+  const file = formData.get("receipt");
   if (amount <= 0) {
     redirect(`/projects/${projectCode}?error=` + encodeURIComponent("Enter a valid payment amount"));
   }
@@ -213,7 +212,7 @@ export async function recordProjectPayment(projectCode: string, formData: FormDa
 }
 
 /** Correct a payment record (amount/description) — adjusts project paid total */
-export async function editProjectPayment(projectCode: string, formData: FormData) {
+export async function editProjectPayment(projectCode, formData) {
   const { user, perms } = await requireUser();
   if (!perms.isFounder && !perms.isFinance && !perms.isHod) {
     redirect(`/projects/${projectCode}?error=` + encodeURIComponent("Not allowed to edit payments"));
@@ -252,7 +251,7 @@ export async function editProjectPayment(projectCode: string, formData: FormData
   }
 
   // Optional new receipt on edit
-  const file = formData.get("receipt") as File | null;
+  const file = formData.get("receipt");
   if (file && typeof file !== "string" && file.size) {
     const { writeFile, mkdir } = await import("fs/promises");
     const path = await import("path");
@@ -282,9 +281,8 @@ export async function editProjectPayment(projectCode: string, formData: FormData
   redirect(`/projects/${projectCode}?ok=` + encodeURIComponent("Payment record updated"));
 }
 
-
 /** Mark project completed → locked & moved to Project Archives */
-export async function completeProject(projectCode: string, formData?: FormData) {
+export async function completeProject(projectCode) {
   const { user, perms } = await requireUser();
   const canComplete = perms.isFounder || perms.isHod || perms.isFinance || perms.isDesign;
   if (!canComplete) {

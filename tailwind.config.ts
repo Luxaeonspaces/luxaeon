@@ -5,16 +5,15 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        burgundy: { DEFAULT: "#5C1A1B", soft: "#7A2426", deep: "#4A1012" },
-        gold: { DEFAULT: "#C9A96E", soft: "#E8D9B5" },
-        cream: "#F8F5F0",
+        brown: "#6B4226",
+        whitesmoke: "#F5F5F5",
       },
       fontFamily: {
-        sans: ["var(--font-dm)", "system-ui", "sans-serif"],
-        display: ["var(--font-outfit)", "system-ui", "sans-serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
-        glass: "0 8px 32px rgba(92, 26, 27, 0.08)",
+        glass: "0 2px 12px rgba(0, 0, 0, 0.06)",
       },
     },
   },

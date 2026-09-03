@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 export async function addVendor(formData: FormData) {
@@ -16,6 +16,7 @@ export async function addVendor(formData: FormData) {
       phone: String(formData.get("phone") || "") || null,
     },
   });
+  revalidateTag("vendors");
   revalidatePath("/vendors");
   redirect("/vendors?ok=" + encodeURIComponent("Vendor saved"));
 }
