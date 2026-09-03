@@ -15,7 +15,7 @@ export default async function DashboardPage() {
       salesTargets = [];
     }
   }
-  const first = user.fullName.split(" ")[0] || user.fullName;
+  const first = user.fullName?.split(" ")[0] || "there";
 
   const [leads, active, paid, pending, income, expense] = await Promise.all([
     prisma.lead.count(),
