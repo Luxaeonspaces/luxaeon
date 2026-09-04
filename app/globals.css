@@ -28,9 +28,9 @@ textarea {
 }
 
 .main-header {
-  background: #5c1a1b;
+ color: white;
   border-radius: 1.25rem;
-  color: white;
+  background-color: #a57b0a;
   padding: 1.25rem 1.5rem;
   position: relative;
   overflow: hidden;
