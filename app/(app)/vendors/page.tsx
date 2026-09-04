@@ -1,17 +1,23 @@
-import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { addVendor } from "./actions";
-import { unstable_cache } from "next/cache";
+import { Suspense } from "react";
+import VendorsTable from "./_components/VendorsTable";
 
-const getVendors = unstable_cache(
-  async () => prisma.vendor.findMany({ orderBy: { name: "asc" } }),
-  ["vendors-list"],
-  { tags: ["vendors"] }
-);
+function TableSkeleton() {
+  return (
+    <div className="glass-card h-40 animate-pulse p-4">
+      <div className="h-3 w-24 rounded bg-gray-200" />
+      <div className="mt-4 space-y-2">
+        <div className="h-4 w-full rounded bg-gray-100" />
+        <div className="h-4 w-full rounded bg-gray-100" />
+        <div className="h-4 w-full rounded bg-gray-100" />
+      </div>
+    </div>
+  );
+}
 
 export default async function VendorsPage({ searchParams }: { searchParams?: { ok?: string; created?: string; error?: string } }) {
   await requireUser();
-  const vendors = await getVendors();
 
   return (
     <div className="space-y-6">
@@ -26,26 +32,9 @@ export default async function VendorsPage({ searchParams }: { searchParams?: { o
           Add vendor
         </button>
       </form>
-      <div className="glass-card overflow-hidden">
-        <table className="w-full text-left text-sm">
-          <thead className="bg-cream/50 text-xs uppercase text-gray-500">
-            <tr>
-              <th className="px-4 py-2">Name</th>
-              <th className="px-4 py-2">Category</th>
-              <th className="px-4 py-2">Phone</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vendors.map((v) => (
-              <tr key={v.id} className="border-t border-gold/20">
-                <td className="px-4 py-2">{v.name}</td>
-                <td className="px-4 py-2">{v.category}</td>
-                <td className="px-4 py-2">{v.phone}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Suspense fallback={<TableSkeleton />}>
+        <VendorsTable />
+      </Suspense>
     </div>
   );
 }

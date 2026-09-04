@@ -28,13 +28,13 @@ textarea {
 }
 
 .main-header {
-  background: #000000;
+  background: #5c1a1b;
   border-radius: 1.25rem;
   color: white;
   padding: 1.25rem 1.5rem;
   position: relative;
   overflow: hidden;
-  border: 1px solid #000000;
+  border: 1px solid #c9a96e;
 }
 
 .glass-card {

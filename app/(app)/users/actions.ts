@@ -3,7 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import bcrypt from "bcryptjs";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 function tempPassword() {
@@ -59,6 +59,7 @@ export async function createUser(formData: FormData) {
       details: `${fullName} (@${username}) as ${formData.get("role")}/${formData.get("department")}`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect(
     "/users?ok=" +
@@ -110,6 +111,7 @@ export async function updateUser(formData: FormData) {
       details: `${username}${newUsername && newUsername !== username ? ` renamed to ${newUsername}` : ""} updated by ${user.fullName}`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect("/users?ok=" + encodeURIComponent(`Updated @${newUsername || username}`));
 }
@@ -146,6 +148,7 @@ export async function resetPassword(formData: FormData) {
       details: `Temporary password issued for @${username} by ${user.fullName}`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect(
     "/users?ok=" +
@@ -187,6 +190,7 @@ export async function disableUser(formData: FormData) {
       details: `Disabled @${target.username} (${target.fullName})`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect("/users?ok=" + encodeURIComponent(`Disabled @${target.username} — they can no longer sign in`));
 }
@@ -216,6 +220,7 @@ export async function enableUser(formData: FormData) {
       details: `Re-enabled @${target.username}`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect("/users?ok=" + encodeURIComponent(`Enabled @${target.username}`));
 }
@@ -270,6 +275,7 @@ export async function deleteUser(formData: FormData) {
         details: `Delete blocked by linked data — disabled ${label} instead`,
       },
     });
+    revalidateTag("users");
     revalidatePath("/users");
     redirect(
       "/users?error=" +
@@ -290,6 +296,7 @@ export async function deleteUser(formData: FormData) {
       details: `Removed ${label} from the application`,
     },
   });
+  revalidateTag("users");
   revalidatePath("/users");
   redirect("/users?ok=" + encodeURIComponent(`Removed ${label} from the application`));
 }
