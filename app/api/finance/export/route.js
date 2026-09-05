@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
@@ -7,13 +7,13 @@ import { logTxnAudit } from "@/lib/txnAudit";
 
 export const runtime = "nodejs";
 
-function esc(v: any) {
+function esc(v) {
   const s = v == null ? "" : String(v);
   if (/[",\n]/.test(s)) return `"${s.replace(/"/g, '""')}"`;
   return s;
 }
 
-export async function GET(req: NextRequest) {
+export async function GET(req) {
   const session = await getServerSession(authOptions);
   if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
@@ -32,7 +32,7 @@ export async function GET(req: NextRequest) {
 
   if (!rows.length) return NextResponse.json({ error: "No data" }, { status: 404 });
 
-  const u = session.user as any;
+  const u = session.user;
   for (const r of rows.slice(0, 20)) {
     await logTxnAudit({
       transactionId: r.id,
@@ -69,7 +69,7 @@ export async function GET(req: NextRequest) {
   const bold = await pdf.embedFont(StandardFonts.HelveticaBold);
   const page = pdf.addPage([595, 842]);
   let y = 800;
-  const line = (text: string, b = false) => {
+  const line = (text, b = false) => {
     page.drawText(text.slice(0, 90), { x: 40, y, size: 10, font: b ? bold : font, color: rgb(0.1, 0.1, 0.1) });
     y -= 14;
   };
