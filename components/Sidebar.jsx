@@ -24,6 +24,7 @@ const links = [
   { href: "/leave", label: "Leave Requests", show: () => true },
   { href: "/profile", label: "My Profile & Payslip", show: () => true },
   { href: "/payroll", label: "Payroll", show: (p) => p.canManageHr || p.canSeeFinance },
+  {href: "/audit", label: "Audit Logs", show: (p) => p.canSeeAudit },
   { href: "/hr", label: "HR & Profiles", show: (p) => p.canManageHr },
   { href: "/users", label: "User Management", show: (p) => p.canManageUsers },
   { href: "/permissions", label: "Role Permissions", show: (p) => p.canManageUsers },

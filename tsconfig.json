@@ -16,6 +16,6 @@
     "plugins": [{ "name": "next" }],
     "paths": { "@/*": ["./*"] }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(app)/layout.js", "components/Sidebar.jsx", "lib/session.js", "app/(app)/projects/[code]/actions.js", "app/(app)/projects/actions.js", "app/(app)/projects/[code]/page.jsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/(app)/leads/actions.js", "lib/txnAudit.js", "components/TxnDocs.jsx", "app/(app)/layout.js", "components/Sidebar.jsx", "lib/session.js", "app/(app)/projects/[code]/actions.js", "app/(app)/projects/actions.js", "app/(app)/projects/[code]/page.jsx"],
   "exclude": ["node_modules"]
 }
