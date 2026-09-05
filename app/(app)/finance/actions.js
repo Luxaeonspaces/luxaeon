@@ -4,7 +4,7 @@ import { requireUser } from "@/lib/session";
 import { createTransaction } from "@/lib/txn";
 import { revalidatePath } from "next/cache";
 
-export async function addTransaction(formData: FormData) {
+export async function addTransaction(formData) {
   const { user, perms } = await requireUser();
   if (!perms.canSeeFinance) throw new Error("Not allowed");
   const amount = Number(formData.get("amount") || 0);
