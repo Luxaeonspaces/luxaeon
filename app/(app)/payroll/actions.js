@@ -8,9 +8,9 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 /** HR: one batch for the period — many employee lines, one cumulative total */
-export async function preparePayroll(formData: FormData) {
+export async function preparePayroll(formData) {
   const { user, perms } = await requireUser();
-  if (!perms.canManageHr) throw new Error("Not allowed");
+  if (!perms.canGeneratePayroll) throw new Error("Not allowed");
   const period = String(formData.get("period") || "").trim();
   if (!period) return;
 
@@ -73,7 +73,7 @@ export async function preparePayroll(formData: FormData) {
 }
 
 /** Founder approves batch → Head of Finance */
-export async function founderApproveBatch(formData: FormData) {
+export async function founderApproveBatch(formData) {
   const { user, perms } = await requireUser();
   if (!perms.isFounder) throw new Error("Founder only");
   const id = String(formData.get("id"));
@@ -101,7 +101,7 @@ export async function founderApproveBatch(formData: FormData) {
 }
 
 /** Head of Finance: one cumulative expense transaction for entire batch */
-export async function disburseBatch(formData: FormData) {
+export async function disburseBatch(formData) {
   const { user, perms } = await requireUser();
   if (!perms.canDisburseFunds || !perms.isHeadOfFinance) {
     throw new Error("Only Head of Finance can disburse payroll");
