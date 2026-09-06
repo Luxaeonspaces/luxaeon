@@ -6,7 +6,7 @@ import { createTransaction } from "@/lib/txn";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
-export async function setTarget(formData: FormData) {
+export async function setTarget(formData) {
   const { user, perms } = await requireUser();
   if (!perms.canSetSalesTargets && !perms.isFounder) throw new Error("Not allowed");
   if (!perms.canManageSalesTargets) throw new Error("Sales only");
@@ -33,7 +33,7 @@ export async function setTarget(formData: FormData) {
   redirect("/sales-targets?ok=" + encodeURIComponent("Target saved"));
 }
 
-export async function updateAchievement(formData: FormData) {
+export async function updateAchievement(formData) {
   const { user, perms } = await requireUser();
   if (!perms.canManageSalesTargets) throw new Error("Not allowed");
   const id = String(formData.get("id"));

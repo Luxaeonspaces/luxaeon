@@ -23,8 +23,11 @@ export default async function SettingsPage({ searchParams }: { searchParams?: { 
           <strong>Founder:</strong> Oluwabukunmi OMISORE · +234 902 114 4350 · luxaeonspaces@gmail.com
         </p>
       </div>
+      {searchParams?.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p>}
+      {searchParams?.ok && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{searchParams.ok}</p>}
+
       <form key={searchParams?.ok || "pwd"} action={changePassword} className="glass-card space-y-3 p-5">
-        <h2 className="font-display font-semibold text-burgundy">Change my password</h2>
+        <h2 className="font-display font-semibold text-brown">Change my password</h2>
         <input name="current" type="password" className="input" placeholder="Current password" required />
         <input name="next" type="password" className="input" placeholder="New password (min 6)" required />
         <input name="confirm" type="password" className="input" placeholder="Confirm new password" required />

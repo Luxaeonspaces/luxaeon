@@ -68,8 +68,8 @@ export function getPerms(user: SessionUser) {
 
     canCreateProjects: isFounder || isHod || isIt || isDesign,
 
-    canManageSalesTargets: isFounder || isSales,
-    canSetSalesTargets: isFounder || isHeadOfSales,
+    canManageSalesTargets: isFounder || isSales || isHeadOfIt,
+    canSetSalesTargets: isFounder || isHeadOfSales || isHeadOfIt,
 
     canManageAppraisals: isFounder || isHr || isHeadOfIt,
     canHodApproveAppraisal: isFounder || isHod,
