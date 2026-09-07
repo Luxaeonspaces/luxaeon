@@ -1,4 +1,5 @@
 export default function ProjectFilesPanel({ project }) {
+  // just confirming
   return (
     <>
       <div className="glass-card p-4">
