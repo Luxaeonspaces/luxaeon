@@ -7,7 +7,7 @@ const config: Config = {
       colors: {
         burgundy: { DEFAULT: "#4A0E0E", soft: "#641717", deep: "#300707" },
         gold: { DEFAULT: "#C9A96E", soft: "#E8D9B5" },
-        cream: "#F3E8D8",
+        cream: "#F5F5F2",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

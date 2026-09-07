@@ -9,8 +9,8 @@
 
 body {
   background:
-    radial-gradient(1000px 500px at 10% -10%, rgba(255, 255, 255, 0.5), transparent 58%),
-    linear-gradient(165deg, #f6eee3 0%, #efe1d0 52%, #f4e9da 100%);
+    radial-gradient(1000px 500px at 10% -10%, rgba(255, 255, 255, 0.75), transparent 58%),
+    linear-gradient(165deg, #fbfbfa 0%, #f3f3f0 52%, #f8f8f6 100%);
   min-height: 100vh;
   overflow-x: clip;
 }
@@ -76,8 +76,8 @@ textarea {
 
 .login-shell {
   background:
-    radial-gradient(700px 360px at 50% -10%, rgba(255, 255, 255, 0.65), transparent 65%),
-    #f3e8d8;
+    radial-gradient(700px 360px at 50% -10%, rgba(255, 255, 255, 0.85), transparent 65%),
+    #f8f8f6;
 }
 
 .login-brand {
