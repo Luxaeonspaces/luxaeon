@@ -1,4 +1,4 @@
-export default function ProjectFilesPanel({ project }) {
+export default function ProjectFilePanel({ project }) {
   return (
     <>
       <div className="glass-card p-4">

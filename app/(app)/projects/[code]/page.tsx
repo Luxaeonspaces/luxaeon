@@ -8,7 +8,7 @@ import ProjectHeader from "./components/ProjectHeader";
 import ProjectSummaryCards from "./components/ProjectSummaryCards";
 import ProjectDetailsForm from "./components/ProjectDetailsForm";
 import ProjectPayments from "./components/ProjectPayments";
-import ProjectFilesPanel from "./components/ProjectFilesPanel";
+import  ProjectFilePanel from "./components/ProjectFilePanel.jsx"
 import ProjectNotes from "./components/ProjectNotes";
 
 // fixing the deployment bug
@@ -76,7 +76,7 @@ export default async function ProjectDetailPage({
         formKey={searchParams?.ok || "pay-form"}
       />
 
-      <ProjectFilesPanel project={project as any} />
+      <ProjectFilePanel project={project as any} />
 
       <div>
         <h2 className="mb-3 font-display text-lg font-semibold text-brown">Documents & PDFs</h2>
