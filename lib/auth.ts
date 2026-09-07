@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("INVALID");
         }
 
-        await prisma.auditLog.create({
+        void prisma.auditLog.create({
           data: {
             username: user.username,
             fullName: user.fullName,
@@ -74,7 +74,7 @@ export const authOptions: NextAuthOptions = {
             entityId: user.id,
             details: "Successful login",
           },
-        });
+        }).catch((error) => console.error("Login audit failed", error));
 
         return {
           id: user.id,
@@ -98,6 +98,7 @@ export const authOptions: NextAuthOptions = {
         token.role = u.role;
         token.department = u.department;
         token.active = true;
+        return token;
       }
       // Live check — block mid-session if disabled or deleted
       if (token.id) {

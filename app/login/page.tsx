@@ -41,18 +41,6 @@ function LoginForm() {
     setError("");
 
     try {
-      const check = await fetch("/api/login-check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-      const data = await check.json();
-      if (!data.ok) {
-        setError(MESSAGES[data.code] || MESSAGES.INVALID);
-        setLoading(false);
-        return;
-      }
-
       const res = await signIn("credentials", { username, password, redirect: false });
       if (res?.error) {
         setError(MESSAGES.INVALID);
