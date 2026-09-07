@@ -1,4 +1,5 @@
 import { founderApproveAppraisal } from "../actions";
+import DecisionButtons from "@/components/DecisionButtons";
 
 export default function FounderQueueSection({ pendingFounder }) {
   if (pendingFounder.length === 0) return null;
@@ -19,12 +20,7 @@ export default function FounderQueueSection({ pendingFounder }) {
           <form action={founderApproveAppraisal} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={a.id} />
             <input name="founderNote" className="input flex-1" placeholder="Founder note" />
-            <button name="decision" value="approve" className="btn-primary">
-              Approve
-            </button>
-            <button name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
-              Reject
-            </button>
+            <DecisionButtons />
           </form>
         </div>
       ))}

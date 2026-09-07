@@ -1,4 +1,5 @@
 import { hrApproveAppraisal } from "../actions";
+import SubmitButton from "@/components/SubmitButton";
 
 const HR_SCORES = [
   ["qualityScore", "Quality"],
@@ -39,9 +40,9 @@ export default function HrQueueSection({ pendingHr }) {
             <textarea name="strengths" className="input md:col-span-5" rows={1} placeholder="HR strengths note" />
             <textarea name="improvements" className="input md:col-span-5" rows={1} placeholder="HR improvements" />
             <textarea name="hrNote" className="input md:col-span-5" rows={1} placeholder="HR note to Founder" />
-            <button type="submit" className="btn-primary md:col-span-5">
+            <SubmitButton className="btn-primary md:col-span-5" pendingText="Submitting...">
               HR approve → send to Founder
-            </button>
+            </SubmitButton>
           </form>
         </div>
       ))}

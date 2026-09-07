@@ -1,4 +1,5 @@
 import { hodApproveAppraisal } from "../actions";
+import DecisionButtons from "@/components/DecisionButtons";
 
 export default function HodQueueSection({ pendingHod }) {
   if (pendingHod.length === 0) return null;
@@ -14,12 +15,7 @@ export default function HodQueueSection({ pendingHod }) {
           <form action={hodApproveAppraisal} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={a.id} />
             <input name="note" className="input flex-1" placeholder="HOD note" />
-            <button name="decision" value="approve" className="btn-primary">
-              Approve → HR
-            </button>
-            <button name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
-              Reject
-            </button>
+            <DecisionButtons approveLabel="Approve → HR" />
           </form>
         </div>
       ))}

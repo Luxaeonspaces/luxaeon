@@ -2,7 +2,6 @@ import { Suspense } from "react";
 import { requireUser } from "@/lib/session";
 
 import MySpaceHeader from "./components/MySpaceHeader";
-import MySpaceMessages from "./components/MySpaceMessages";
 import MySpaceSummary from "./components/MySpaceSummary";
 import MySpaceSummarySkeleton from "./components/MySpaceSummarySkeleton";
 import EmployeeProfile from "./components/EmployeeProfile";
@@ -25,11 +24,6 @@ export default async function MySpacePage({
   return (
     <div className="space-y-6">
       <MySpaceHeader />
-
-      <MySpaceMessages
-        error={searchParams?.error}
-        ok={searchParams?.ok}
-      />
 
       <Suspense fallback={<MySpaceSummarySkeleton />}>
         <MySpaceSummary user={user} />

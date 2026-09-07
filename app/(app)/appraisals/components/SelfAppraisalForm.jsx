@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { submitSelfAppraisal } from "../actions";
+import SubmitButton from "@/components/SubmitButton";
 
 const QUARTERS = ["Q1", "Q2", "Q3", "Q4"];
 const yearNow = new Date().getFullYear();
@@ -74,9 +75,9 @@ export default async function SelfAppraisalForm({ userId, isSales, formKey }) {
           </p>
         </>
       )}
-      <button type="submit" className="btn-primary md:col-span-3">
+      <SubmitButton className="btn-primary md:col-span-3" pendingText="Submitting...">
         Submit self-appraisal to HR
-      </button>
+      </SubmitButton>
     </form>
   );
 }

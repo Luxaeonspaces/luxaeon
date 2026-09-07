@@ -3,15 +3,16 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
-function avg(nums: number[]) {
+function avg(nums) {
   const v = nums.filter((n) => n > 0);
   if (!v.length) return 0;
   return Math.round((v.reduce((a, b) => a + b, 0) / v.length) * 10) / 10;
 }
 
 /** Employee: create self-appraisal + KPIs (quarterly) */
-export async function submitSelfAppraisal(formData: FormData) {
+export async function submitSelfAppraisal(formData) {
   const { user } = await requireUser();
   const year = Number(formData.get("year") || new Date().getFullYear());
   const quarter = String(formData.get("quarter") || "Q1");
@@ -26,8 +27,8 @@ export async function submitSelfAppraisal(formData: FormData) {
   ];
 
   // Pull latest sales target for this user + period if Sales
-  let selfSalesTarget: number | null = null;
-  let selfSalesAchieved: number | null = null;
+  let selfSalesTarget = null;
+  let selfSalesAchieved = null;
   const target = await prisma.salesTarget.findFirst({
     where: { userId: user.id, period: { contains: quarter } },
     orderBy: { createdAt: "desc" },
@@ -72,15 +73,20 @@ export async function submitSelfAppraisal(formData: FormData) {
   });
   revalidatePath("/appraisals");
   revalidatePath("/dashboard");
+  redirect(`/appraisals?ok=${encodeURIComponent(`Self-appraisal submitted for ${period}`)}`);
 }
 
 /** HR: score + approve → Founder */
-export async function hrApproveAppraisal(formData: FormData) {
+export async function hrApproveAppraisal(formData) {
   const { user, perms } = await requireUser();
-  if (!perms.canManageAppraisals) throw new Error("Not allowed");
+  if (!perms.canManageAppraisals) {
+    redirect(`/appraisals?error=${encodeURIComponent("Not allowed")}`);
+  }
   const id = String(formData.get("id"));
   const existing = await prisma.appraisal.findUnique({ where: { id } });
-  if (!existing || existing.status !== "HOD Approved") throw new Error("Awaiting HOD approval first");
+  if (!existing || existing.status !== "HOD Approved") {
+    redirect(`/appraisals?error=${encodeURIComponent("Awaiting HOD approval first")}`);
+  }
   const scores = [
     Number(formData.get("qualityScore") || 0),
     Number(formData.get("teamworkScore") || 0),
@@ -107,15 +113,18 @@ export async function hrApproveAppraisal(formData: FormData) {
     },
   });
   revalidatePath("/appraisals");
+  redirect(`/appraisals?ok=${encodeURIComponent(`${existing.employeeName}'s appraisal approved → sent to Founder`)}`);
 }
 
 /** Founder final approval */
-export async function founderApproveAppraisal(formData: FormData) {
+export async function founderApproveAppraisal(formData) {
   const { user, perms } = await requireUser();
-  if (!perms.isFounder) throw new Error("Founder only");
+  if (!perms.isFounder) {
+    redirect(`/appraisals?error=${encodeURIComponent("Founder only")}`);
+  }
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "approve");
-  await prisma.appraisal.update({
+  const row = await prisma.appraisal.update({
     where: { id },
     data: {
       founderNote: String(formData.get("founderNote") || "") || null,
@@ -125,21 +134,29 @@ export async function founderApproveAppraisal(formData: FormData) {
     },
   });
   revalidatePath("/appraisals");
+  redirect(
+    `/appraisals?ok=${encodeURIComponent(
+      decision === "reject" ? `${row.employeeName}'s appraisal rejected` : `${row.employeeName}'s appraisal approved`
+    )}`
+  );
 }
 
-
 /** Head of Department approves before HR */
-export async function hodApproveAppraisal(formData: FormData) {
+export async function hodApproveAppraisal(formData) {
   const { user, perms } = await requireUser();
-  if (!perms.canHodApproveAppraisal) throw new Error("HOD only");
+  if (!perms.canHodApproveAppraisal) {
+    redirect(`/appraisals?error=${encodeURIComponent("HOD only")}`);
+  }
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "approve");
   const note = String(formData.get("note") || "");
   const row = await prisma.appraisal.findUnique({ where: { id } });
-  if (!row || row.status !== "Self Submitted") return;
+  if (!row || row.status !== "Self Submitted") {
+    redirect(`/appraisals?error=${encodeURIComponent("This appraisal is no longer pending HOD review")}`);
+  }
   // HOD should be same department (Founder bypass)
   if (!perms.isFounder && row.department && user.department && row.department !== user.department) {
-    throw new Error("Only HOD of employee department can approve");
+    redirect(`/appraisals?error=${encodeURIComponent("Only HOD of employee department can approve")}`);
   }
   await prisma.appraisal.update({
     where: { id },
@@ -151,4 +168,9 @@ export async function hodApproveAppraisal(formData: FormData) {
     },
   });
   revalidatePath("/appraisals");
+  redirect(
+    `/appraisals?ok=${encodeURIComponent(
+      decision === "reject" ? `${row.employeeName}'s appraisal rejected` : `${row.employeeName}'s appraisal approved → sent to HR`
+    )}`
+  );
 }
