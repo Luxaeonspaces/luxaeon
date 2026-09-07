@@ -48,7 +48,6 @@ function LoginForm() {
         return;
       }
       router.push("/dashboard");
-      router.refresh();
     } catch {
       setError(MESSAGES.ERROR);
       setLoading(false);
