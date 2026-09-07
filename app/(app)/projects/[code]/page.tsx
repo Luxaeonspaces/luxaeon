@@ -11,6 +11,8 @@ import ProjectPayments from "./components/ProjectPayments";
 import ProjectFilesPanel from "./components/ProjectFilesPanel";
 import ProjectNotes from "./components/ProjectNotes";
 
+// fixing the deployment bug
+
 export default async function ProjectDetailPage({
   params,
   searchParams,

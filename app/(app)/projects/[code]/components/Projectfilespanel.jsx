@@ -1,5 +1,4 @@
 export default function ProjectFilesPanel({ project }) {
-  // just confirming
   return (
     <>
       <div className="glass-card p-4">
@@ -26,6 +25,7 @@ export default function ProjectFilesPanel({ project }) {
           </a>
         </div>
       </div>
+
 
       <div className="grid gap-4 md:grid-cols-2">
         <div className="glass-card p-5">
