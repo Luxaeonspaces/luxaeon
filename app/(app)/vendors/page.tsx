@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/session";
 import { addVendor } from "./actions";
 import { Suspense } from "react";
 import VendorsTable from "./_components/VendorsTable";
+import SubmitButton from "@/components/SubmitButton";
 
 function TableSkeleton() {
   return (
@@ -28,9 +29,9 @@ export default async function VendorsPage({ searchParams }: { searchParams?: { o
         <input name="name" className="input" placeholder="Name *" required />
         <input name="category" className="input" placeholder="Category" />
         <input name="phone" className="input" placeholder="Phone" />
-        <button type="submit" className="btn-primary md:col-span-3">
+        <SubmitButton className="btn-primary md:col-span-3" pendingText="Adding vendor...">
           Add vendor
-        </button>
+        </SubmitButton>
       </form>
       <Suspense fallback={<TableSkeleton />}>
         <VendorsTable />

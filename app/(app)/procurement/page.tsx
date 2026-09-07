@@ -39,10 +39,6 @@ export default async function ProcurementPage({
         </p>
       </div>
 
-      {searchParams?.ok && (
-        <p className="rounded-xl border border-brown/40 bg-brown/10 px-4 py-3 text-sm text-brown">{searchParams.ok}</p>
-      )}
-
       <div className="flex flex-wrap gap-2">
         <a
           href="/api/export/procurement?all=1"

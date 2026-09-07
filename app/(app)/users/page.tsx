@@ -37,19 +37,12 @@ export default async function UsersPage({
         </p>
       </div>
 
-
       <AccessControlNotice />
 
       <Suspense fallback={<TableSkeleton />}>
         <UsersTable currentUserId={user.id} />
       </Suspense>
 
-      {searchParams?.ok && (
-        <p className="rounded-xl border border-brown/40 bg-brown/10 px-4 py-3 text-sm text-brown">{searchParams.ok}</p>
-      )}
-      {searchParams?.error && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p>
-      )}
       <CreateUserForm formKey={searchParams?.ok || "create"} />
       <ResetPasswordForm formKey={`reset-${searchParams?.ok || ""}`} />
       <UpdateUserForm formKey={`upd-${searchParams?.ok || ""}`} />

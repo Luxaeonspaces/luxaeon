@@ -42,28 +42,23 @@ export default async function LeavePage({
         </p>
       </div>
 
-      {searchParams?.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p>}
-      {searchParams?.ok && (
-        <p className="rounded-xl border border-gold/40 bg-gold/10 px-4 py-3 text-sm text-burgundy">{searchParams.ok}</p>
-      )}
-
       <div className="grid gap-4 sm:grid-cols-3">
         <div className="glass-card p-4 text-center">
           <div className="text-xs uppercase text-gray-500">Annual entitlement</div>
-          <div className="font-display text-2xl font-bold text-burgundy">{MAX}</div>
+          <div className="font-display text-2xl font-bold text-brown">{MAX}</div>
         </div>
         <div className="glass-card p-4 text-center">
           <div className="text-xs uppercase text-gray-500">Used / pending ({year})</div>
-          <div className="font-display text-2xl font-bold text-burgundy">{used}</div>
+          <div className="font-display text-2xl font-bold text-brown">{used}</div>
         </div>
         <div className="glass-card p-4 text-center">
           <div className="text-xs uppercase text-gray-500">Balance</div>
-          <div className="font-display text-2xl font-bold text-burgundy">{balance}</div>
+          <div className="font-display text-2xl font-bold text-brown">{balance}</div>
         </div>
       </div>
 
       <form action={requestLeave} className="glass-card grid gap-3 p-5 md:grid-cols-2" key={searchParams?.ok || "l"}>
-        <h2 className="md:col-span-2 font-semibold text-burgundy">Request leave</h2>
+        <h2 className="md:col-span-2 font-semibold text-brown">Request leave</h2>
         <label className="text-sm">
           <span className="text-xs text-gray-500">Start</span>
           <input name="startDate" type="date" className="input" required />
@@ -79,13 +74,13 @@ export default async function LeavePage({
       </form>
 
       <div className="glass-card p-5">
-        <h2 className="mb-2 font-semibold text-burgundy">My leave history</h2>
+        <h2 className="mb-2 font-semibold text-brown">My leave history</h2>
         <LeaveTable rows={myLeaves} />
       </div>
 
       {(perms.isHod || perms.canManageHr || perms.isFounder) && (
         <div className="space-y-3">
-          <h2 className="font-semibold text-burgundy">Team leave (visible to maker&apos;s HOD, HR, Founder)</h2>
+          <h2 className="font-semibold text-brown">Team leave (visible to maker&apos;s HOD, HR, Founder)</h2>
           {team
             .filter((l) => l.status === "Pending HOD" && (perms.isFounder || perms.isHod))
             .map((l) => (
@@ -144,7 +139,7 @@ function LeaveTable({ rows }: { rows: any[] }) {
       </thead>
       <tbody>
         {rows.map((l) => (
-          <tr key={l.id} className="border-t border-gold/20">
+          <tr key={l.id} className="border-t border-brown/20">
             <td className="py-1">{l.employeeName}</td>
             <td className="py-1">
               {l.startDate} → {l.endDate}

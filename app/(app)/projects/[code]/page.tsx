@@ -4,12 +4,12 @@ import { notFound } from "next/navigation";
 import { addNote, updateProjectDetails, recordProjectPayment, editProjectPayment, completeProject } from "./actions";
 import ProjectTools from "@/components/ProjectTools";
 import { PROJECT_STAGES } from "@/lib/rbac";
-import ProjectHeader from "./_components/ProjectHeader";
-import ProjectSummaryCards from "./_components/ProjectSummaryCards";
-import ProjectDetailsForm from "./_components/ProjectDetailsForm";
-import ProjectPayments from "./_components/ProjectPayments";
-import ProjectFilesPanel from "./_components/Projectfilespanel"
-import ProjectNotes from "./_components/ProjectNotes";
+import ProjectHeader from "./components/ProjectHeader";
+import ProjectSummaryCards from "./components/ProjectSummaryCards";
+import ProjectDetailsForm from "./components/ProjectDetailsForm";
+import ProjectPayments from "./components/ProjectPayments";
+import ProjectFilesPanel from "./components/ProjectFilesPanel";
+import ProjectNotes from "./components/ProjectNotes";
 
 export default async function ProjectDetailPage({
   params,
@@ -52,8 +52,6 @@ export default async function ProjectDetailPage({
         isLocked={isLocked}
         canComplete={canComplete}
         completeProjectAction={completeProject.bind(null, project.projectCode)}
-        error={searchParams?.error}
-        ok={searchParams?.ok}
       />
 
       <ProjectSummaryCards project={project} balance={balance} progress={progress} />

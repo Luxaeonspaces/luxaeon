@@ -1,13 +1,6 @@
 import Link from "next/link";
 
-export default function ProjectHeader({
-  project,
-  isLocked,
-  canComplete,
-  completeProjectAction,
-  error,
-  ok,
-}) {
+export default function ProjectHeader({ project, isLocked, canComplete, completeProjectAction }) {
   return (
     <>
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -46,9 +39,6 @@ export default function ProjectHeader({
           </button>
         </form>
       )}
-
-      {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>}
-      {ok && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{ok}</p>}
     </>
   );
 }

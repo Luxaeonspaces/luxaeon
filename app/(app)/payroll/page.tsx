@@ -37,9 +37,6 @@ export default async function PayrollPage({
         </p>
       </div>
 
-      {searchParams?.error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{searchParams.error}</p>}
-      {searchParams?.ok && <p className="rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800">{searchParams.ok}</p>}
-
       <div className="flex flex-wrap gap-2">
         <a
           href="/api/export/payroll?all=1"

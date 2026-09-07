@@ -5,6 +5,7 @@ import { requireUser } from "@/lib/session";
 import { revalidatePath } from "next/cache";
 import { createTransaction } from "@/lib/txn";
 import { logWork } from "@/lib/activity";
+import { storeFile } from "@/lib/fileStorage";
 import { redirect } from "next/navigation";
 
 export async function addNote(projectId, formData) {
@@ -164,13 +165,9 @@ export async function recordProjectPayment(projectCode, formData) {
   );
 
   // Save receipt against transaction
-  const { writeFile, mkdir } = await import("fs/promises");
-  const path = await import("path");
-  const dir = path.join(process.cwd(), "storage", "finance_docs");
-  await mkdir(dir, { recursive: true });
   const safe = `RCPT_${txn.id}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
   const buf = Buffer.from(await file.arrayBuffer());
-  await writeFile(path.join(dir, safe), buf);
+  await storeFile("finance_docs", safe, buf);
   await prisma.transactionDocument.create({
     data: {
       transactionId: txn.id,
@@ -253,12 +250,8 @@ export async function editProjectPayment(projectCode, formData) {
   // Optional new receipt on edit
   const file = formData.get("receipt");
   if (file && typeof file !== "string" && file.size) {
-    const { writeFile, mkdir } = await import("fs/promises");
-    const path = await import("path");
-    const dir = path.join(process.cwd(), "storage", "finance_docs");
-    await mkdir(dir, { recursive: true });
     const safe = `RCPT_${txn.id}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-    await writeFile(path.join(dir, safe), Buffer.from(await file.arrayBuffer()));
+    await storeFile("finance_docs", safe, Buffer.from(await file.arrayBuffer()));
     await prisma.transactionDocument.create({
       data: {
         transactionId: txn.id,
