@@ -67,14 +67,14 @@ function LoginForm() {
     }
   }
 return (
-    <div className="flex min-h-screen items-center justify-center p-6">
+    <div className="login-shell flex min-h-screen items-center justify-center p-4 sm:p-6">
       <div className="w-full max-w-md page-enter">
         <div className="mb-8 text-center">
           <p className="text-xs font-semibold uppercase tracking-[0.15em] text-gold">Welcome back</p>
-          <h1 className="mt-2 font-display text-3xl font-bold tracking-tight text-burgundy">Luxaeon Spaces</h1>
+          <h1 className="login-brand mt-2 font-display text-3xl font-bold tracking-tight">Luxaeon Spaces</h1>
           <p className="mt-2 text-sm text-gray-500">Your studio OS — projects, people & flow</p>
         </div>
-<form onSubmit={onSubmit} className="glass-card space-y-4 p-6">
+  <form onSubmit={onSubmit} className="glass-card space-y-4 border-burgundy/15 p-5 sm:p-6">
           <h2 className="font-display text-lg font-semibold text-burgundy">Sign in to continue</h2>
           <div>
             <label className="mb-1 block text-xs font-medium text-gray-600">Username</label>
