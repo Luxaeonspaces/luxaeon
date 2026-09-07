@@ -6,8 +6,10 @@ const config: Config = {
     extend: {
       colors: {
         burgundy: { DEFAULT: "#4A0E0E", soft: "#641717", deep: "#300707" },
+        brown: "#4A0E0E",
         gold: { DEFAULT: "#C9A96E", soft: "#E8D9B5" },
         cream: "#F5F5F2",
+        whitesmoke: "#F5F5F2",
       },
       fontFamily: {
         sans: ["var(--font-sans)", "system-ui", "sans-serif"],

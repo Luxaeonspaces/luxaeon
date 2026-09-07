@@ -12,6 +12,15 @@ export default async function ArchiveTable() {
     orderBy: {
       updatedAt: "desc",
     },
+    take: 100,
+    select: {
+      id: true,
+      projectCode: true,
+      clientName: true,
+      designFee: true,
+      amountPaid: true,
+      salesPersonName: true,
+    },
   });
 
   return (

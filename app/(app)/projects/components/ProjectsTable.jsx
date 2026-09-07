@@ -5,6 +5,18 @@ export default async function ProjectsTable() {
   const projects = await prisma.project.findMany({
     where: { NOT: { OR: [{ status: "Completed" }, { stage: "Completed" }] } },
     orderBy: { updatedAt: "desc" },
+    take: 100,
+    select: {
+      id: true,
+      projectCode: true,
+      clientName: true,
+      stage: true,
+      designFee: true,
+      amountPaid: true,
+      createdBy: true,
+      salesPersonName: true,
+      clientAccessCode: true,
+    },
   });
 
   return (
