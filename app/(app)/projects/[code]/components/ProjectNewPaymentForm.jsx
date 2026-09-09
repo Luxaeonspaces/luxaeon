@@ -1,4 +1,4 @@
-import AmountInput from "@/components/AmountInput";
+import AmountInput from "@/app/components/AmountInput";
 
 export default function ProjectNewPaymentForm({ recordProjectPaymentAction, formKey }) {
   return (

@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 import { addNote, updateProjectDetails, recordProjectPayment, editProjectPayment, completeProject } from "./actions";
-import ProjectTools from "@/components/ProjectTools";
+import ProjectTools from "@/app/components/ProjectTools";
 import { PROJECT_STAGES } from "@/lib/rbac";
 import ProjectHeader from "./components/ProjectHeader";
 import ProjectSummaryCards from "./components/ProjectSummaryCards";

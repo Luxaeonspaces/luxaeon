@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import AmountInput from "@/components/AmountInput";
+import AmountInput from "@/app/components/AmountInput";
 import { requestProcurement } from "../actions";
 
 export default async function NewRequestForm({ formKey }) {

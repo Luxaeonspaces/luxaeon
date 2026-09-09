@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import EmployeeDocs from "@/components/EmployeeDocs";
+import EmployeeDocs from "@/app/components/EmployeeDocs";
 
 export default async function EmployeeDocsSection({ userId }) {
   const docs = await prisma.employeeDocument.findMany({

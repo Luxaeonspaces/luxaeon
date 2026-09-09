@@ -1,6 +1,6 @@
 import { DEPARTMENTS } from "@/lib/rbac";
-import AmountInput from "@/components/AmountInput";
-import OutflowDocs from "@/components/OutflowDocs";
+import AmountInput from "@/app/components/AmountInput";
+import OutflowDocs from "@/app/components/OutflowDocs";
 
 export default function NewOutflowForm({ user, createOutflowAction, createdId, formKey }) {
   return (

@@ -1,5 +1,5 @@
 import { founderApproveAppraisal } from "../actions";
-import DecisionButtons from "@/components/DecisionButtons";
+import DecisionButtons from "@/app/components/DecisionButtons";
 
 export default function FounderQueueSection({ pendingFounder }) {
   if (pendingFounder.length === 0) return null;

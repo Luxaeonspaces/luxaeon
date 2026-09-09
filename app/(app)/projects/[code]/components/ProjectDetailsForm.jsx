@@ -1,5 +1,5 @@
 import { PROJECT_STAGES } from "@/lib/rbac";
-import AmountInput from "@/components/AmountInput";
+import AmountInput from "@/app/components/AmountInput";
 
 function Detail({ label, value }) {
   return (

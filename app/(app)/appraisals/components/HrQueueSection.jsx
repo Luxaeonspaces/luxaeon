@@ -1,5 +1,5 @@
 import { hrApproveAppraisal } from "../actions";
-import SubmitButton from "@/components/SubmitButton";
+import SubmitButton from "@/app/components/SubmitButton";
 
 const HR_SCORES = [
   ["qualityScore", "Quality"],

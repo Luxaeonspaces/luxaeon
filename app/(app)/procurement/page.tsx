@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { Suspense } from "react";
-import ProcDocsUpload from "@/components/ProcDocsUpload";
+import ProcDocsUpload from "@/app/components/ProcDocsUpload";
 import NewRequestForm from "./components/NewRequestForm";
 import ProcurementQueuesAndList from "./components/ProcurementQueuesAndList";
 

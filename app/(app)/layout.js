@@ -1,5 +1,5 @@
-import Sidebar from "@/components/Sidebar";
-import BackButton from "@/components/BackButton";
+import Sidebar from "@/app/components/Sidebar";
+import BackButton from "@/app/components/BackButton";
 import { requireUser } from "@/lib/session";
 
 export default async function AppLayout({ children }) {

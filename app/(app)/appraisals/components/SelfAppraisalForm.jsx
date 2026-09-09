@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { submitSelfAppraisal } from "../actions";
-import SubmitButton from "@/components/SubmitButton";
+import SubmitButton from "@/app/components/SubmitButton";
 
 const QUARTERS = ["Q1", "Q2", "Q3", "Q4"];
 const yearNow = new Date().getFullYear();

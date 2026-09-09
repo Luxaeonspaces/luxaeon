@@ -3,8 +3,8 @@ import { IBM_Plex_Sans } from "next/font/google";
 import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import "./globals.css";
-import Providers from "@/components/Providers";
-import ToastFromParams from "@/components/ToastFromParams";
+import Providers from "@/app/components/Providers";
+import ToastFromParams from "@/app/components/ToastFromParams";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],

@@ -1,4 +1,4 @@
-import AmountInput from "@/components/AmountInput";
+import AmountInput from "@/app/components/AmountInput";
 import { getAllUsers } from "@/lib/cachedQueries";
 import { setTarget } from "../actions";
 

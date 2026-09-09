@@ -1,5 +1,5 @@
-import DocList from "@/components/DocList";
-import ProcDocsUpload from "@/components/ProcDocsUpload";
+import DocList from "@/app/components/DocList";
+import ProcDocsUpload from "@/app/components/ProcDocsUpload";
 import { editProcurement, cancelProcurement, recallProcurement, resubmitProcurement } from "../actions";
 
 export default function ProcCard({ r, canUpload, canEdit }) {

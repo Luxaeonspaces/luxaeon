@@ -1,6 +1,6 @@
 import { requireUser } from "@/lib/session";
 import { changePassword } from "./actions";
-import SubmitButton from "@/components/SubmitButton";
+import SubmitButton from "@/app/components/SubmitButton";
 
 export default async function SettingsPage({ searchParams }: { searchParams?: { ok?: string; created?: string; error?: string } }) {
   const { user } = await requireUser();

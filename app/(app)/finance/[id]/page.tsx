@@ -9,7 +9,7 @@ import TransactionAudit from "./components/TransactionAudit";
 import TransactionAuditSkeleton from "./components/TransactionAuditSkeleton";
 import { getTransaction } from "./components/transaction-data";
 
-import TxnDocs from "@/components/TxnDocs";
+import TxnDocs from "@/app/components/TxnDocs";
 import { logTxnAudit } from "@/lib/txnAudit";
 
 export default async function TxnDetailPage({

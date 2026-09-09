@@ -5,7 +5,7 @@ import ClientPortalHeader from "./components/ClientPortalHeader";
 import ClientPortalForm from "./components/ClientPortalForm";
 import ClientPortalResult from "./components/ClientPortalResult";
 import ClientPortalResultSkeleton from "./components/ClientPortalResultSkeleton";
-import ClientPortalInfo from "./components/ClientPortalInfo";
+
 
 export default async function ClientPortalPage({
   searchParams,
@@ -35,7 +35,6 @@ export default async function ClientPortalPage({
         </Suspense>
       )}
 
-      <ClientPortalInfo />
     </div>
   );
 }

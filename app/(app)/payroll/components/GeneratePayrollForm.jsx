@@ -1,4 +1,4 @@
-import AmountInput from "@/components/AmountInput";
+import AmountInput from "@/app/components/AmountInput";
 import { preparePayroll } from "../actions";
 
 export default function GeneratePayrollForm({ formKey }) {

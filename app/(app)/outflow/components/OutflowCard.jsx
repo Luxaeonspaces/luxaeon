@@ -1,4 +1,4 @@
-import OutflowDocs from "@/components/OutflowDocs";
+import OutflowDocs from "@/app/components/OutflowDocs";
 
 
 export default function OutflowCard({ r, canUpload, canEdit, actions, children }) {

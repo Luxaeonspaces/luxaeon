@@ -1,5 +1,5 @@
 import { hodApproveAppraisal } from "../actions";
-import DecisionButtons from "@/components/DecisionButtons";
+import DecisionButtons from "@/app/components/DecisionButtons";
 
 export default function HodQueueSection({ pendingHod }) {
   if (pendingHod.length === 0) return null;

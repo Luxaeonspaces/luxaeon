@@ -2,7 +2,7 @@ import { requireUser } from "@/lib/session";
 import { addVendor } from "./actions";
 import { Suspense } from "react";
 import VendorsTable from "./_components/VendorsTable";
-import SubmitButton from "@/components/SubmitButton";
+import SubmitButton from "@/app/components/SubmitButton";
 
 function TableSkeleton() {
   return (
