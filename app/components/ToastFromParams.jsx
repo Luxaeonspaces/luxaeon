@@ -23,6 +23,11 @@ export default function ToastFromParams() {
       delete (window).__luxaeonSubmitToastId;
     }
 
+    const processingOverlay = document.getElementById("luxaeon-global-processing-overlay");
+    if (processingOverlay) {
+      processingOverlay.remove();
+    }
+
     if (error) toast.error(error);
     else if (ok) toast.success(ok);
 

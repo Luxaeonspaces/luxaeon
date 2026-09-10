@@ -28,9 +28,9 @@ function Area({ name, label, defaultValue }) {
   );
 }
 
-export default function ProfileForm({ employeeId, profile: p }) {
+export default function ProfileForm({ employeeId, profile: p, formKey = "profile" }) {
   return (
-    <form action={saveProfile} className="space-y-4">
+    <form key={formKey} action={saveProfile} className="space-y-4 page-enter">
       <input type="hidden" name="userId" value={employeeId} />
 
       <Section title="Work identity">

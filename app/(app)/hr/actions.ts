@@ -3,6 +3,7 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
 
 const PROFILE_FIELDS = [
   "employeeId", "phone", "email", "address", "jobTitle", "dateJoined",
@@ -18,9 +19,16 @@ const PROFILE_FIELDS = [
 
 export async function saveProfile(formData: FormData) {
   const { perms } = await requireUser();
-  if (!perms.canManageHr) throw new Error("Not allowed");
-  const userId = String(formData.get("userId"));
-  if (!userId) return;
+  const userId = String(formData.get("userId") || "");
+
+  if (!perms.canManageHr) {
+    if (userId) redirect(`/hr/${userId}?error=${encodeURIComponent("Not allowed")}`);
+    redirect("/dashboard?error=" + encodeURIComponent("Not allowed"));
+  }
+
+  if (!userId) {
+    redirect("/hr?error=" + encodeURIComponent("Missing employee selection"));
+  }
 
   const data: Record<string, any> = {
     salaryAmount: Number(String(formData.get("salaryAmount") || "0").replace(/,/g, "")),
@@ -37,6 +45,8 @@ export async function saveProfile(formData: FormData) {
   });
   revalidatePath("/hr");
   revalidatePath(`/hr/${userId}`);
+
+  redirect(`/hr/${userId}?ok=${encodeURIComponent("Profile saved successfully")}`);
 }
 
 export async function preparePayroll(formData: FormData) {

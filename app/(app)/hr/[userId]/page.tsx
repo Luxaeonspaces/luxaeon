@@ -23,7 +23,13 @@ function TableSkeleton() {
   );
 }
 
-export default async function EmployeeDetailPage({ params }: { params: { userId: string } }) {
+export default async function EmployeeDetailPage({
+  params,
+  searchParams,
+}: {
+  params: { userId: string };
+  searchParams?: { ok?: string; error?: string };
+}) {
   const { perms } = await requireUser();
   if (!perms.canManageHr) redirect("/dashboard");
 
@@ -40,7 +46,11 @@ export default async function EmployeeDetailPage({ params }: { params: { userId:
     <div className="space-y-6">
       <EmployeeHeader employee={employee} />
 
-      <ProfileForm employeeId={employee.id} profile={employee.profile} />
+      <ProfileForm
+        employeeId={employee.id}
+        profile={employee.profile}
+        formKey={searchParams?.ok || searchParams?.error || employee.id}
+      />
 
       <Suspense fallback={<DocsSkeleton />}>
         <EmployeeDocsSection userId={employee.id} />
