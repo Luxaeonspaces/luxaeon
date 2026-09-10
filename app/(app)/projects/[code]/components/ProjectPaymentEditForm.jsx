@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import AmountInput from "@/app/components/AmountInput";
 
 export default function ProjectPaymentEditForm({ payment, editProjectPaymentAction }) {
@@ -26,9 +27,9 @@ export default function ProjectPaymentEditForm({ payment, editProjectPaymentActi
       </div>
       <input name="description" className="input md:col-span-2" defaultValue={payment.description || ""} />
       <input name="receipt" type="file" accept="image/*,.pdf" className="text-xs" />
-      <button type="submit" data-submit-trigger="true" className="rounded-xl border border-brown/50 px-3 py-2 text-xs font-semibold text-brown">
+      <SubmitButton className="rounded-xl border border-brown/50 px-3 py-2 text-xs font-semibold text-brown" pendingText="Saving...">
         Save correction
-      </button>
+      </SubmitButton>
     </form>
   );
 }

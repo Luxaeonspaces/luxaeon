@@ -100,7 +100,7 @@ model Lead {
   id           String   @id @default(cuid())
   fullName     String
   phone        String?
-  email        String?
+  email        String?  @unique
   location     String?
   projectType  String?
   budgetRange  String?

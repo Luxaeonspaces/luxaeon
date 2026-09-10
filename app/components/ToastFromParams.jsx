@@ -16,28 +16,22 @@ export default function ToastFromParams() {
   useEffect(() => {
     if (shown.current) return;
     if (!ok && !error) return;
+
     shown.current = true;
 
-    if (typeof window !== "undefined" && (window).__luxaeonSubmitToastId) {
-      toast.dismiss((window).__luxaeonSubmitToastId);
-      delete (window).__luxaeonSubmitToastId;
+    if (error) {
+      toast.error(error);
+    } else if (ok) {
+      toast.success(ok);
     }
-
-    const processingOverlay = document.getElementById("luxaeon-global-processing-overlay");
-    if (processingOverlay) {
-      processingOverlay.remove();
-    }
-
-    if (error) toast.error(error);
-    else if (ok) toast.success(ok);
 
     const params = new URLSearchParams(searchParams.toString());
     params.delete("ok");
     params.delete("error");
+
     const rest = params.toString();
     router.replace(rest ? `${pathname}?${rest}` : pathname, { scroll: false });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [ok, error]);
+  }, [ok, error, pathname, router, searchParams]);
 
   return null;
 }

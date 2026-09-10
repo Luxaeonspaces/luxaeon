@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { getAllUsers } from "@/lib/cachedQueries";
 import { disableUser, enableUser, deleteUser } from "../actions";
 
@@ -43,34 +44,33 @@ export default async function UsersTable({ currentUserId }) {
                     {u.active ? (
                       <form action={disableUser}>
                         <input type="hidden" name="userId" value={u.id} />
-                        <button
-                          type="submit"
-                          data-submit-trigger="true"
-                          disabled={isSelf}
+                        <SubmitButton
                           className="rounded-lg border border-amber-300 px-2 py-1 text-xs font-medium text-amber-900 disabled:opacity-40"
+                          disabled={isSelf}
+                          pendingText="Disabling..."
                           title={isSelf ? "Cannot disable yourself" : "Disable login"}
                         >
                           Disable
-                        </button>
+                        </SubmitButton>
                       </form>
                     ) : (
                       <form action={enableUser}>
                         <input type="hidden" name="userId" value={u.id} />
-                        <button type="submit" data-submit-trigger="true" className="rounded-lg border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-800">
+                        <SubmitButton className="rounded-lg border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-800" pendingText="Enabling...">
                           Enable
-                        </button>
+                        </SubmitButton>
                       </form>
                     )}
                     <form action={deleteUser}>
                       <input type="hidden" name="userId" value={u.id} />
-                      <button
-                        type="submit"
-                        disabled={isSelf}
+                      <SubmitButton
                         className="rounded-lg border border-red-300 px-2 py-1 text-xs font-medium text-red-700 disabled:opacity-40"
+                        disabled={isSelf}
+                        pendingText="Deleting..."
                         title={isSelf ? "Cannot delete yourself" : "Permanently remove"}
                       >
                         Delete
-                      </button>
+                      </SubmitButton>
                     </form>
                   </div>
                 </td>

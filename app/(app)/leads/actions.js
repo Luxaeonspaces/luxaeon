@@ -12,14 +12,25 @@ export async function createLead(formData) {
   const fullName = String(formData.get("fullName") || "").trim();
   if (!fullName) return;
 
-  const email =
-    String(formData.get("email") || "").trim() || null;
+  const email = String(formData.get("email") || "").trim();
+  const normalizedEmail = email ? email.toLowerCase() : null;
 
-  let ownerUserId =
-    String(formData.get("ownerUserId") || "") || null;
+  if (normalizedEmail) {
+    const existingLead = await prisma.lead.findUnique({
+      where: { email: normalizedEmail },
+    });
 
-  let ownerName =
-    String(formData.get("ownerName") || "") || null;
+    if (existingLead) {
+      redirect(
+        "/leads?error=" +
+          encodeURIComponent("A lead with this email already exists")
+      );
+    }
+  }
+
+  let ownerUserId = String(formData.get("ownerUserId") || "") || null;
+
+  let ownerName = String(formData.get("ownerName") || "") || null;
 
   if (
     !ownerUserId &&
@@ -43,7 +54,7 @@ export async function createLead(formData) {
   await prisma.lead.create({
     data: {
       fullName,
-      email,
+      email: normalizedEmail,
       phone: String(formData.get("phone") || "") || null,
       location: String(formData.get("location") || "") || null,
       source: String(formData.get("source") || "") || null,

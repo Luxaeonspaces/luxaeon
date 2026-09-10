@@ -1,4 +1,5 @@
 import { createLead } from "../actions";
+import SubmitButton from "@/app/components/SubmitButton";
 
 export default function LeadForm({
   user,
@@ -91,13 +92,9 @@ export default function LeadForm({
         rows={3}
       />
 
-      <button
-        type="submit"
-        data-submit-trigger="true"
-        className="btn-primary md:col-span-2"
-      >
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Saving lead...">
         Save lead
-      </button>
+      </SubmitButton>
     </form>
   );
 }

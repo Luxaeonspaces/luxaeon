@@ -2,16 +2,25 @@
 
 import { useFormStatus } from "react-dom";
 
-export default function SubmitButton({ children, pendingText, className = "btn-primary", ...props }) {
-  const { pending } = useFormStatus();
+export default function SubmitButton({
+  children,
+  pendingText,
+  className = "btn-primary",
+  disabled = false,
+  pending = undefined,
+  ...props
+}) {
+  const { pending: formPending } = useFormStatus();
+  const isPending = Boolean(pending ?? formPending ?? disabled);
+
   return (
     <button
       type="submit"
-      disabled={pending}
-      data-submit-trigger="true"
-      className={`${className} disabled:cursor-not-allowed disabled:opacity-60`} {...props}
+      disabled={isPending}
+      className={`${className} disabled:cursor-not-allowed disabled:opacity-60`}
+      {...props}
     >
-      {pending ? (
+      {isPending ? (
         <span className="inline-flex items-center gap-2">
           <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

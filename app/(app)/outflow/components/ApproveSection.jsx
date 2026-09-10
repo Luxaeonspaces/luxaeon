@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import OutflowCard from "./OutflowCard";
 
 export default function ApproveSection({ title, rows, decisionAction, cardActions, approveLabel = "Approve" }) {
@@ -9,12 +10,12 @@ export default function ApproveSection({ title, rows, decisionAction, cardAction
           <form action={decisionAction} className="mt-2 flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="note" className="input flex-1" placeholder="Note" />
-            <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
+            <SubmitButton name="decision" value="approve" className="btn-primary" pendingText="Approving...">
               {approveLabel}
-            </button>
-            <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700">
+            </SubmitButton>
+            <SubmitButton name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700" pendingText="Rejecting...">
               Reject
-            </button>
+            </SubmitButton>
           </form>
         </OutflowCard>
       ))}

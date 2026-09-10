@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import AmountInput from "@/app/components/AmountInput";
 
 export default function ProjectNewPaymentForm({ recordProjectPaymentAction, formKey }) {
@@ -17,9 +18,9 @@ export default function ProjectNewPaymentForm({ recordProjectPaymentAction, form
         <label className="mb-1 block text-xs text-gray-500">Payment receipt *</label>
         <input name="receipt" type="file" accept="image/*,.pdf" required className="text-sm" />
       </div>
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Recording payment...">
         Record payment with receipt
-      </button>
+      </SubmitButton>
     </form>
   );
 }

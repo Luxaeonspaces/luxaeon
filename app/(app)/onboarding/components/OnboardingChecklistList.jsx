@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ONBOARDING_STEPS } from "@/lib/rbac";
+import SubmitButton from "@/app/components/SubmitButton";
 import { updateOnboarding } from "../actions";
 
 export default async function OnboardingChecklistList() {
@@ -32,9 +33,9 @@ export default async function OnboardingChecklistList() {
                 </label>
               ))}
               <textarea name="notes" className="input sm:col-span-2 md:col-span-3" rows={2} defaultValue={o.notes || ""} />
-              <button type="submit" data-submit-trigger="true" className="btn-primary sm:col-span-2 md:col-span-3">
+              <SubmitButton className="btn-primary sm:col-span-2 md:col-span-3" pendingText="Saving checklist...">
                 Save checklist
-              </button>
+              </SubmitButton>
             </form>
           </div>
         );

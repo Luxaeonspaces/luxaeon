@@ -1,4 +1,5 @@
 import { DEPARTMENTS } from "@/lib/rbac";
+import SubmitButton from "@/app/components/SubmitButton";
 import { createUser } from "../actions";
 
 export default function CreateUserForm({ formKey }) {
@@ -21,9 +22,9 @@ export default function CreateUserForm({ formKey }) {
           <option key={d}>{d}</option>
         ))}
       </select>
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Creating account...">
         Create account
-      </button>
+      </SubmitButton>
     </form>
   );
 }

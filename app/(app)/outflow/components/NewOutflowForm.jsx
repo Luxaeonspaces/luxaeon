@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { DEPARTMENTS } from "@/lib/rbac";
 import AmountInput from "@/app/components/AmountInput";
 import OutflowDocs from "@/app/components/OutflowDocs";
@@ -24,9 +25,9 @@ export default function NewOutflowForm({ user, createOutflowAction, createdId, f
         <input name="payeeBankName" className="input" placeholder="Bank name" />
         <input name="payeeAccountName" className="input" placeholder="Account name" />
         <input name="payeeAccountNo" className="input" placeholder="Account number" />
-        <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+        <SubmitButton className="btn-primary md:col-span-2" pendingText="Submitting request...">
           Submit for department review
-        </button>
+        </SubmitButton>
         <p className="md:col-span-2 text-xs text-gray-500">
           After submit, upload supporting documents on the request card (or below if just created).
         </p>

@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { PROJECT_STAGES } from "@/lib/rbac";
 import AmountInput from "@/app/components/AmountInput";
 import { getAllUsers } from "@/lib/cachedQueries";
@@ -35,9 +36,9 @@ export default async function CreateProjectForm({ userFullName, formKey }) {
         ))}
       </select>
       <textarea name="notes" className="input md:col-span-2" placeholder="Notes" rows={2} />
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Creating project...">
         Create project (as {userFullName})
-      </button>
+      </SubmitButton>
     </form>
   );
 }

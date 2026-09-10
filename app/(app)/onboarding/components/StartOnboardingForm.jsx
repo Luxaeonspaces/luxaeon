@@ -1,4 +1,5 @@
 import { getAllUsers } from "@/lib/cachedQueries";
+import SubmitButton from "@/app/components/SubmitButton";
 import { startOnboarding } from "../actions";
 
 export default async function StartOnboardingForm({ formKey }) {
@@ -17,9 +18,9 @@ export default async function StartOnboardingForm({ formKey }) {
         ))}
       </select>
       <input name="notes" className="input flex-1" placeholder="Onboarding notes" />
-      <button type="submit" data-submit-trigger="true" className="btn-primary">
+      <SubmitButton className="btn-primary" pendingText="Starting...">
         Start onboarding
-      </button>
+      </SubmitButton>
     </form>
   );
 }

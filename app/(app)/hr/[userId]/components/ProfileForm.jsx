@@ -1,4 +1,5 @@
 import AmountInput from "@/app/components/AmountInput";
+import SubmitButton from "@/app/components/SubmitButton";
 import { saveProfile } from "../../actions";
 
 function Section({ title, children }) {
@@ -97,9 +98,9 @@ export default function ProfileForm({ employeeId, profile: p, formKey = "profile
         <Area name="notes" label="HR notes" defaultValue={p?.notes} />
       </Section>
 
-      <button type="submit" data-submit-trigger="true" className="btn-primary">
+      <SubmitButton className="btn-primary" pendingText="Saving profile...">
         Save employee profile
-      </button>
+      </SubmitButton>
     </form>
   );
 }

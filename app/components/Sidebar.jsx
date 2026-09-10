@@ -97,7 +97,10 @@ export default function Sidebar({ fullName, role, department, perms }) {
         <div className="mt-3 shrink-0 border-t border-gray-200 pt-3">
           <button
             type="button"
-            onClick={() => signOut({ callbackUrl: "/login" })}
+            onClick={async () => {
+              await signOut({ redirect: false });
+              window.location.href = "/login";
+            }}
             className="min-h-11 w-full rounded-xl border border-gray-300 bg-white/90 px-3 py-2 text-sm font-semibold text-brown transition hover:bg-whitesmoke"
           >
             Sign out

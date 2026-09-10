@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { PROJECT_STAGES } from "@/lib/rbac";
 import AmountInput from "@/app/components/AmountInput";
 
@@ -47,9 +48,9 @@ export default function ProjectDetailsForm({ project, canEditActive, isLocked, u
           <input name="location" className="input" defaultValue={project.location || ""} placeholder="Location" />
           <input name="targetHandover" className="input" defaultValue={project.targetHandover || ""} placeholder="Target handover" />
           <textarea name="notes" className="input md:col-span-2" rows={2} defaultValue={project.notes || ""} placeholder="Notes" />
-          <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+          <SubmitButton className="btn-primary md:col-span-2" pendingText="Saving changes...">
             Save changes
-          </button>
+          </SubmitButton>
         </form>
       ) : isLocked ? (
         <p className="rounded-xl border border-brown/40 bg-brown/10 px-4 py-3 text-sm text-brown">

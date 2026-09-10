@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import Link from "next/link";
 import { requestLeave } from "../../leave/actions";
 import { getMyLeaves } from "./my-space-data";
@@ -58,12 +59,9 @@ export default async function LeaveSection({
           placeholder="Reason"
         />
 
-        <button
-          type="submit"
-          className="btn-primary md:col-span-2"
-        >
+        <SubmitButton className="btn-primary md:col-span-2" pendingText="Submitting leave...">
           Submit leave (to your HOD)
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="mt-4 overflow-x-auto">

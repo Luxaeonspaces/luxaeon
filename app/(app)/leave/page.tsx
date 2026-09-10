@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
+import SubmitButton from "@/app/components/SubmitButton";
 import { requestLeave, hodApproveLeave, hrApproveLeave } from "./actions";
 
 const MAX = 60;
@@ -68,9 +69,9 @@ export default async function LeavePage({
           <input name="endDate" type="date" className="input" required />
         </label>
         <textarea name="reason" className="input md:col-span-2" rows={2} placeholder="Reason" />
-        <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+        <SubmitButton className="btn-primary md:col-span-2" pendingText="Submitting leave...">
           Submit to Head of Department
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="glass-card p-5">
@@ -90,12 +91,17 @@ export default async function LeavePage({
                   <strong>{l.employeeName}</strong> · {l.startDate} → {l.endDate} ({l.days} days) · {l.department}
                 </p>
                 <input name="note" className="input flex-1" placeholder="HOD note" />
-                <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
+                <SubmitButton name="decision" value="approve" className="btn-primary" pendingText="Approving...">
                   Approve → HR
-                </button>
-                <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
+                </SubmitButton>
+                <SubmitButton
+                  name="decision"
+                  value="reject"
+                  className="rounded-xl border border-red-200 px-3 py-2 text-red-700"
+                  pendingText="Rejecting..."
+                >
                   Reject
-                </button>
+                </SubmitButton>
               </form>
             ))}
           {(perms.canManageHr || perms.isFounder) &&
@@ -108,12 +114,17 @@ export default async function LeavePage({
                     <strong>{l.employeeName}</strong> · {l.startDate} → {l.endDate} ({l.days}d) · HOD: {l.hodApprovedBy}
                   </p>
                   <input name="note" className="input flex-1" placeholder="HR note" />
-                  <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
+                  <SubmitButton name="decision" value="approve" className="btn-primary" pendingText="Approving...">
                     HR approve
-                  </button>
-                  <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
+                  </SubmitButton>
+                  <SubmitButton
+                    name="decision"
+                    value="reject"
+                    className="rounded-xl border border-red-200 px-3 py-2 text-red-700"
+                    pendingText="Rejecting..."
+                  >
                     Reject
-                  </button>
+                  </SubmitButton>
                 </form>
               ))}
           <div className="glass-card p-5">

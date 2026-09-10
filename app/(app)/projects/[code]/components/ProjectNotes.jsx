@@ -1,12 +1,14 @@
+import SubmitButton from "@/app/components/SubmitButton";
+
 export default function ProjectNotes({ project, addNoteAction, formKey }) {
   return (
     <>
       <form key={formKey} action={addNoteAction} className="glass-card space-y-3 p-5">
         <h2 className="font-display font-semibold text-brown">Add internal note</h2>
         <textarea name="note" className="input" rows={3} required />
-        <button type="submit" data-submit-trigger="true" className="btn-primary">
+        <SubmitButton className="btn-primary" pendingText="Saving note...">
           Save note
-        </button>
+        </SubmitButton>
       </form>
 
       <div className="glass-card p-5">

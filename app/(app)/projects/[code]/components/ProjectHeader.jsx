@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import Link from "next/link";
 
 export default function ProjectHeader({ project, isLocked, canComplete, completeProjectAction }) {
@@ -31,12 +32,9 @@ export default function ProjectHeader({ project, isLocked, canComplete, complete
           <p className="mb-3 text-xs text-gray-600">
             When you mark this project completed, it becomes read-only and moves to <strong>Project Archives</strong>.
           </p>
-          <button
-            type="submit"
-            className="w-full rounded-xl bg-brown px-4 py-3 text-sm font-bold text-white shadow-md transition hover:opacity-90 sm:w-auto"
-          >
+          <SubmitButton className="w-full rounded-xl bg-brown px-4 py-3 text-sm font-bold text-white shadow-md transition hover:opacity-90 sm:w-auto" pendingText="Completing project...">
             Mark project completed
-          </button>
+          </SubmitButton>
         </form>
       )}
     </>

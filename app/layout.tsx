@@ -5,7 +5,6 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Providers from "@/app/components/Providers";
 import ToastFromParams from "@/app/components/ToastFromParams";
-import FormSubmissionGuard from "@/app/components/FormSubmissionGuard";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -49,11 +48,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${plexSans.variable} font-sans antialiased`}>
-        <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
+        <Toaster position="top-center" toastOptions={{ duration: 4000 }} />
         <Suspense fallback={null}>
           <ToastFromParams />
         </Suspense>
-        <FormSubmissionGuard />
         <Providers>{children}</Providers>
       </body>
     </html>

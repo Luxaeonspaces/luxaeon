@@ -1,5 +1,5 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import OutflowDocs from "@/app/components/OutflowDocs";
-
 
 export default function OutflowCard({ r, canUpload, canEdit, actions, children }) {
   const { editOutflowAction, recallOutflowAction, cancelOutflowAction, resubmitOutflowAction } = actions;
@@ -52,9 +52,9 @@ export default function OutflowCard({ r, canUpload, canEdit, actions, children }
           <input name="payeeBankName" className="input" defaultValue={r.payeeBankName || ""} />
           <input name="payeeAccountName" className="input" defaultValue={r.payeeAccountName || ""} />
           <input name="payeeAccountNo" className="input" defaultValue={r.payeeAccountNo || ""} />
-          <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+          <SubmitButton className="btn-primary md:col-span-2" pendingText="Saving changes...">
             Save changes
-          </button>
+          </SubmitButton>
         </form>
       )}
       {["Pending Department", "Pending Founder", "Pending Finance"].includes(r.status) && (
@@ -62,16 +62,16 @@ export default function OutflowCard({ r, canUpload, canEdit, actions, children }
           <form action={recallOutflowAction} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="reason" className="input flex-1" placeholder="Reason for recall (optional)" />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-amber-400 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900">
+            <SubmitButton className="rounded-xl border border-amber-400 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900" pendingText="Recalling...">
               Recall (send to previous level)
-            </button>
+            </SubmitButton>
           </form>
           <form action={cancelOutflowAction} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="reason" className="input flex-1" placeholder="Reason to void voucher (optional)" />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700">
+            <SubmitButton className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700" pendingText="Cancelling...">
               Cancel (void requisition)
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -79,15 +79,15 @@ export default function OutflowCard({ r, canUpload, canEdit, actions, children }
         <div className="mt-2 flex flex-wrap gap-2 border-t border-gray-200 pt-2">
           <form action={resubmitOutflowAction}>
             <input type="hidden" name="id" value={r.id} />
-            <button type="submit" data-submit-trigger="true" className="btn-primary text-xs">
+            <SubmitButton className="btn-primary text-xs" pendingText="Resubmitting...">
               Resubmit to department HOD
-            </button>
+            </SubmitButton>
           </form>
           <form action={cancelOutflowAction}>
             <input type="hidden" name="id" value={r.id} />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700">
+            <SubmitButton className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700" pendingText="Cancelling...">
               Cancel (void)
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}

@@ -28,7 +28,8 @@ export default async function ProcurementPage({
   const { user, perms } = await requireUser();
 
   const canRequest = perms.isFounder || perms.isDesign || perms.isProcurement || perms.isHod;
-  const isProcHod = perms.isFounder || (perms.isHod && perms.isProcurement);
+  const canReviewProcurement = perms.isHeadOfProcurement;
+  const canExportProcurement = perms.isFounder || perms.isProcurement || perms.isHeadOfFinance;
 
   return (
     <div className="space-y-6">
@@ -39,14 +40,16 @@ export default async function ProcurementPage({
         </p>
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        <a
-          href="/api/export/procurement?all=1"
-          className="rounded-xl border border-gray-300 bg-whitesmoke px-4 py-2.5 text-sm font-semibold text-brown"
-        >
-          Download all procurement (Excel)
-        </a>
-      </div>
+      {canExportProcurement && (
+        <div className="flex flex-wrap gap-2">
+          <a
+            href="/api/export/procurement?all=1"
+            className="rounded-xl border border-gray-300 bg-whitesmoke px-4 py-2.5 text-sm font-semibold text-brown"
+          >
+            Download all procurement (Excel)
+          </a>
+        </div>
+      )}
 
       {canRequest && (
         <Suspense fallback={<FormSkeleton />}>
@@ -62,7 +65,7 @@ export default async function ProcurementPage({
       )}
 
       <Suspense fallback={<QueueSkeleton />}>
-        <ProcurementQueuesAndList currentUserFullName={user.fullName} perms={perms} isProcHod={isProcHod} />
+        <ProcurementQueuesAndList currentUserFullName={user.fullName} perms={perms} isProcHod={canReviewProcurement} />
       </Suspense>
     </div>
   );

@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { DEPARTMENTS } from "@/lib/rbac";
 import { updateUser } from "../actions";
 
@@ -21,9 +22,9 @@ export default function UpdateUserForm({ formKey }) {
         <option value="1">Active</option>
         <option value="0">Inactive</option>
       </select>
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-4">
+      <SubmitButton className="btn-primary md:col-span-4" pendingText="Updating user...">
         Update user
-      </button>
+      </SubmitButton>
     </form>
   );
 }

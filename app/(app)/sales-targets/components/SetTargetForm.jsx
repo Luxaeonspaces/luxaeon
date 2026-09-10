@@ -1,4 +1,5 @@
 import AmountInput from "@/app/components/AmountInput";
+import SubmitButton from "@/app/components/SubmitButton";
 import { getAllUsers } from "@/lib/cachedQueries";
 import { setTarget } from "../actions";
 
@@ -23,9 +24,9 @@ export default async function SetTargetForm({ formKey }) {
         <AmountInput name="targetAmount" placeholder="Revenue target (₦)" required />
       </div>
       <input name="leadsTarget" type="number" className="input" placeholder="Leads target" />
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Saving target...">
         Save target
-      </button>
+      </SubmitButton>
     </form>
   );
 }

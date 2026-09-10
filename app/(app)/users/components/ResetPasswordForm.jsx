@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { resetPassword } from "../actions";
 
 export default function ResetPasswordForm({ formKey }) {
@@ -6,9 +7,9 @@ export default function ResetPasswordForm({ formKey }) {
       <h2 className="md:col-span-2 font-display font-semibold text-brown">Reset password</h2>
       <input name="username" className="input" placeholder="Username *" required autoComplete="off" />
       <input name="newPassword" type="text" className="input" placeholder="Optional custom password (min 6)" autoComplete="new-password" />
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Resetting password...">
         Reset &amp; show temporary password
-      </button>
+      </SubmitButton>
     </form>
   );
 }

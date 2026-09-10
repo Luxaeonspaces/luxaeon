@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { requestLeave } from "../actions";
 
 export default function LeaveRequestForm({ message }) {
@@ -44,12 +45,9 @@ export default function LeaveRequestForm({ message }) {
         placeholder="Reason"
       />
 
-      <button
-        type="submit"
-        className="btn-primary md:col-span-2"
-      >
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Submitting request...">
         Submit to Head of Department
-      </button>
+      </SubmitButton>
     </form>
   );
 }

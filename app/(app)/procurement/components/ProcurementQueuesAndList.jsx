@@ -10,9 +10,13 @@ export default async function ProcurementQueuesAndList({ currentUserFullName, pe
     take: 50,
   });
 
+  const canReviewProcurement = Boolean(isProcHod);
+  const canApproveFounder = Boolean(perms.isFounder);
+  const canDisburseFinance = Boolean(perms.isHeadOfFinance);
+
   return (
     <>
-      {isProcHod && (
+      {canReviewProcurement && (
         <ApprovalQueue
           title="Head of Procurement review"
           rows={rows.filter((r) => r.status === "Pending Procurement HOD")}
@@ -20,14 +24,14 @@ export default async function ProcurementQueuesAndList({ currentUserFullName, pe
           canUpload
         />
       )}
-      {perms.isFounder && (
+      {canApproveFounder && (
         <ApprovalQueue
           title="Founder approval"
           rows={rows.filter((r) => r.status === "Pending Founder")}
           action={founderApproveProcurement}
         />
       )}
-      {perms.isHeadOfFinance && (
+      {canDisburseFinance && (
         <ApprovalQueue
           title="Head of Finance — disbursement"
           rows={rows.filter((r) => r.status === "Pending Finance")}

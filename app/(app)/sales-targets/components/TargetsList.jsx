@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/prisma";
+import SubmitButton from "@/app/components/SubmitButton";
 import { updateAchievement } from "../actions";
 
 export default async function TargetsList({ userId, perms }) {
@@ -67,9 +68,9 @@ export default async function TargetsList({ userId, perms }) {
                 <input type="checkbox" name="postFinance" />
                 Also post revenue increase to Finance (avoid if already from project payment)
               </label>
-              <button type="submit" data-submit-trigger="true" className="btn-primary">
+              <SubmitButton className="btn-primary" pendingText="Updating...">
                 Update progress
-              </button>
+              </SubmitButton>
             </form>
           </div>
         );

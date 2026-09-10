@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import AmountInput from "@/app/components/AmountInput";
 import { preparePayroll } from "../actions";
 
@@ -12,9 +13,9 @@ export default function GeneratePayrollForm({ formKey }) {
       <div>
         <AmountInput name="deductions" placeholder="Default deductions (₦)" />
       </div>
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-3">
+      <SubmitButton className="btn-primary md:col-span-3" pendingText="Generating payroll...">
         Generate &amp; send to Founder
-      </button>
+      </SubmitButton>
       <p className="md:col-span-3 text-xs text-gray-500">
         Creates one batch with all salaried staff. Cumulative total posts once when Finance disburses.
       </p>

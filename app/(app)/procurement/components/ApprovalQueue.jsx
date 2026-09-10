@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import ProcCard from "./ProcCard";
 
 export default function ApprovalQueue({ title, rows, action, finance, canUpload }) {
@@ -10,12 +11,22 @@ export default function ApprovalQueue({ title, rows, action, finance, canUpload 
           <form action={action} className="mt-2 flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="note" className="input flex-1" placeholder="Note" />
-            <button type="submit" name="decision" value={finance ? "release" : "approve"} data-submit-trigger="true" className="btn-primary">
+            <SubmitButton
+              name="decision"
+              value={finance ? "release" : "approve"}
+              className="btn-primary"
+              pendingText={finance ? "Releasing funds..." : "Approving..."}
+            >
               {finance ? "Disburse funds" : "Approve"}
-            </button>
-            <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700">
+            </SubmitButton>
+            <SubmitButton
+              name="decision"
+              value="reject"
+              className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700"
+              pendingText="Rejecting..."
+            >
               Reject
-            </button>
+            </SubmitButton>
           </form>
         </div>
       ))}

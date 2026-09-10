@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import DocList from "@/app/components/DocList";
 import ProcDocsUpload from "@/app/components/ProcDocsUpload";
 import { editProcurement, cancelProcurement, recallProcurement, resubmitProcurement } from "../actions";
@@ -38,16 +39,16 @@ export default function ProcCard({ r, canUpload, canEdit }) {
           <form action={recallProcurement} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="reason" className="input flex-1" placeholder="Reason for recall (optional)" />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-amber-400 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900">
+            <SubmitButton className="rounded-xl border border-amber-400 bg-amber-50 px-3 py-2 text-xs font-semibold text-amber-900" pendingText="Recalling...">
               Recall (send to previous level)
-            </button>
+            </SubmitButton>
           </form>
           <form action={cancelProcurement} className="flex flex-wrap gap-2">
             <input type="hidden" name="id" value={r.id} />
             <input name="reason" className="input flex-1" placeholder="Reason to void voucher (optional)" />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700">
+            <SubmitButton className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700" pendingText="Cancelling...">
               Cancel (void requisition)
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -55,15 +56,15 @@ export default function ProcCard({ r, canUpload, canEdit }) {
         <div className="mt-2 flex flex-wrap gap-2 border-t border-gray-200 pt-2">
           <form action={resubmitProcurement}>
             <input type="hidden" name="id" value={r.id} />
-            <button type="submit" data-submit-trigger="true" className="btn-primary text-xs">
+            <SubmitButton className="btn-primary text-xs" pendingText="Resubmitting...">
               Resubmit to Procurement HOD
-            </button>
+            </SubmitButton>
           </form>
           <form action={cancelProcurement}>
             <input type="hidden" name="id" value={r.id} />
-            <button type="submit" data-submit-trigger="true" className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700">
+            <SubmitButton className="rounded-xl border border-red-300 px-3 py-2 text-xs font-semibold text-red-700" pendingText="Cancelling...">
               Cancel (void)
-            </button>
+            </SubmitButton>
           </form>
         </div>
       )}
@@ -80,9 +81,9 @@ export default function ProcCard({ r, canUpload, canEdit }) {
           <input name="payeeBankName" className="input" defaultValue={r.payeeBankName || ""} />
           <input name="payeeAccountNo" className="input" defaultValue={r.payeeAccountNo || ""} />
           <textarea name="description" className="input md:col-span-2" defaultValue={r.description || ""} rows={2} />
-          <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+          <SubmitButton className="btn-primary md:col-span-2" pendingText="Saving changes...">
             Save changes
-          </button>
+          </SubmitButton>
         </form>
       )}
     </div>

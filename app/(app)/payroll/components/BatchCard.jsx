@@ -1,3 +1,4 @@
+import SubmitButton from "@/app/components/SubmitButton";
 import { founderApproveBatch, disburseBatch } from "../actions";
 
 export default function BatchCard({ b, perms }) {
@@ -42,18 +43,20 @@ export default function BatchCard({ b, perms }) {
       {perms.isFounder && b.status === "Pending Founder" && (
         <form action={founderApproveBatch} className="flex flex-wrap gap-2">
           <input type="hidden" name="id" value={b.id} />
-          <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
+          <SubmitButton name="decision" value="approve" className="btn-primary" pendingText="Approving...">
             Founder approve → Finance
-          </button>
-          <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700">
+          </SubmitButton>
+          <SubmitButton name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700" pendingText="Rejecting...">
             Reject
-          </button>
+          </SubmitButton>
         </form>
       )}
       {perms.canDisburseFunds && b.status === "Approved" && (
         <form action={disburseBatch}>
           <input type="hidden" name="id" value={b.id} />
-          <button type="submit" data-submit-trigger="true" className="btn-primary">Disburse cumulative payroll (Head of Finance only)</button>
+          <SubmitButton className="btn-primary" pendingText="Disbursing...">
+            Disburse cumulative payroll (Head of Finance only)
+          </SubmitButton>
         </form>
       )}
     </div>

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import AmountInput from "@/app/components/AmountInput";
+import SubmitButton from "@/app/components/SubmitButton";
 import { requestProcurement } from "../actions";
 
 export default async function NewRequestForm({ formKey }) {
@@ -35,9 +36,9 @@ export default async function NewRequestForm({ formKey }) {
       <input name="payeeAccountName" className="input" placeholder="Account name" />
       <input name="payeeAccountNo" className="input" placeholder="Account number" />
       <textarea name="description" className="input md:col-span-2" rows={2} placeholder="Specs / details" />
-      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
+      <SubmitButton className="btn-primary md:col-span-2" pendingText="Submitting request...">
         Submit request
-      </button>
+      </SubmitButton>
     </form>
   );
 }
