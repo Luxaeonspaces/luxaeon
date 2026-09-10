@@ -24,7 +24,7 @@ export default function NewOutflowForm({ user, createOutflowAction, createdId, f
         <input name="payeeBankName" className="input" placeholder="Bank name" />
         <input name="payeeAccountName" className="input" placeholder="Account name" />
         <input name="payeeAccountNo" className="input" placeholder="Account number" />
-        <button type="submit" className="btn-primary md:col-span-2">
+        <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
           Submit for department review
         </button>
         <p className="md:col-span-2 text-xs text-gray-500">

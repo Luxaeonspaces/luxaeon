@@ -18,6 +18,11 @@ export default function ToastFromParams() {
     if (!ok && !error) return;
     shown.current = true;
 
+    if (typeof window !== "undefined" && (window).__luxaeonSubmitToastId) {
+      toast.dismiss((window).__luxaeonSubmitToastId);
+      delete (window).__luxaeonSubmitToastId;
+    }
+
     if (error) toast.error(error);
     else if (ok) toast.success(ok);
 

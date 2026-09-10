@@ -42,10 +42,10 @@ export default function BatchCard({ b, perms }) {
       {perms.isFounder && b.status === "Pending Founder" && (
         <form action={founderApproveBatch} className="flex flex-wrap gap-2">
           <input type="hidden" name="id" value={b.id} />
-          <button name="decision" value="approve" className="btn-primary">
+          <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
             Founder approve → Finance
           </button>
-          <button name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700">
+          <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-sm text-red-700">
             Reject
           </button>
         </form>
@@ -53,7 +53,7 @@ export default function BatchCard({ b, perms }) {
       {perms.canDisburseFunds && b.status === "Approved" && (
         <form action={disburseBatch}>
           <input type="hidden" name="id" value={b.id} />
-          <button className="btn-primary">Disburse cumulative payroll (Head of Finance only)</button>
+          <button type="submit" data-submit-trigger="true" className="btn-primary">Disburse cumulative payroll (Head of Finance only)</button>
         </form>
       )}
     </div>

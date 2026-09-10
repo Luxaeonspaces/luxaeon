@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 type DocType =
   | "invoice"
@@ -89,21 +90,25 @@ export default function ProjectTools({ projectCode }: { projectCode: string }) {
 
   async function upload(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMsg("");
     const form = e.currentTarget;
     const fd = new FormData(form);
     fd.set("projectCode", projectCode);
     fd.set("kind", "project");
+    const toastId = toast.loading("Uploading project file…");
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
+      toast.success("File uploaded to project archive", { id: toastId });
       setMsg("File uploaded to project archive");
       form.reset();
       router.refresh();
     } catch (err: any) {
-      setMsg(err.message);
+      toast.error(err.message || "Upload failed", { id: toastId });
+      setMsg(err.message || "Upload failed");
     } finally {
       setBusy(false);
     }
@@ -111,21 +116,25 @@ export default function ProjectTools({ projectCode }: { projectCode: string }) {
 
   async function shareWithClient(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMsg("");
     const form = e.currentTarget;
     const fd = new FormData(form);
     fd.set("projectCode", projectCode);
     fd.set("kind", "client");
+    const toastId = toast.loading("Sharing file with client…");
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
+      toast.success("Shared to client portal", { id: toastId });
       setMsg("Shared to client portal");
       form.reset();
       router.refresh();
     } catch (err: any) {
-      setMsg(err.message);
+      toast.error(err.message || "Upload failed", { id: toastId });
+      setMsg(err.message || "Upload failed");
     } finally {
       setBusy(false);
     }

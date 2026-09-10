@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function ProcDocsUpload({ procurementId }: { procurementId: string }) {
   const router = useRouter();
@@ -10,21 +11,25 @@ export default function ProcDocsUpload({ procurementId }: { procurementId: strin
 
   async function upload(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMsg("");
     const form = e.currentTarget;
     const fd = new FormData(form);
     fd.set("kind", "procurement");
     fd.set("procurementId", procurementId);
+    const toastId = toast.loading("Uploading document…");
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
+      toast.success("Document uploaded", { id: toastId });
       setMsg("Document uploaded");
       form.reset();
       router.refresh();
     } catch (err: any) {
-      setMsg(err.message);
+      toast.error(err.message || "Upload failed", { id: toastId });
+      setMsg(err.message || "Upload failed");
     } finally {
       setBusy(false);
     }

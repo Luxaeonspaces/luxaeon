@@ -6,7 +6,7 @@ export default function ResetPasswordForm({ formKey }) {
       <h2 className="md:col-span-2 font-display font-semibold text-brown">Reset password</h2>
       <input name="username" className="input" placeholder="Username *" required autoComplete="off" />
       <input name="newPassword" type="text" className="input" placeholder="Optional custom password (min 6)" autoComplete="new-password" />
-      <button type="submit" className="btn-primary md:col-span-2">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
         Reset &amp; show temporary password
       </button>
     </form>

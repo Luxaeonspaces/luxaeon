@@ -21,7 +21,7 @@ export default function CreateUserForm({ formKey }) {
           <option key={d}>{d}</option>
         ))}
       </select>
-      <button type="submit" className="btn-primary md:col-span-2">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
         Create account
       </button>
     </form>

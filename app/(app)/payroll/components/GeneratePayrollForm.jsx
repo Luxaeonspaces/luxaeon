@@ -12,7 +12,7 @@ export default function GeneratePayrollForm({ formKey }) {
       <div>
         <AmountInput name="deductions" placeholder="Default deductions (₦)" />
       </div>
-      <button type="submit" className="btn-primary md:col-span-3">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-3">
         Generate &amp; send to Founder
       </button>
       <p className="md:col-span-3 text-xs text-gray-500">

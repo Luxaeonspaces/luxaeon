@@ -43,19 +43,21 @@ export async function createOutflow(formData: FormData) {
 
 export async function decideDept(formData: FormData) {
   const { user, perms } = await requireUser();
-  if (!perms.canDeptApprove) throw new Error("Not allowed");
+  if (!perms.canDeptApprove) redirect("/outflow?error=" + encodeURIComponent("Not allowed"));
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision"));
   const note = String(formData.get("note") || "");
   const now = new Date().toISOString();
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row || row.status !== "Pending Department") return;
+  if (!row || row.status !== "Pending Department") {
+    redirect("/outflow?error=" + encodeURIComponent("This request is no longer available for department approval"));
+  }
 
   // Only maker's HOD (same department) — Founder can also step in
   if (!perms.isFounder) {
-    if (!perms.isHod) throw new Error("Only Head of Department can approve at this step");
+    if (!perms.isHod) redirect("/outflow?error=" + encodeURIComponent("Only Head of Department can approve at this step"));
     if (row.department && user.department && row.department !== user.department) {
-      throw new Error("Only the maker's Head of Department can approve this request");
+      redirect("/outflow?error=" + encodeURIComponent("Only the maker's Head of Department can approve this request"));
     }
   }
 
@@ -73,7 +75,7 @@ export async function decideDept(formData: FormData) {
 
 export async function decideFinal(formData: FormData) {
   const { user, perms } = await requireUser();
-  if (!perms.canFinalApprove) throw new Error("Not allowed");
+  if (!perms.canFinalApprove) redirect("/outflow?error=" + encodeURIComponent("Not allowed"));
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision"));
   const note = String(formData.get("note") || "");
@@ -92,13 +94,15 @@ export async function decideFinal(formData: FormData) {
 
 export async function releaseFunds(formData: FormData) {
   const { user, perms } = await requireUser();
-  if (!perms.isHeadOfFinance) throw new Error("Only Head of Finance can release funds");
+  if (!perms.isHeadOfFinance) redirect("/outflow?error=" + encodeURIComponent("Only Head of Finance can release funds"));
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "release");
   const note = String(formData.get("note") || "");
   const now = new Date().toISOString();
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row || row.status !== "Pending Finance") return;
+  if (!row || row.status !== "Pending Finance") {
+    redirect("/outflow?error=" + encodeURIComponent("This outflow is no longer in the finance approval stage"));
+  }
 
   if (decision === "reject") {
     await prisma.outflowRequest.update({
@@ -142,9 +146,10 @@ export async function editOutflow(formData: FormData) {
   const { user, perms } = await requireUser();
   const id = String(formData.get("id") || "");
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
-  if (row.status !== "Pending Department") {
-    throw new Error("Only editable before Head of Department approval");
+  if (!row) redirect("/outflow?error=" + encodeURIComponent("Request not found"));
+  const editableStatuses = ["Pending Department", "Pending Founder", "Pending Finance", "Recalled"];
+  if (!editableStatuses.includes(row.status)) {
+    redirect("/outflow?error=" + encodeURIComponent("This request can no longer be edited"));
   }
   const isMaker =
     row.requestedById === user.id || row.requestedBy === user.fullName;
@@ -152,13 +157,15 @@ export async function editOutflow(formData: FormData) {
     perms.isHod &&
     (!row.department || !user.department || row.department === user.department);
   if (!perms.isFounder && !isMaker && !isDeptHod) {
-    throw new Error("Only the maker or department HOD can edit this request");
+    redirect("/outflow?error=" + encodeURIComponent("Only the maker or department HOD can edit this request"));
   }
 
   const amount = Number(String(formData.get("amount") || row.amount).replace(/,/g, ""));
+  const nextStatus = row.status === "Recalled" ? "Pending Department" : row.status;
   await prisma.outflowRequest.update({
     where: { id },
     data: {
+      status: nextStatus,
       description: String(formData.get("description") || row.description),
       category: String(formData.get("category") || row.category || "") || null,
       amount: amount > 0 ? amount : row.amount,
@@ -169,6 +176,8 @@ export async function editOutflow(formData: FormData) {
       payeeAccountNo: String(formData.get("payeeAccountNo") || "") || null,
       payeeAccountName: String(formData.get("payeeAccountName") || "") || null,
       department: String(formData.get("department") || row.department || "") || null,
+      deptNote: row.status === "Recalled" ? `Edited after recall by ${user.fullName}` : row.deptNote,
+      deptDate: new Date().toISOString(),
     },
   });
   revalidatePath("/outflow");
@@ -184,7 +193,7 @@ export async function recallOutflow(formData: FormData) {
   const id = String(formData.get("id") || "");
   const reason = String(formData.get("reason") || "").trim();
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
+  if (!row) redirect("/outflow?error=" + encodeURIComponent("Request not found"));
 
   // Map: current status → previous status
   const previous: Record<string, string> = {
@@ -193,7 +202,7 @@ export async function recallOutflow(formData: FormData) {
     "Pending Department": "Recalled", // back to maker to fix & resubmit
   };
   if (!previous[row.status]) {
-    throw new Error("This request cannot be recalled from its current stage");
+    redirect("/outflow?error=" + encodeURIComponent("This request cannot be recalled from its current stage"));
   }
 
   const isMaker = row.requestedById === user.id || row.requestedBy === user.fullName;
@@ -211,7 +220,7 @@ export async function recallOutflow(formData: FormData) {
     allowed = perms.isFounder || isMaker || isDeptHod;
   }
   if (!allowed) {
-    throw new Error("You are not allowed to recall this request at this stage");
+    redirect("/outflow?error=" + encodeURIComponent("You are not allowed to recall this request at this stage"));
   }
 
   const nextStatus = previous[row.status];
@@ -244,11 +253,11 @@ export async function cancelOutflow(formData: FormData) {
   const id = String(formData.get("id") || "");
   const reason = String(formData.get("reason") || "").trim();
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
+  if (!row) redirect("/outflow?error=" + encodeURIComponent("Request not found"));
 
   const cancellable = ["Pending Department", "Pending Founder", "Pending Finance", "Recalled"];
   if (!cancellable.includes(row.status)) {
-    throw new Error("This voucher can no longer be cancelled");
+    redirect("/outflow?error=" + encodeURIComponent("This voucher can no longer be cancelled"));
   }
 
   const isMaker = row.requestedById === user.id || row.requestedBy === user.fullName;
@@ -256,7 +265,7 @@ export async function cancelOutflow(formData: FormData) {
     perms.isHod &&
     (!row.department || !user.department || row.department === user.department);
   if (!perms.isFounder && !perms.isHeadOfFinance && !isMaker && !isDeptHod) {
-    throw new Error("Not allowed to cancel this voucher");
+    redirect("/outflow?error=" + encodeURIComponent("Not allowed to cancel this voucher"));
   }
 
   await prisma.outflowRequest.update({
@@ -278,10 +287,10 @@ export async function resubmitOutflow(formData: FormData) {
   const { user } = await requireUser();
   const id = String(formData.get("id") || "");
   const row = await prisma.outflowRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
-  if (row.status !== "Recalled") throw new Error("Only recalled requests can be resubmitted");
+  if (!row) redirect("/outflow?error=" + encodeURIComponent("Request not found"));
+  if (row.status !== "Recalled") redirect("/outflow?error=" + encodeURIComponent("Only recalled requests can be resubmitted"));
   const isMaker = row.requestedById === user.id || row.requestedBy === user.fullName;
-  if (!isMaker) throw new Error("Only the maker can resubmit");
+  if (!isMaker) redirect("/outflow?error=" + encodeURIComponent("Only the maker can resubmit"));
 
   await prisma.outflowRequest.update({
     where: { id },

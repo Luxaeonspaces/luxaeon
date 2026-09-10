@@ -10,7 +10,7 @@ export default function OutflowHistorySection({ rows, user, perms, cardActions }
           r={r}
           canUpload={r.requestedBy === user.fullName && r.status === "Pending Department"}
           canEdit={
-            (r.status === "Pending Department" || r.status === "Recalled") &&
+            ["Pending Department", "Pending Founder", "Pending Finance", "Recalled"].includes(r.status) &&
             (r.requestedBy === user.fullName ||
               r.requestedById === user.id ||
               perms.isFounder ||

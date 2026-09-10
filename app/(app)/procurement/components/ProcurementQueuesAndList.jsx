@@ -44,7 +44,7 @@ export default async function ProcurementQueuesAndList({ currentUserFullName, pe
             r={r}
             canUpload={perms.isProcurement || r.requestedBy === currentUserFullName}
             canEdit={
-              (r.status === "Pending Procurement HOD" || r.status === "Recalled") &&
+              ["Pending Procurement HOD", "Pending Founder", "Pending Finance", "Recalled"].includes(r.status) &&
               (r.requestedBy === currentUserFullName || perms.isFounder || (perms.isHod && perms.isProcurement))
             }
           />

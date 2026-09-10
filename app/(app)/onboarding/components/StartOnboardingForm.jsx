@@ -17,7 +17,7 @@ export default async function StartOnboardingForm({ formKey }) {
         ))}
       </select>
       <input name="notes" className="input flex-1" placeholder="Onboarding notes" />
-      <button type="submit" className="btn-primary">
+      <button type="submit" data-submit-trigger="true" className="btn-primary">
         Start onboarding
       </button>
     </form>

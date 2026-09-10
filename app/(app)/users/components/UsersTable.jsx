@@ -45,6 +45,7 @@ export default async function UsersTable({ currentUserId }) {
                         <input type="hidden" name="userId" value={u.id} />
                         <button
                           type="submit"
+                          data-submit-trigger="true"
                           disabled={isSelf}
                           className="rounded-lg border border-amber-300 px-2 py-1 text-xs font-medium text-amber-900 disabled:opacity-40"
                           title={isSelf ? "Cannot disable yourself" : "Disable login"}
@@ -55,7 +56,7 @@ export default async function UsersTable({ currentUserId }) {
                     ) : (
                       <form action={enableUser}>
                         <input type="hidden" name="userId" value={u.id} />
-                        <button type="submit" className="rounded-lg border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-800">
+                        <button type="submit" data-submit-trigger="true" className="rounded-lg border border-emerald-300 px-2 py-1 text-xs font-medium text-emerald-800">
                           Enable
                         </button>
                       </form>

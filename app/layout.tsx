@@ -5,6 +5,7 @@ import { Toaster } from "react-hot-toast";
 import "./globals.css";
 import Providers from "@/app/components/Providers";
 import ToastFromParams from "@/app/components/ToastFromParams";
+import FormSubmissionGuard from "@/app/components/FormSubmissionGuard";
 
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -52,6 +53,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Suspense fallback={null}>
           <ToastFromParams />
         </Suspense>
+        <FormSubmissionGuard />
         <Providers>{children}</Providers>
       </body>
     </html>

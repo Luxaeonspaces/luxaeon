@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 type Doc = {
   id: string;
@@ -19,21 +20,25 @@ export default function EmployeeDocs({ userId, docs }: { userId: string; docs: D
 
   async function upload(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (busy) return;
     setBusy(true);
     setMsg("");
     const form = e.currentTarget;
     const fd = new FormData(form);
     fd.set("userId", userId);
     fd.set("kind", "employee");
+    const toastId = toast.loading("Uploading document…");
     try {
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Upload failed");
+      toast.success("Document uploaded to employee archive", { id: toastId });
       setMsg("Document uploaded to employee archive");
       form.reset();
       router.refresh();
     } catch (err: any) {
-      setMsg(err.message);
+      toast.error(err.message || "Upload failed", { id: toastId });
+      setMsg(err.message || "Upload failed");
     } finally {
       setBusy(false);
     }

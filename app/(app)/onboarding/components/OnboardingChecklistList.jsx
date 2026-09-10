@@ -32,7 +32,7 @@ export default async function OnboardingChecklistList() {
                 </label>
               ))}
               <textarea name="notes" className="input sm:col-span-2 md:col-span-3" rows={2} defaultValue={o.notes || ""} />
-              <button type="submit" className="btn-primary sm:col-span-2 md:col-span-3">
+              <button type="submit" data-submit-trigger="true" className="btn-primary sm:col-span-2 md:col-span-3">
                 Save checklist
               </button>
             </form>

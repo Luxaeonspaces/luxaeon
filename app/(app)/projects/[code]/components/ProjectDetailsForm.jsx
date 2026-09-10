@@ -47,7 +47,7 @@ export default function ProjectDetailsForm({ project, canEditActive, isLocked, u
           <input name="location" className="input" defaultValue={project.location || ""} placeholder="Location" />
           <input name="targetHandover" className="input" defaultValue={project.targetHandover || ""} placeholder="Target handover" />
           <textarea name="notes" className="input md:col-span-2" rows={2} defaultValue={project.notes || ""} placeholder="Notes" />
-          <button type="submit" className="btn-primary md:col-span-2">
+          <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
             Save changes
           </button>
         </form>

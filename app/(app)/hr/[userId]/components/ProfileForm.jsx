@@ -97,7 +97,7 @@ export default function ProfileForm({ employeeId, profile: p }) {
         <Area name="notes" label="HR notes" defaultValue={p?.notes} />
       </Section>
 
-      <button type="submit" className="btn-primary">
+      <button type="submit" data-submit-trigger="true" className="btn-primary">
         Save employee profile
       </button>
     </form>

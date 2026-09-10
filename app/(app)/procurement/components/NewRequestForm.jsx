@@ -35,7 +35,7 @@ export default async function NewRequestForm({ formKey }) {
       <input name="payeeAccountName" className="input" placeholder="Account name" />
       <input name="payeeAccountNo" className="input" placeholder="Account number" />
       <textarea name="description" className="input md:col-span-2" rows={2} placeholder="Specs / details" />
-      <button type="submit" className="btn-primary md:col-span-2">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
         Submit request
       </button>
     </form>

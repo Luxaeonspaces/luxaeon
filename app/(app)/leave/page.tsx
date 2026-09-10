@@ -68,7 +68,7 @@ export default async function LeavePage({
           <input name="endDate" type="date" className="input" required />
         </label>
         <textarea name="reason" className="input md:col-span-2" rows={2} placeholder="Reason" />
-        <button type="submit" className="btn-primary md:col-span-2">
+        <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
           Submit to Head of Department
         </button>
       </form>
@@ -90,10 +90,10 @@ export default async function LeavePage({
                   <strong>{l.employeeName}</strong> · {l.startDate} → {l.endDate} ({l.days} days) · {l.department}
                 </p>
                 <input name="note" className="input flex-1" placeholder="HOD note" />
-                <button name="decision" value="approve" className="btn-primary">
+                <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
                   Approve → HR
                 </button>
-                <button name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
+                <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
                   Reject
                 </button>
               </form>
@@ -108,10 +108,10 @@ export default async function LeavePage({
                     <strong>{l.employeeName}</strong> · {l.startDate} → {l.endDate} ({l.days}d) · HOD: {l.hodApprovedBy}
                   </p>
                   <input name="note" className="input flex-1" placeholder="HR note" />
-                  <button name="decision" value="approve" className="btn-primary">
+                  <button type="submit" name="decision" value="approve" data-submit-trigger="true" className="btn-primary">
                     HR approve
                   </button>
-                  <button name="decision" value="reject" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
+                  <button type="submit" name="decision" value="reject" data-submit-trigger="true" className="rounded-xl border border-red-200 px-3 py-2 text-red-700">
                     Reject
                   </button>
                 </form>

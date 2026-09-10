@@ -93,6 +93,7 @@ export default function LeadForm({
 
       <button
         type="submit"
+        data-submit-trigger="true"
         className="btn-primary md:col-span-2"
       >
         Save lead

@@ -48,7 +48,7 @@ export async function requestProcurement(formData: FormData) {
 export async function hodApproveProcurement(formData: FormData) {
   const { user, perms } = await requireUser();
   if (!perms.isFounder && !(perms.isHod && perms.isProcurement)) {
-    throw new Error("Only Head of Procurement (or Founder) can approve at this step");
+    redirect("/procurement?error=" + encodeURIComponent("Only Head of Procurement (or Founder) can approve at this step"));
   }
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "approve");
@@ -70,7 +70,7 @@ export async function hodApproveProcurement(formData: FormData) {
 
 export async function founderApproveProcurement(formData: FormData) {
   const { user, perms } = await requireUser();
-  if (!perms.isFounder) throw new Error("Founder only");
+  if (!perms.isFounder) redirect("/procurement?error=" + encodeURIComponent("Founder only"));
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "approve");
   const note = String(formData.get("note") || "");
@@ -88,7 +88,7 @@ export async function founderApproveProcurement(formData: FormData) {
 
 export async function financeDisburseProcurement(formData: FormData) {
   const { user, perms } = await requireUser();
-  if (!perms.isHeadOfFinance) throw new Error("Only Head of Finance can disburse");
+  if (!perms.isHeadOfFinance) redirect("/procurement?error=" + encodeURIComponent("Only Head of Finance can disburse"));
   const id = String(formData.get("id"));
   const decision = String(formData.get("decision") || "release");
   const note = String(formData.get("note") || "");
@@ -141,20 +141,23 @@ export async function editProcurement(formData: FormData) {
   const { user, perms } = await requireUser();
   const id = String(formData.get("id") || "");
   const row = await prisma.procurementRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
-  if (row.status !== "Pending Procurement HOD") {
-    throw new Error("Only editable before Head of Procurement approval");
+  if (!row) redirect("/procurement?error=" + encodeURIComponent("Request not found"));
+  const editableStatuses = ["Pending Procurement HOD", "Pending Founder", "Pending Finance", "Recalled"];
+  if (!editableStatuses.includes(row.status)) {
+    redirect("/procurement?error=" + encodeURIComponent("This request can no longer be edited"));
   }
   const isMaker =
     (row as any).requestedById === user.id || row.requestedBy === user.fullName;
   const isProcHod = perms.isFounder || (perms.isHod && perms.isProcurement);
   if (!isMaker && !isProcHod) {
-    throw new Error("Only the maker or Head of Procurement can edit this request");
+    redirect("/procurement?error=" + encodeURIComponent("Only the maker or Head of Procurement can edit this request"));
   }
 
+  const nextStatus = row.status === "Recalled" ? "Pending Procurement HOD" : row.status;
   await prisma.procurementRequest.update({
     where: { id },
     data: {
+      status: nextStatus,
       title: String(formData.get("title") || row.title),
       description: String(formData.get("description") || "") || null,
       category: String(formData.get("category") || "") || null,
@@ -165,6 +168,8 @@ export async function editProcurement(formData: FormData) {
       payeeBankName: String(formData.get("payeeBankName") || "") || null,
       payeeAccountNo: String(formData.get("payeeAccountNo") || "") || null,
       payeeAccountName: String(formData.get("payeeAccountName") || "") || null,
+      hodNote: row.status === "Recalled" ? `Edited after recall by ${user.fullName}` : row.hodNote,
+      hodDate: new Date().toISOString(),
     },
   });
   revalidatePath("/procurement");
@@ -180,7 +185,7 @@ export async function recallProcurement(formData: FormData) {
   const id = String(formData.get("id") || "");
   const reason = String(formData.get("reason") || "").trim();
   const row = await prisma.procurementRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
+  if (!row) redirect("/procurement?error=" + encodeURIComponent("Request not found"));
 
   const previous: Record<string, string> = {
     "Pending Finance": "Pending Founder",
@@ -188,7 +193,7 @@ export async function recallProcurement(formData: FormData) {
     "Pending Procurement HOD": "Recalled",
   };
   if (!previous[row.status]) {
-    throw new Error("Cannot recall from this stage");
+    redirect("/procurement?error=" + encodeURIComponent("Cannot recall from this stage"));
   }
 
   const isMaker =
@@ -201,7 +206,7 @@ export async function recallProcurement(formData: FormData) {
   } else if (row.status === "Pending Procurement HOD") {
     allowed = perms.isFounder || isMaker || (perms.isHod && perms.isProcurement);
   }
-  if (!allowed) throw new Error("Not allowed to recall at this stage");
+  if (!allowed) redirect("/procurement?error=" + encodeURIComponent("Not allowed to recall at this stage"));
 
   const nextStatus = previous[row.status];
   const note = reason
@@ -229,7 +234,7 @@ export async function cancelProcurement(formData: FormData) {
   const id = String(formData.get("id") || "");
   const reason = String(formData.get("reason") || "").trim();
   const row = await prisma.procurementRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
+  if (!row) redirect("/procurement?error=" + encodeURIComponent("Request not found"));
 
   const cancellable = [
     "Pending Procurement HOD",
@@ -238,7 +243,7 @@ export async function cancelProcurement(formData: FormData) {
     "Recalled",
   ];
   if (!cancellable.includes(row.status)) {
-    throw new Error("Cannot cancel at this stage");
+    redirect("/procurement?error=" + encodeURIComponent("Cannot cancel at this stage"));
   }
 
   const isMaker =
@@ -249,7 +254,7 @@ export async function cancelProcurement(formData: FormData) {
     !isMaker &&
     !(perms.isHod && perms.isProcurement)
   ) {
-    throw new Error("Not allowed to cancel");
+    redirect("/procurement?error=" + encodeURIComponent("Not allowed to cancel"));
   }
 
   await prisma.procurementRequest.update({
@@ -270,11 +275,11 @@ export async function resubmitProcurement(formData: FormData) {
   const { user } = await requireUser();
   const id = String(formData.get("id") || "");
   const row = await prisma.procurementRequest.findUnique({ where: { id } });
-  if (!row) throw new Error("Not found");
-  if (row.status !== "Recalled") throw new Error("Only recalled requests can be resubmitted");
+  if (!row) redirect("/procurement?error=" + encodeURIComponent("Request not found"));
+  if (row.status !== "Recalled") redirect("/procurement?error=" + encodeURIComponent("Only recalled requests can be resubmitted"));
   const isMaker =
     (row as any).requestedById === user.id || row.requestedBy === user.fullName;
-  if (!isMaker) throw new Error("Only the maker can resubmit");
+  if (!isMaker) redirect("/procurement?error=" + encodeURIComponent("Only the maker can resubmit"));
 
   await prisma.procurementRequest.update({
     where: { id },

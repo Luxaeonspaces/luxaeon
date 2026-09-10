@@ -4,7 +4,7 @@ export default function ProjectNotes({ project, addNoteAction, formKey }) {
       <form key={formKey} action={addNoteAction} className="glass-card space-y-3 p-5">
         <h2 className="font-display font-semibold text-brown">Add internal note</h2>
         <textarea name="note" className="input" rows={3} required />
-        <button type="submit" className="btn-primary">
+        <button type="submit" data-submit-trigger="true" className="btn-primary">
           Save note
         </button>
       </form>

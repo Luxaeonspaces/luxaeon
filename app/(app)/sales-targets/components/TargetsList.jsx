@@ -67,7 +67,7 @@ export default async function TargetsList({ userId, perms }) {
                 <input type="checkbox" name="postFinance" />
                 Also post revenue increase to Finance (avoid if already from project payment)
               </label>
-              <button type="submit" className="btn-primary">
+              <button type="submit" data-submit-trigger="true" className="btn-primary">
                 Update progress
               </button>
             </form>

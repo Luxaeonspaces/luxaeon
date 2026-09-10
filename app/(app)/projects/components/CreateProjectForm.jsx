@@ -35,7 +35,7 @@ export default async function CreateProjectForm({ userFullName, formKey }) {
         ))}
       </select>
       <textarea name="notes" className="input md:col-span-2" placeholder="Notes" rows={2} />
-      <button type="submit" className="btn-primary md:col-span-2">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
         Create project (as {userFullName})
       </button>
     </form>

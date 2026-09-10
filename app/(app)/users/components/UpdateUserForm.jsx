@@ -21,7 +21,7 @@ export default function UpdateUserForm({ formKey }) {
         <option value="1">Active</option>
         <option value="0">Inactive</option>
       </select>
-      <button type="submit" className="btn-primary md:col-span-4">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-4">
         Update user
       </button>
     </form>

@@ -23,7 +23,7 @@ export default async function SetTargetForm({ formKey }) {
         <AmountInput name="targetAmount" placeholder="Revenue target (₦)" required />
       </div>
       <input name="leadsTarget" type="number" className="input" placeholder="Leads target" />
-      <button type="submit" className="btn-primary md:col-span-2">
+      <button type="submit" data-submit-trigger="true" className="btn-primary md:col-span-2">
         Save target
       </button>
     </form>
