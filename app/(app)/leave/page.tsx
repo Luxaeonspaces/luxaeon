@@ -1,7 +1,7 @@
-import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import SubmitButton from "@/app/components/SubmitButton";
 import { requestLeave, hodApproveLeave, hrApproveLeave } from "./actions";
+import { getUserLeaves, getVisibleTeamLeaves } from "@/lib/cachedQueries";
 
 const MAX = 60;
 
@@ -13,25 +13,15 @@ export default async function LeavePage({
   const { user, perms } = await requireUser();
   const year = new Date().getFullYear();
 
-  const myLeaves = await prisma.leaveRequest.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-  });
+  const myLeaves = await getUserLeaves(user.id);
   const used = myLeaves
     .filter((l) => l.year === year && ["Approved", "Pending HOD", "Pending HR"].includes(l.status))
     .reduce((a, l) => a + l.days, 0);
   const balance = MAX - used;
 
-  // Visibility: own + (HOD same dept) + HR + Founder
   let team: typeof myLeaves = [];
-  if (perms.isFounder || perms.canManageHr) {
-    team = await prisma.leaveRequest.findMany({ orderBy: { createdAt: "desc" }, take: 50 });
-  } else if (perms.isHod && user.department) {
-    team = await prisma.leaveRequest.findMany({
-      where: { department: user.department },
-      orderBy: { createdAt: "desc" },
-      take: 50,
-    });
+  if (perms.isFounder || perms.canManageHr || perms.isHod) {
+    team = await getVisibleTeamLeaves(user.department || null, perms.canManageHr, perms.isFounder);
   }
 
   return (

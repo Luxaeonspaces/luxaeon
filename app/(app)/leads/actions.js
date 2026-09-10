@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { logWork } from "@/lib/activity";
 
@@ -72,6 +72,7 @@ export async function createLead(formData) {
     }`,
   });
 
+  revalidateTag("leads");
   revalidatePath("/leads");
   revalidatePath("/sales-targets");
   revalidatePath("/dashboard");

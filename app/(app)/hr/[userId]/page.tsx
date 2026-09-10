@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { notFound, redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -6,6 +5,7 @@ import EmployeeHeader from "./components/EmployeeHeader";
 import ProfileForm from "./components/ProfileForm";
 import EmployeeDocsSection from "./components/EmployeeDocsSection";
 import PayslipsTable from "./components/PayslipsTable";
+import { getEmployeeProfileForHr } from "@/lib/cachedQueries";
 
 function DocsSkeleton() {
   return <div className="glass-card h-32 animate-pulse" />;
@@ -33,13 +33,7 @@ export default async function EmployeeDetailPage({
   const { perms } = await requireUser();
   if (!perms.canManageHr) redirect("/dashboard");
 
-  // Only the core record + profile here — hrDocuments and payrolls are fetched
-  // independently below so they can stream in behind the profile form instead
-  // of blocking it.
-  const employee = await prisma.user.findUnique({
-    where: { id: params.userId },
-    include: { profile: true },
-  });
+  const employee = await getEmployeeProfileForHr(params.userId);
   if (!employee) notFound();
 
   return (

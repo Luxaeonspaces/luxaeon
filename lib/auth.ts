@@ -100,33 +100,10 @@ export const authOptions: NextAuthOptions = {
         token.active = true;
         return token;
       }
-      // Live check — block mid-session if disabled or deleted
-      if (token.id) {
-        try {
-          const fresh = await prisma.user.findUnique({ where: { id: String(token.id) } });
-          if (!fresh) {
-            token.active = false;
-            token.disabledReason = "DELETED";
-            token.role = "Inactive";
-          } else if (!fresh.active) {
-            token.active = false;
-            token.disabledReason = "DISABLED";
-            token.role = "Inactive";
-            token.fullName = fresh.fullName;
-            token.username = fresh.username;
-            token.department = fresh.department;
-          } else {
-            token.active = true;
-            token.disabledReason = undefined;
-            token.username = fresh.username;
-            token.fullName = fresh.fullName;
-            token.role = fresh.role;
-            token.department = fresh.department;
-          }
-        } catch {
-          /* ignore */
-        }
-      }
+
+      // Avoid repetitive DB lookups on every request. The session is treated as the
+      // current identity source, and actions that need a fresh state can validate
+      // explicitly when they are about to mutate data.
       return token;
     },
     async session({ session, token }) {

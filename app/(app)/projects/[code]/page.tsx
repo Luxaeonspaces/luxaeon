@@ -1,4 +1,3 @@
-import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
 import { notFound } from "next/navigation";
 import { addNote, updateProjectDetails, recordProjectPayment, editProjectPayment, completeProject } from "./actions";
@@ -8,10 +7,9 @@ import ProjectHeader from "./components/ProjectHeader";
 import ProjectSummaryCards from "./components/ProjectSummaryCards";
 import ProjectDetailsForm from "./components/ProjectDetailsForm";
 import ProjectPayments from "./components/ProjectPayments";
-import  ProjectFilePanel from "./components/ProjectFilePanel.jsx"
+import ProjectFilePanel from "./components/ProjectFilePanel.jsx";
 import ProjectNotes from "./components/ProjectNotes";
-
-// fixing the deployment bug
+import { getProjectDetailForPage, getProjectIncomeTxns } from "@/lib/cachedQueries";
 
 export default async function ProjectDetailPage({
   params,
@@ -23,21 +21,10 @@ export default async function ProjectDetailPage({
   const { user, perms } = await requireUser();
   const canEdit = perms.isFounder || perms.isHod || perms.isFinance;
 
-  const project = await prisma.project.findUnique({
-    where: { projectCode: params.code },
-    include: {
-      notesLog: { orderBy: { createdAt: "desc" } },
-      files: { orderBy: { createdAt: "desc" } },
-      clientDocs: { orderBy: { createdAt: "desc" } },
-    },
-  });
+  const project = await getProjectDetailForPage(params.code);
   if (!project) notFound();
 
-  const paymentTxns = await prisma.transaction.findMany({
-    where: { projectCode: project.projectCode, type: "Income" },
-    include: { documents: true },
-    orderBy: { createdAt: "desc" },
-  });
+  const paymentTxns = await getProjectIncomeTxns(project.projectCode);
   const paidFromHistory = paymentTxns.reduce((a, t) => a + t.amount, 0);
 
   const balance = Math.max(0, (project.designFee || 0) - (project.amountPaid || 0));

@@ -1,26 +1,9 @@
-import { prisma } from "@/lib/prisma";
-import { cache } from "react";
+import { getLeads as getCachedLeads, getSalesPeople as getCachedSalesPeople } from "@/lib/cachedQueries";
 
 export async function getSalesPeople() {
-  return prisma.user.findMany({
-    where: {
-      active: true,
-      OR: [
-        { department: "Sales & Marketing" },
-        { department: "Sales" },
-        { department: "Marketing" },
-      ],
-    },
-    orderBy: {
-      fullName: "asc",
-    },
-  });
+  return getCachedSalesPeople();
 }
 
-export const getLeads = cache(async () => {
-  return prisma.lead.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-});
+export async function getLeads() {
+  return getCachedLeads();
+}

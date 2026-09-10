@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createTransaction } from "@/lib/txn";
 import { logWork } from "@/lib/activity";
 import { storeFile } from "@/lib/fileStorage";
@@ -23,6 +23,7 @@ export async function addNote(projectId, formData) {
     entityId: project.projectCode,
     details: note.slice(0, 120),
   });
+  revalidateTag("projects");
   revalidatePath(`/projects/${project.projectCode}`);
 }
 
@@ -100,6 +101,8 @@ export async function updateProjectDetails(projectCode, formData) {
     details: `Stage ${formData.get("stage") || existing.stage}`,
   });
 
+  revalidateTag("projects");
+  revalidateTag("finance");
   revalidatePath(`/projects/${projectCode}`);
   revalidatePath("/projects");
   revalidatePath("/dashboard");
@@ -164,7 +167,6 @@ export async function recordProjectPayment(projectCode, formData) {
     user
   );
 
-  // Save receipt against transaction
   const safe = `RCPT_${txn.id}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
   const buf = Buffer.from(await file.arrayBuffer());
   await storeFile("finance_docs", safe, buf);
@@ -197,6 +199,8 @@ export async function recordProjectPayment(projectCode, formData) {
     details: `NGN ${amount} · receipt ${file.name}`,
   });
 
+  revalidateTag("projects");
+  revalidateTag("finance");
   revalidatePath(`/projects/${projectCode}`);
   revalidatePath("/projects");
   revalidatePath("/finance");
@@ -247,7 +251,6 @@ export async function editProjectPayment(projectCode, formData) {
     });
   }
 
-  // Optional new receipt on edit
   const file = formData.get("receipt");
   if (file && typeof file !== "string" && file.size) {
     const safe = `RCPT_${txn.id}_${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
@@ -269,6 +272,8 @@ export async function editProjectPayment(projectCode, formData) {
     details: `Txn ${txn.txnId} → NGN ${newAmount}`,
   });
 
+  revalidateTag("projects");
+  revalidateTag("finance");
   revalidatePath(`/projects/${projectCode}`);
   revalidatePath("/finance");
   redirect(`/projects/${projectCode}?ok=` + encodeURIComponent("Payment record updated"));
@@ -304,6 +309,8 @@ export async function completeProject(projectCode) {
     details: `${existing.clientName} · archived`,
   });
 
+  revalidateTag("projects");
+  revalidateTag("finance");
   revalidatePath(`/projects/${projectCode}`);
   revalidatePath("/projects");
   revalidatePath("/archive");

@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 const PROFILE_FIELDS = [
@@ -43,6 +43,8 @@ export async function saveProfile(formData: FormData) {
     create: { userId, ...data },
     update: data,
   });
+  revalidateTag("hr");
+  revalidateTag("users");
   revalidatePath("/hr");
   revalidatePath(`/hr/${userId}`);
 
@@ -72,5 +74,6 @@ export async function preparePayroll(formData: FormData) {
       },
     });
   }
+  revalidateTag("hr");
   revalidatePath("/hr");
 }

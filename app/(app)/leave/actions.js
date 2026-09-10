@@ -2,7 +2,7 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { redirect } from "next/navigation";
 
 const MAX_DAYS = 60;
@@ -120,6 +120,7 @@ export async function requestLeave(formData) {
     },
   });
 
+  revalidateTag("leave");
   revalidatePath("/leaves");
   revalidatePath("/profile");
   revalidatePath("/hr");
@@ -193,6 +194,7 @@ export async function hodApproveLeave(formData) {
     },
   });
 
+  revalidateTag("leave");
   revalidatePath("/leaves");
   revalidatePath("/hr");
 }
@@ -244,6 +246,7 @@ export async function hrApproveLeave(formData) {
     },
   });
 
+  revalidateTag("leave");
   revalidatePath("/leaves");
   revalidatePath("/hr");
   revalidatePath("/profile");
