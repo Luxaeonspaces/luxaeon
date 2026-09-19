@@ -6,7 +6,7 @@ export default async function AppLayout({ children }) {
   const { user, perms } = await requireUser();
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-dvh overflow-hidden">
       <Sidebar
         fullName={user.fullName}
         role={user.role}
@@ -30,7 +30,8 @@ export default async function AppLayout({ children }) {
           <BackButton />
           <span className="text-xs text-gray-500 hidden md:inline-block">Luxaeon Spaces · Business OS</span>
         </header>
-        <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain p-4 page-enter sm:p-6">{children}</main>
+        <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-4 page-enter sm:p-6">{children}</main>
+        {/* <main className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain p-4 page-enter sm:p-6">{children}</main> */}
       </div>
     </div>
   );
