@@ -18,7 +18,7 @@ export default async function PermissionsPage() {
       </div>
 
       <OutflowWorkflowExplainer />
-      <PermissionMatrix />
+      <PermissionMatrix user={user}/>
       {/* <LiveSessionFlags user={user} perms={perms} /> */}
     </div>
   );
