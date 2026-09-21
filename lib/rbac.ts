@@ -51,12 +51,12 @@ export function getPerms(user: SessionUser) {
     canDisburseFunds: isHeadOfFinance, // Founder approves only; Head of Finance disburses
 
     canRequestOutflow: true,
-    canDeptApprove: isFounder || isHod || isHeadOfIt,
+    canDeptApprove: isFounder || isHod,
     canFinalApprove: isFounder,
 
     canManageUsers: isFounder || isIt,
-    canManageHr: isFounder || isHr || isHeadOfIt,
-    canViewHr: isFounder || isHr || isHeadOfIt,
+    canManageHr: isFounder || isHr,
+    canViewHr: isFounder || isHr,
     canManagePayroll: isFounder || isHr || isHeadOfFinance,
     canGeneratePayroll: isFounder || isHr,
     canSeeAudit: isFounder || isHeadOfIt,
@@ -71,13 +71,13 @@ export function getPerms(user: SessionUser) {
     canManageSalesTargets: isFounder || isSales,
     canSetSalesTargets: isFounder || isHeadOfSales,
 
-    canManageAppraisals: isFounder || isHr || isHeadOfIt,
+    canManageAppraisals: isFounder || isHr,
     canHodApproveAppraisal: isFounder || isHod,
 
     canProcessProcurement: isFounder || isProcurement,
     canRequestProcurement: true,
 
-    canManageOnboarding: isFounder || isHr || isHeadOfIt,
+    canManageOnboarding: isFounder || isHr,
   };
 }
 
