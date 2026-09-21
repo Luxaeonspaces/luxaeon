@@ -3,7 +3,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { cloudinaryConfig, signParams } from "@/lib/fileStorage";
-import { resolveUploadTarget } from "@/lib/uploadTargets";
+import { resolveUploadTarget } from "@/lib/uploadTarget";
 
 export const runtime = "nodejs";
 
