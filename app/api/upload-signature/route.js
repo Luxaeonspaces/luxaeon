@@ -8,6 +8,22 @@ import { resolveUploadTarget } from "@/lib/uploadTarget";
 export const runtime = "nodejs";
 
 const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
+const DOCUMENT_EXTENSIONS = new Set(["pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "txt", "zip"]);
+const IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg", "heic", "heif"]);
+const VIDEO_EXTENSIONS = new Set(["mp4", "mov", "webm", "avi"]);
+
+function extension(filename) {
+  return (filename || "").toLowerCase().split(".").pop() || "";
+}
+
+function validateFileType(fileName, kind) {
+  const ext = extension(fileName);
+  const supportsVideo = kind === "client" || kind === "project";
+  if (!DOCUMENT_EXTENSIONS.has(ext) && !IMAGE_EXTENSIONS.has(ext) && !(supportsVideo && VIDEO_EXTENSIONS.has(ext))) {
+    return supportsVideo ? "Supported files: documents, images, or videos" : "Supported files: documents or images";
+  }
+  return null;
+}
 
 export async function POST(req) {
   try {
@@ -30,6 +46,10 @@ export async function POST(req) {
     }
     if (typeof fileSize === "number" && fileSize > MAX_UPLOAD_BYTES) {
       return NextResponse.json({ error: "Files must be 25 MB or smaller" }, { status: 400 });
+    }
+    const typeError = validateFileType(fileName, kind);
+    if (typeError) {
+      return NextResponse.json({ error: typeError }, { status: 400 });
     }
 
     // Same auth/access rules as /api/upload, checked BEFORE issuing a signature.

@@ -83,7 +83,7 @@ export default function EmployeeDocs({ userId, docs }: { userId: string; docs: D
           ))}
         </select>
         <input name="description" className="input" placeholder="Description" />
-        <input name="file" type="file" required className="text-sm" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.gif,.webp,.svg,.zip" />
+        <input name="file" type="file" required className="text-sm" accept=".pdf,.doc,.docx,.xls,.xlsx,.csv,.ppt,.pptx,.txt,.png,.jpg,.jpeg,.gif,.webp,.svg,.heic,.heif,.zip" />
         <button type="submit" className="btn-primary" disabled={busy}>
           {busy ? "Uploading…" : "Upload document"}
         </button>

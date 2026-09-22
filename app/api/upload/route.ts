@@ -7,7 +7,7 @@ import { storeFile } from "@/lib/fileStorage";
 export const runtime = "nodejs";
 
 const DOCUMENT_EXTENSIONS = new Set(["pdf", "doc", "docx", "xls", "xlsx", "csv", "ppt", "pptx", "txt", "zip"]);
-const IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg"]);
+const IMAGE_EXTENSIONS = new Set(["png", "jpg", "jpeg", "gif", "webp", "svg", "heic", "heif"]);
 const VIDEO_EXTENSIONS = new Set(["mp4", "mov", "webm", "avi"]);
 const MAX_UPLOAD_BYTES = 25 * 1024 * 1024;
 
