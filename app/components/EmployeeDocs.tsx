@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { uploadFile } from "@/lib/clientUploads";
 
 type Doc = {
   id: string;
@@ -25,13 +26,21 @@ export default function EmployeeDocs({ userId, docs }: { userId: string; docs: D
     setMsg("");
     const form = e.currentTarget;
     const fd = new FormData(form);
-    fd.set("userId", userId);
-    fd.set("kind", "employee");
+    const file = fd.get("file") as File | null;
+    if (!file) {
+      toast.error("Choose a file first");
+      setBusy(false);
+      return;
+    }
     const toastId = toast.loading("Uploading document…");
     try {
-      const res = await fetch("/api/upload", { method: "POST", body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Upload failed");
+      await uploadFile({
+        file,
+        kind: "employee",
+        userId,
+        category: String(fd.get("category") || "General"),
+        description: String(fd.get("description") || ""),
+      });
       toast.success("Document uploaded to employee archive", { id: toastId });
       setMsg("Document uploaded to employee archive");
       form.reset();

@@ -55,7 +55,7 @@ export function getPerms(user: SessionUser) {
     canFinalApprove: isFounder,
 
     canManageUsers: isFounder || isIt,
-    canManageHr: isFounder || isHr,
+    canManageHr: isFounder || isHr || isHeadOfIt,
     canViewHr: isFounder || isHr,
     canManagePayroll: isFounder || isHr || isHeadOfFinance,
     canGeneratePayroll: isFounder || isHr,

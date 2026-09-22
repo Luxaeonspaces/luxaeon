@@ -22,7 +22,7 @@ const matrix = [
 
 export default function PermissionMatrix() {
   return (
-    <div className="glass-card overflow-hidden">
+    <div className="glass-card overflow-x-auto">
       <div className="border-b border-gold/30 px-4 py-3 font-semibold text-brown">
         Permission matrix
       </div>
