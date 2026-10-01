@@ -7,12 +7,17 @@ import LeaveSummary from "./components/LeaveSummary";
 import MyLeaveHistory from "./components/MyLeaveHistory";
 import TeamLeaveSection from "./components/TeamLeaveSection";
 
+type LeavePageProps = {
+  searchParams?: {
+    error?: string;
+    ok?: string;
+  };
+};
+
 export default async function LeavePage({
   searchParams,
-}) {
+}: LeavePageProps) {
   const { user, perms } = await requireUser();
-
-  const params = await searchParams;
 
   const showTeam =
     perms.isFounder ||
@@ -24,14 +29,17 @@ export default async function LeavePage({
       <LeaveHeader />
 
       <LeaveMessages
-        error={params?.error}
-        ok={params?.ok}
+        error={searchParams?.error}
+        ok={searchParams?.ok}
       />
 
       <LeaveSummary userId={user.id} />
 
       <LeaveRequestForm
-        message={params?.ok || params?.error}
+        message={
+          searchParams?.ok ||
+          searchParams?.error
+        }
       />
 
       <MyLeaveHistory userId={user.id} />

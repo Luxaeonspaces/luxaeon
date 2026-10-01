@@ -66,7 +66,7 @@ export function getPerms(user: SessionUser) {
     canSeeProjectReport: isFounder || isExecutive || (isHod && isDesign),
     canSeeAllActivity: isFounder,
 
-    canCreateProjects: isFounder || isDesign || isHeadOfIt,
+    canCreateProjects: isFounder || isDesign ,
 
     canManageSalesTargets: isFounder || isSales,
     canSetSalesTargets: isFounder || isHeadOfSales,
