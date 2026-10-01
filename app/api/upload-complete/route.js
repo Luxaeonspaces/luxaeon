@@ -8,6 +8,7 @@ export const runtime = "nodejs";
 export async function POST(req) {
   try {
     const body = await req.json();
+
     const {
       kind = "project",
       filename,
@@ -24,12 +25,51 @@ export async function POST(req) {
     } = body;
 
     if (!filename || !originalName) {
-      return NextResponse.json({ error: "filename and originalName required" }, { status: 400 });
+      return NextResponse.json(
+        { error: "filename and originalName required" },
+        { status: 400 },
+      );
     }
+
+    /*
+     * Leave document
+     *
+     * Nothing is written to Prisma yet.
+     * requestLeave() will attach this filename to
+     * the newly-created LeaveRequest.
+     */
+    if (kind === "leave") {
+      const session = await getServerSession(authOptions);
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      if (!session.user.id) {
+        return NextResponse.json(
+          { error: "User ID unavailable" },
+          { status: 401 },
+        );
+      }
+
+      return NextResponse.json({
+        ok: true,
+        filename,
+        originalName,
+      });
+    }
+
+    /*
+     * Existing upload targets
+     */
 
     if (kind === "procurement") {
       const session = await getServerSession(authOptions);
-      if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
       const doc = await prisma.procurementDocument.create({
         data: {
           procurementId,
@@ -38,12 +78,21 @@ export async function POST(req) {
           uploadedBy: session.user.fullName || "Staff",
         },
       });
-      return NextResponse.json({ ok: true, id: doc.id, filename });
+
+      return NextResponse.json({
+        ok: true,
+        id: doc.id,
+        filename,
+      });
     }
 
     if (kind === "outflow") {
       const session = await getServerSession(authOptions);
-      if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
       const doc = await prisma.outflowDocument.create({
         data: {
           outflowId,
@@ -52,14 +101,32 @@ export async function POST(req) {
           uploadedBy: session.user.fullName || "Staff",
         },
       });
-      return NextResponse.json({ ok: true, id: doc.id, filename });
+
+      return NextResponse.json({
+        ok: true,
+        id: doc.id,
+        filename,
+      });
     }
 
     if (kind === "finance") {
       const session = await getServerSession(authOptions);
-      if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-      const txn = await prisma.transaction.findUnique({ where: { id: transactionId } });
-      if (!txn) return NextResponse.json({ error: "Transaction not found" }, { status: 404 });
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
+      const txn = await prisma.transaction.findUnique({
+        where: { id: transactionId },
+      });
+
+      if (!txn) {
+        return NextResponse.json(
+          { error: "Transaction not found" },
+          { status: 404 },
+        );
+      }
+
       const doc = await prisma.transactionDocument.create({
         data: {
           transactionId,
@@ -69,6 +136,7 @@ export async function POST(req) {
           uploadedBy: session.user.fullName || "Finance",
         },
       });
+
       await prisma.transactionAudit
         .create({
           data: {
@@ -82,12 +150,21 @@ export async function POST(req) {
           },
         })
         .catch(() => {});
-      return NextResponse.json({ ok: true, id: doc.id, filename });
+
+      return NextResponse.json({
+        ok: true,
+        id: doc.id,
+        filename,
+      });
     }
 
     if (kind === "employee") {
       const session = await getServerSession(authOptions);
-      if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+      if (!session?.user) {
+        return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      }
+
       const doc = await prisma.employeeDocument.create({
         data: {
           userId,
@@ -98,14 +175,28 @@ export async function POST(req) {
           uploadedBy: session.user.fullName || "HR",
         },
       });
-      return NextResponse.json({ ok: true, id: doc.id, filename });
+
+      return NextResponse.json({
+        ok: true,
+        id: doc.id,
+        filename,
+      });
     }
 
-    // project / client
-    const project = await prisma.project.findUnique({ where: { projectCode } });
-    if (!project) return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    /*
+     * Project / client
+     */
+
+    const project = await prisma.project.findUnique({
+      where: { projectCode },
+    });
+
+    if (!project) {
+      return NextResponse.json({ error: "Project not found" }, { status: 404 });
+    }
 
     const session = await getServerSession(authOptions);
+
     const uploader =
       uploadedByName ||
       session?.user?.fullName ||
@@ -122,7 +213,12 @@ export async function POST(req) {
           description: description || null,
         },
       });
-      return NextResponse.json({ ok: true, id: doc.id, filename });
+
+      return NextResponse.json({
+        ok: true,
+        id: doc.id,
+        filename,
+      });
     }
 
     const doc = await prisma.projectFile.create({
@@ -135,9 +231,18 @@ export async function POST(req) {
         description: description || null,
       },
     });
-    return NextResponse.json({ ok: true, id: doc.id, filename });
+
+    return NextResponse.json({
+      ok: true,
+      id: doc.id,
+      filename,
+    });
   } catch (e) {
     console.error(e);
-    return NextResponse.json({ error: e.message || "Could not save upload record" }, { status: 500 });
+
+    return NextResponse.json(
+      { error: e.message || "Could not save upload record" },
+      { status: 500 },
+    );
   }
 }

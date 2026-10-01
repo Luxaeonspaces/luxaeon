@@ -1,6 +1,4 @@
--- Luxaeon Business OS initial PostgreSQL schema
--- Run this file in Supabase SQL Editor.
-
+-- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "username" TEXT NOT NULL,
@@ -10,9 +8,11 @@ CREATE TABLE "User" (
     "department" TEXT,
     "active" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "StaffProfile" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -57,9 +57,11 @@ CREATE TABLE "StaffProfile" (
     "educationHistory" TEXT,
     "certifications" TEXT,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "StaffProfile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "EmployeeDocument" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -69,9 +71,11 @@ CREATE TABLE "EmployeeDocument" (
     "description" TEXT,
     "uploadedBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "EmployeeDocument_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Lead" (
     "id" TEXT NOT NULL,
     "fullName" TEXT NOT NULL,
@@ -87,10 +91,12 @@ CREATE TABLE "Lead" (
     "ownerUserId" TEXT,
     "ownerName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "Lead_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Project" (
     "id" TEXT NOT NULL,
     "projectCode" TEXT NOT NULL,
@@ -110,18 +116,22 @@ CREATE TABLE "Project" (
     "salesPersonName" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "ProjectNote" (
     "id" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
     "note" TEXT NOT NULL,
     "createdBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "ProjectNote_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "ProjectFile" (
     "id" TEXT NOT NULL,
     "projectCode" TEXT NOT NULL,
@@ -131,9 +141,11 @@ CREATE TABLE "ProjectFile" (
     "category" TEXT DEFAULT 'General',
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "ProjectFile_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "ClientDocument" (
     "id" TEXT NOT NULL,
     "projectCode" TEXT NOT NULL,
@@ -143,9 +155,11 @@ CREATE TABLE "ClientDocument" (
     "uploadedByRole" TEXT DEFAULT 'staff',
     "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "ClientDocument_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Vendor" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
@@ -158,9 +172,11 @@ CREATE TABLE "Vendor" (
     "quality" INTEGER NOT NULL DEFAULT 3,
     "priceLevel" TEXT,
     "notes" TEXT,
+
     CONSTRAINT "Vendor_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
     "txnId" TEXT NOT NULL,
@@ -175,9 +191,11 @@ CREATE TABLE "Transaction" (
     "date" TEXT NOT NULL,
     "createdBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "TransactionDocument" (
     "id" TEXT NOT NULL,
     "transactionId" TEXT NOT NULL,
@@ -186,9 +204,11 @@ CREATE TABLE "TransactionDocument" (
     "category" TEXT DEFAULT 'Invoice',
     "uploadedBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "TransactionDocument_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "TransactionAudit" (
     "id" TEXT NOT NULL,
     "transactionId" TEXT,
@@ -200,9 +220,11 @@ CREATE TABLE "TransactionAudit" (
     "role" TEXT,
     "department" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "TransactionAudit_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "OutflowRequest" (
     "id" TEXT NOT NULL,
     "requestedBy" TEXT NOT NULL,
@@ -229,9 +251,11 @@ CREATE TABLE "OutflowRequest" (
     "financeDate" TEXT,
     "linkedTxnId" TEXT,
     "requestDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "OutflowRequest_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "OutflowDocument" (
     "id" TEXT NOT NULL,
     "outflowId" TEXT NOT NULL,
@@ -239,9 +263,11 @@ CREATE TABLE "OutflowDocument" (
     "originalName" TEXT,
     "uploadedBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "OutflowDocument_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "PayrollBatch" (
     "id" TEXT NOT NULL,
     "period" TEXT NOT NULL,
@@ -255,9 +281,11 @@ CREATE TABLE "PayrollBatch" (
     "paidAt" TEXT,
     "linkedTxnId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "PayrollBatch_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "PayrollRecord" (
     "id" TEXT NOT NULL,
     "batchId" TEXT,
@@ -277,9 +305,11 @@ CREATE TABLE "PayrollRecord" (
     "linkedTxnId" TEXT,
     "notes" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "PayrollRecord_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "AuditLog" (
     "id" TEXT NOT NULL,
     "username" TEXT,
@@ -291,18 +321,22 @@ CREATE TABLE "AuditLog" (
     "entityId" TEXT,
     "details" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "AuditLog_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Activity" (
     "id" TEXT NOT NULL,
     "entityType" TEXT,
     "entityId" TEXT,
     "activity" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "Activity_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "OnboardingChecklist" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -323,9 +357,11 @@ CREATE TABLE "OnboardingChecklist" (
     "startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "completedAt" TEXT,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "OnboardingChecklist_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "SalesTarget" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -339,9 +375,11 @@ CREATE TABLE "SalesTarget" (
     "setBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "SalesTarget_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "Appraisal" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -385,9 +423,11 @@ CREATE TABLE "Appraisal" (
     "status" TEXT NOT NULL DEFAULT 'Self Draft',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "Appraisal_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "ProcurementRequest" (
     "id" TEXT NOT NULL,
     "projectCode" TEXT,
@@ -419,9 +459,11 @@ CREATE TABLE "ProcurementRequest" (
     "linkedTxnId" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "ProcurementRequest_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "ProcurementDocument" (
     "id" TEXT NOT NULL,
     "procurementId" TEXT NOT NULL,
@@ -429,9 +471,11 @@ CREATE TABLE "ProcurementDocument" (
     "originalName" TEXT,
     "uploadedBy" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "ProcurementDocument_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "LeaveRequest" (
     "id" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
@@ -451,9 +495,11 @@ CREATE TABLE "LeaveRequest" (
     "year" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+
     CONSTRAINT "LeaveRequest_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
 CREATE TABLE "WorkActivity" (
     "id" TEXT NOT NULL,
     "userId" TEXT,
@@ -466,31 +512,52 @@ CREATE TABLE "WorkActivity" (
     "entityId" TEXT,
     "details" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
     CONSTRAINT "WorkActivity_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "StaffProfile_userId_key" ON "StaffProfile"("userId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Lead_email_key" ON "Lead"("email");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Project_projectCode_key" ON "Project"("projectCode");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Transaction_txnId_key" ON "Transaction"("txnId");
 
-ALTER TABLE "StaffProfile" ADD CONSTRAINT "StaffProfile_userId_fkey"
-  FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "EmployeeDocument" ADD CONSTRAINT "EmployeeDocument_userId_fkey"
-  FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "ProjectNote" ADD CONSTRAINT "ProjectNote_projectId_fkey"
-  FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "ProjectFile" ADD CONSTRAINT "ProjectFile_projectCode_fkey"
-  FOREIGN KEY ("projectCode") REFERENCES "Project"("projectCode") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "ClientDocument" ADD CONSTRAINT "ClientDocument_projectCode_fkey"
-  FOREIGN KEY ("projectCode") REFERENCES "Project"("projectCode") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "TransactionDocument" ADD CONSTRAINT "TransactionDocument_transactionId_fkey"
-  FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "OutflowDocument" ADD CONSTRAINT "OutflowDocument_outflowId_fkey"
-  FOREIGN KEY ("outflowId") REFERENCES "OutflowRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "PayrollRecord" ADD CONSTRAINT "PayrollRecord_batchId_fkey"
-  FOREIGN KEY ("batchId") REFERENCES "PayrollBatch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
-ALTER TABLE "PayrollRecord" ADD CONSTRAINT "PayrollRecord_userId_fkey"
-  FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-ALTER TABLE "ProcurementDocument" ADD CONSTRAINT "ProcurementDocument_procurementId_fkey"
-  FOREIGN KEY ("procurementId") REFERENCES "ProcurementRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- AddForeignKey
+ALTER TABLE "StaffProfile" ADD CONSTRAINT "StaffProfile_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "EmployeeDocument" ADD CONSTRAINT "EmployeeDocument_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectNote" ADD CONSTRAINT "ProjectNote_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectFile" ADD CONSTRAINT "ProjectFile_projectCode_fkey" FOREIGN KEY ("projectCode") REFERENCES "Project"("projectCode") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ClientDocument" ADD CONSTRAINT "ClientDocument_projectCode_fkey" FOREIGN KEY ("projectCode") REFERENCES "Project"("projectCode") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "TransactionDocument" ADD CONSTRAINT "TransactionDocument_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "OutflowDocument" ADD CONSTRAINT "OutflowDocument_outflowId_fkey" FOREIGN KEY ("outflowId") REFERENCES "OutflowRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PayrollRecord" ADD CONSTRAINT "PayrollRecord_batchId_fkey" FOREIGN KEY ("batchId") REFERENCES "PayrollBatch"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PayrollRecord" ADD CONSTRAINT "PayrollRecord_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProcurementDocument" ADD CONSTRAINT "ProcurementDocument_procurementId_fkey" FOREIGN KEY ("procurementId") REFERENCES "ProcurementRequest"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+

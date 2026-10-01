@@ -2,10 +2,12 @@
 
 import { prisma } from "@/lib/prisma";
 import { requireUser } from "@/lib/session";
-import { revalidatePath, revalidateTag } from "next/cache";
+import { LEAVE_TYPES } from "./components/leave-types";
+import {
+  revalidatePath,
+  revalidateTag,
+} from "next/cache";
 import { redirect } from "next/navigation";
-
-const MAX_DAYS = 60;
 
 function daysBetween(start, end) {
   const a = new Date(start);
@@ -22,12 +24,22 @@ function daysBetween(start, end) {
 
 function getReturnPath(formData) {
   const returnTo = String(
-    formData.get("returnTo") || "/leaves"
+    formData.get("returnTo") || "/leave"
   );
 
   return returnTo.startsWith("/")
     ? returnTo.split("?")[0]
-    : "/leaves";
+    : "/leave";
+}
+
+function redirectWithError(formData, message) {
+  const base = getReturnPath(formData);
+
+  redirect(
+    base +
+      "?error=" +
+      encodeURIComponent(message)
+  );
 }
 
 export async function requestLeave(formData) {
@@ -41,18 +53,67 @@ export async function requestLeave(formData) {
     formData.get("endDate") || ""
   );
 
+  const leaveType = String(
+    formData.get("leaveType") || ""
+  );
+
+  const documentFilename =
+    String(
+      formData.get("documentFilename") || ""
+    ) || null;
+
+  const documentName =
+    String(
+      formData.get("documentName") || ""
+    ) || null;
+
   const reason =
     String(formData.get("reason") || "") || null;
 
   if (!startDate || !endDate) {
-    const base = getReturnPath(formData);
+    redirectWithError(
+      formData,
+      "Start and end dates are required."
+    );
+  }
 
-    redirect(
-      base +
-        "?error=" +
-        encodeURIComponent(
-          "Start and end dates required"
-        )
+  if (
+    !leaveType ||
+    !LEAVE_TYPES[leaveType]
+  ) {
+    redirectWithError(
+      formData,
+      "Please select a valid leave type."
+    );
+  }
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (
+    Number.isNaN(start.getTime()) ||
+    Number.isNaN(end.getTime())
+  ) {
+    redirectWithError(
+      formData,
+      "Please provide valid leave dates."
+    );
+  }
+
+  if (end < start) {
+    redirectWithError(
+      formData,
+      "End date must be on or after the start date."
+    );
+  }
+
+  if (
+    start.getFullYear() !==
+    end.getFullYear()
+  ) {
+    redirectWithError(
+      formData,
+      "Leave requests cannot cross calendar years. Please submit separate requests for each year."
     );
   }
 
@@ -62,47 +123,55 @@ export async function requestLeave(formData) {
   );
 
   if (days <= 0) {
-    const base = getReturnPath(formData);
-
-    redirect(
-      base +
-        "?error=" +
-        encodeURIComponent(
-          "End date must be on or after the start date"
-        )
+    redirectWithError(
+      formData,
+      "The selected dates are invalid."
     );
   }
 
-  const year = new Date(startDate).getFullYear();
+  const type = LEAVE_TYPES[leaveType];
+  const year = start.getFullYear();
 
-  const used = await prisma.leaveRequest.aggregate({
-    where: {
-      userId: user.id,
-      year,
-      status: {
-        in: [
-          "Approved",
-          "Pending HOD",
-          "Pending HR",
-        ],
+  if (
+    type.requiresDocument &&
+    (!documentFilename || !documentName)
+  ) {
+    redirectWithError(
+      formData,
+      `${type.label} requires a supporting document.`
+    );
+  }
+
+  const used =
+    await prisma.leaveRequest.aggregate({
+      where: {
+        userId: user.id,
+        leaveType,
+        year,
+        status: {
+          in: [
+            "Approved",
+            "Pending HOD",
+            "Pending HR",
+          ],
+        },
       },
-    },
-    _sum: {
-      days: true,
-    },
-  });
+      _sum: {
+        days: true,
+      },
+    });
 
   const usedDays = used._sum.days || 0;
 
-  if (usedDays + days > MAX_DAYS) {
-    const base = getReturnPath(formData);
+  const remaining =
+    type.maxDays - usedDays;
 
-    redirect(
-      base +
-        "?error=" +
-        encodeURIComponent(
-          `Leave balance exceeded. Used/pending ${usedDays} of ${MAX_DAYS} days. This request is ${days} days.`
-        )
+  if (days > remaining) {
+    redirectWithError(
+      formData,
+      `${type.label} allows ${type.maxDays} days per year. You have ${remaining} day${
+        remaining === 1 ? "" : "s"
+      } remaining for ${year}. This request is ${days} days.`
     );
   }
 
@@ -115,13 +184,16 @@ export async function requestLeave(formData) {
       endDate,
       days,
       reason,
+      leaveType,
+      documentFilename,
+      documentName,
       status: "Pending HOD",
       year,
     },
   });
 
   revalidateTag("leave");
-  revalidatePath("/leaves");
+  revalidatePath("/leave");
   revalidatePath("/profile");
   revalidatePath("/hr");
 
@@ -131,19 +203,24 @@ export async function requestLeave(formData) {
     base +
       "?ok=" +
       encodeURIComponent(
-        `Leave requested (${days} days) — awaiting your HOD`
+        `${type.label} requested (${days} day${
+          days === 1 ? "" : "s"
+        }) — awaiting your HOD.`
       )
   );
 }
 
 export async function hodApproveLeave(formData) {
-  const { user, perms } = await requireUser();
+  const { user, perms } =
+    await requireUser();
 
   if (!perms.isFounder && !perms.isHod) {
     throw new Error("HOD only");
   }
 
-  const id = String(formData.get("id") || "");
+  const id = String(
+    formData.get("id") || ""
+  );
 
   const decision = String(
     formData.get("decision") || "approve"
@@ -154,16 +231,22 @@ export async function hodApproveLeave(formData) {
   );
 
   if (!id) {
-    throw new Error("Leave request ID required");
+    throw new Error(
+      "Leave request ID required"
+    );
   }
 
-  const row = await prisma.leaveRequest.findUnique({
-    where: {
-      id,
-    },
-  });
+  const row =
+    await prisma.leaveRequest.findUnique({
+      where: {
+        id,
+      },
+    });
 
-  if (!row || row.status !== "Pending HOD") {
+  if (
+    !row ||
+    row.status !== "Pending HOD"
+  ) {
     return;
   }
 
@@ -190,23 +273,30 @@ export async function hodApproveLeave(formData) {
 
       hodApprovedBy: user.fullName,
       hodNote: note || null,
-      hodDate: new Date().toISOString(),
+      hodDate:
+        new Date().toISOString(),
     },
   });
 
   revalidateTag("leave");
-  revalidatePath("/leaves");
+  revalidatePath("/leave");
   revalidatePath("/hr");
 }
 
 export async function hrApproveLeave(formData) {
-  const { user, perms } = await requireUser();
+  const { user, perms } =
+    await requireUser();
 
-  if (!perms.canManageHr && !perms.isFounder) {
+  if (
+    !perms.canManageHr &&
+    !perms.isFounder
+  ) {
     throw new Error("HR only");
   }
 
-  const id = String(formData.get("id") || "");
+  const id = String(
+    formData.get("id") || ""
+  );
 
   const decision = String(
     formData.get("decision") || "approve"
@@ -217,16 +307,22 @@ export async function hrApproveLeave(formData) {
   );
 
   if (!id) {
-    throw new Error("Leave request ID required");
+    throw new Error(
+      "Leave request ID required"
+    );
   }
 
-  const row = await prisma.leaveRequest.findUnique({
-    where: {
-      id,
-    },
-  });
+  const row =
+    await prisma.leaveRequest.findUnique({
+      where: {
+        id,
+      },
+    });
 
-  if (!row || row.status !== "Pending HR") {
+  if (
+    !row ||
+    row.status !== "Pending HR"
+  ) {
     return;
   }
 
@@ -242,12 +338,13 @@ export async function hrApproveLeave(formData) {
 
       hrApprovedBy: user.fullName,
       hrNote: note || null,
-      hrDate: new Date().toISOString(),
+      hrDate:
+        new Date().toISOString(),
     },
   });
 
   revalidateTag("leave");
-  revalidatePath("/leaves");
+  revalidatePath("/leave");
   revalidatePath("/hr");
   revalidatePath("/profile");
 }
