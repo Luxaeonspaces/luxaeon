@@ -28,6 +28,7 @@ export default async function LeavePage({
     <div className="space-y-6">
       <LeaveHeader />
 
+      {/* 
       <LeaveMessages
         error={searchParams?.error}
         ok={searchParams?.ok}
@@ -42,7 +43,7 @@ export default async function LeavePage({
         }
       />
 
-      <MyLeaveHistory userId={user.id} />
+      <MyLeaveHistory userId={user.id} /> */}
 
       {showTeam && (
         <TeamLeaveSection

@@ -2,6 +2,7 @@ import { requireUser } from "@/lib/session";
 import { Suspense } from "react";
 import ProfileSummary from "./components/ProfileSummary";
 import MyPayslipsTable from "./components/MyPayslipsTable";
+import { redirect } from "next/navigation";
 
 function SummarySkeleton() {
   return <div className="glass-card h-32 animate-pulse p-5" />;
@@ -21,6 +22,10 @@ function TableSkeleton() {
 
 export default async function ProfilePage() {
   const { user } = await requireUser();
+
+
+  redirect("/dashboard");
+
 
   return (
     <div className="space-y-6">

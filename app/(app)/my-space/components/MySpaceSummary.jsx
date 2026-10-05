@@ -1,8 +1,5 @@
-import {
-  getPayrolls,
-  getMyLeaves,
-  calculateLeaveUsage,
-} from "./my-space-data";
+import LeaveSummary from "../../leave/components/LeaveSummary";
+import { getPayrolls, getMyLeaves, calculateLeaveUsage } from "./my-space-data";
 
 const MAX_DAYS = 60;
 
@@ -14,46 +11,32 @@ export default async function MySpaceSummary({ user }) {
     getMyLeaves(user.id),
   ]);
 
-  const used = calculateLeaveUsage(
-    leaves,
-    year
-  );
+  const used = calculateLeaveUsage(leaves, year);
 
   const latestPayroll = payrolls[0];
 
   return (
-    <div className="grid gap-4 md:grid-cols-3">
-      <div className="glass-card p-4">
-        <p className="text-xs uppercase text-gray-500">
-          Role
-        </p>
+    <>
+      <LeaveSummary userId={user.id} />
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase text-gray-500">Role</p>
 
-        <p className="font-semibold text-burgundy">
-          {user.role} · {user.department || "—"}
-        </p>
+          <p className="font-semibold text-burgundy">
+            {user.role} · {user.department || "—"}
+          </p>
+        </div>
+
+        <div className="glass-card p-4">
+          <p className="text-xs uppercase text-gray-500">Latest net pay</p>
+
+          <p className="font-semibold text-burgundy">
+            {latestPayroll
+              ? `₦${latestPayroll.netPay.toLocaleString()} · ${latestPayroll.period}`
+              : "—"}
+          </p>
+        </div>
       </div>
-
-      <div className="glass-card p-4">
-        <p className="text-xs uppercase text-gray-500">
-          Leave balance {year}
-        </p>
-
-        <p className="font-semibold text-burgundy">
-          {MAX_DAYS - used} of {MAX_DAYS} days left
-        </p>
-      </div>
-
-      <div className="glass-card p-4">
-        <p className="text-xs uppercase text-gray-500">
-          Latest net pay
-        </p>
-
-        <p className="font-semibold text-burgundy">
-          {latestPayroll
-            ? `₦${latestPayroll.netPay.toLocaleString()} · ${latestPayroll.period}`
-            : "—"}
-        </p>
-      </div>
-    </div>
+    </>
   );
 }
