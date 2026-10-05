@@ -13,11 +13,11 @@ import PayrollSectionSkeleton from "./components/PayrollSectionSkeleton";
 import LeaveRequestForm from "../leave/components/LeaveRequestForm";
 import SelfAppraisalForm from "../appraisals/components/SelfAppraisalForm";
 import AppraisalQueuesAndHistory from "../appraisals/components/AppraisalQueuesAndHistory";
+import MyLeaveHistory from "../leave/components/MyLeaveHistory";
 
 function FormSkeleton() {
   return <div className="glass-card h-40 animate-pulse" />;
 }
-
 
 function QueueSkeleton() {
   return (
@@ -45,33 +45,36 @@ export default async function MySpacePage({
 
       <Suspense fallback={<MySpaceSummarySkeleton />}>
         <MySpaceSummary user={user} />
-
       </Suspense>
 
       <Suspense fallback={<EmployeeProfileSkeleton />}>
         <EmployeeProfile user={user} />
       </Suspense>
 
-       <Suspense fallback={<FormSkeleton />}>
-              <SelfAppraisalForm userId={user.id} isSales={perms.isSales} formKey={searchParams?.ok || "appraisal"} />
-            </Suspense>
-      <Suspense fallback={<LeaveSectionSkeleton />}>
-       <LeaveRequestForm
-        message={
-          searchParams?.ok ||
-          searchParams?.error
-        }
-      />
+      <Suspense fallback={<FormSkeleton />}>
+        <SelfAppraisalForm
+          userId={user.id}
+          isSales={perms.isSales}
+          formKey={searchParams?.ok || "appraisal"}
+        />
       </Suspense>
 
-         <Suspense fallback={<QueueSkeleton />}>
-              <AppraisalQueuesAndHistory userId={user.id} department={user.department} perms={perms} />
-            </Suspense>
+      <Suspense fallback={<QueueSkeleton />}>
+        <AppraisalQueuesAndHistory
+          userId={user.id}
+          department={user.department}
+          perms={perms}
+        />
+      </Suspense>
+      <Suspense fallback={<LeaveSectionSkeleton />}>
+        <LeaveRequestForm message={searchParams?.ok || searchParams?.error} />
+      </Suspense>
+
+      <MyLeaveHistory userId={user.id} /> 
 
       <Suspense fallback={<PayrollSectionSkeleton />}>
         <PayrollSection userId={user.id} />
       </Suspense>
-
     </div>
   );
 }

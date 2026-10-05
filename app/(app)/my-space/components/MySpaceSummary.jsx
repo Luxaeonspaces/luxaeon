@@ -17,7 +17,6 @@ export default async function MySpaceSummary({ user }) {
 
   return (
     <>
-      <LeaveSummary userId={user.id} />
       <div className="grid gap-4 md:grid-cols-2">
         <div className="glass-card p-4">
           <p className="text-xs uppercase text-gray-500">Role</p>
@@ -37,6 +36,7 @@ export default async function MySpaceSummary({ user }) {
           </p>
         </div>
       </div>
+      <LeaveSummary userId={user.id} />
     </>
   );
 }
