@@ -18,7 +18,7 @@ export default async function TeamLeaveSection({
     perms.isFounder || perms.isHod;
 
   const showHr =
-    perms.canManageHr || perms.isFounder;
+    perms.canManageHr || perms.isFounder || perms.isHeadOfHr;
 
   const pendingHod = team.filter(
     (leave) => leave.status === "Pending HOD"
