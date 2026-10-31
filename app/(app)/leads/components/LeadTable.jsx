@@ -1,11 +1,13 @@
-import { getLeads } from "./leads-data";
 
-export default async function LeadTable() {
+import { getLeads } from "./leads-data";
+import EditLeadModal from "./EditLeadModal";
+
+export default async function LeadTable({ salesPeople }) {
   const leads = await getLeads();
 
   return (
     <div className="glass-card overflow-x-auto">
-      <table className="w-full min-w-[700px] text-left text-sm">
+      <table className="w-full min-w-[800px] text-left text-sm">
         <thead className="bg-cream/50 text-xs uppercase text-gray-500">
           <tr>
             <th className="px-4 py-2">Name</th>
@@ -15,6 +17,7 @@ export default async function LeadTable() {
             <th className="px-4 py-2">Status</th>
             <th className="px-4 py-2">Sales owner</th>
             <th className="px-4 py-2">Created</th>
+            <th className="px-4 py-2">Actions</th>
           </tr>
         </thead>
 
@@ -50,6 +53,13 @@ export default async function LeadTable() {
 
               <td className="px-4 py-2 text-xs text-gray-500">
                 {lead.createdAt.toISOString().slice(0, 10)}
+              </td>
+
+              <td className="px-4 py-2">
+                <EditLeadModal
+                  lead={lead}
+                  salesPeople={salesPeople}
+                />
               </td>
             </tr>
           ))}

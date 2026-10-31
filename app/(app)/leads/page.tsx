@@ -1,3 +1,4 @@
+
 import { Suspense } from "react";
 import { requireUser } from "@/lib/session";
 
@@ -20,6 +21,11 @@ export default async function LeadsPage({
 
   const salesPeople = await getSalesPeople();
 
+  const salesPeopleOptions = salesPeople.map((person) => ({
+    id: person.id,
+    fullName: person.fullName,
+  }));
+
   return (
     <div className="space-y-6">
       <LeadsHeader />
@@ -32,7 +38,7 @@ export default async function LeadsPage({
       />
 
       <Suspense fallback={<LeadTableSkeleton />}>
-        <LeadTable />
+        <LeadTable salesPeople={salesPeopleOptions} />
       </Suspense>
     </div>
   );
