@@ -12,8 +12,8 @@ const config: Config = {
         whitesmoke: "#F5F5F2",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
-        display: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["IBM Plex Sans", "var(--font-sans)", "system-ui", "sans-serif"],
+        display: ["IBM Plex Sans", "var(--font-sans)", "system-ui", "sans-serif"],
       },
       boxShadow: {
         glass: "0 8px 32px rgba(74, 14, 14, 0.1)",
