@@ -1,4 +1,3 @@
-
 import { Suspense } from "react";
 import { requireUser } from "@/lib/session";
 
@@ -38,7 +37,11 @@ export default async function LeadsPage({
       />
 
       <Suspense fallback={<LeadTableSkeleton />}>
-        <LeadTable salesPeople={salesPeopleOptions} />
+        <LeadTable
+          salesPeople={salesPeopleOptions}
+          canEdit={perms.canEditLeads}
+          canDelete={perms.canDeleteLeads}
+        />
       </Suspense>
     </div>
   );

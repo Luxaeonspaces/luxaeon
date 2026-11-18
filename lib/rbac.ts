@@ -71,6 +71,11 @@ export function getPerms(user: SessionUser) {
     canManageSalesTargets: isFounder || isSales,
     canSetSalesTargets: isFounder || isHeadOfSales,
 
+    // Leads: all sales staff and Head of IT/Founder can edit; deletion is restricted to Head of Sales, Head of IT, and Founder.
+    canEditLeads: isFounder || isHeadOfIt || isSales,
+    canDeleteLeads: isFounder || isHeadOfIt,
+    // canDeleteLeads: isFounder || isHeadOfIt || isHeadOfSales,
+
     canManageAppraisals: isFounder || isHr,
     canHodApproveAppraisal: isFounder || isHod,
 

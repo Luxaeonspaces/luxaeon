@@ -1,4 +1,3 @@
-
 "use server";
 
 import { prisma } from "@/lib/prisma";
@@ -107,7 +106,11 @@ export async function createLead(formData) {
 }
 
 export async function updateLead(formData) {
-  const { user } = await requireUser();
+  const { user, perms } = await requireUser();
+
+  if (!perms.canEditLeads) {
+    return { success: false, error: "You do not have permission to edit leads." };
+  }
 
   const leadId = String(formData.get("leadId") || "").trim();
   const fullName = String(formData.get("fullName") || "").trim();
@@ -221,6 +224,53 @@ export async function updateLead(formData) {
     return {
       success: false,
       error: "Something went wrong while updating this lead.",
+    };
+  }
+}
+
+export async function deleteLead(formData) {
+  const { user, perms } = await requireUser();
+
+  if (!perms.canDeleteLeads) {
+    return { success: false, error: "You do not have permission to delete leads." };
+  }
+
+  const leadId = String(formData.get("leadId") || "").trim();
+
+  if (!leadId) {
+    return { success: false, error: "Lead ID is missing." };
+  }
+
+  try {
+    const lead = await prisma.lead.findUnique({
+      where: { id: leadId },
+      select: { id: true, fullName: true },
+    });
+
+    if (!lead) {
+      return { success: false, error: "This lead no longer exists." };
+    }
+
+    await prisma.lead.delete({ where: { id: leadId } });
+
+    await logWork(user, "Lead Deleted", {
+      entityType: "lead",
+      entityId: leadId,
+      details: `${lead.fullName} · Permanently deleted`,
+    });
+
+    revalidateTag("leads");
+    revalidatePath("/leads");
+    revalidatePath("/sales-targets");
+    revalidatePath("/dashboard");
+
+    return { success: true, error: "" };
+  } catch (error) {
+    console.error("Delete lead error:", error);
+
+    return {
+      success: false,
+      error: "Something went wrong while deleting this lead.",
     };
   }
 }

@@ -1,8 +1,8 @@
-
 import { getLeads } from "./leads-data";
 import EditLeadModal from "./EditLeadModal";
+import DeleteLeadModal from "./DeleteLeadModal";
 
-export default async function LeadTable({ salesPeople }) {
+export default async function LeadTable({ salesPeople, canEdit, canDelete }) {
   const leads = await getLeads();
 
   return (
@@ -56,10 +56,15 @@ export default async function LeadTable({ salesPeople }) {
               </td>
 
               <td className="px-4 py-2">
-                <EditLeadModal
-                  lead={lead}
-                  salesPeople={salesPeople}
-                />
+                <div className="flex items-center gap-2">
+                  {canEdit && (
+                    <EditLeadModal
+                      lead={lead}
+                      salesPeople={salesPeople}
+                    />
+                  )}
+                  {canDelete && <DeleteLeadModal lead={lead} />}
+                </div>
               </td>
             </tr>
           ))}
